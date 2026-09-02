@@ -328,7 +328,7 @@ async function loadSettings() {
   const s = await api('/settings');
   document.getElementById('webhook-url').value = s.discord_webhook_url || '';
   document.getElementById('timezone').value = s.timezone || 'Asia/Tokyo';
-  document.getElementById('notify-minutes').value = s.default_notify_minutes || '5,15,30';
+  document.getElementById('notify-minutes').value = s.default_notify_minutes || '5,30';
   document.getElementById('mention-role').value = s.mention_role_id || '';
   document.getElementById('embed-color').value = s.embed_color || '#E74C3C';
   document.getElementById('mention-everyone').checked = !!s.mention_everyone;

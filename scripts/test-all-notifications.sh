@@ -52,7 +52,7 @@ for s in sorted(json.load(sys.stdin)['data'], key=lambda x: x['boss_id']):
     if s['boss_id'] in seen:
         continue
     seen.add(s['boss_id'])
-    print(f\"{s['id']}|{s['boss_name']}|{s['notify_minutes'] or '5,10'}\")
+    print(f\"{s['id']}|{s['boss_name']}|{s['notify_minutes'] or '5,30'}\")
 ")
 
 echo ""
