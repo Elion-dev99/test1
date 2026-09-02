@@ -1,4 +1,4 @@
-import type { NotificationEvent, Settings, ScheduleWithBoss } from './types';
+import type { NotificationEvent, Settings } from './types';
 import { formatDateTime, getScheduleLabel } from './scheduler';
 
 function hexToDecimal(color: string): number {
@@ -7,10 +7,47 @@ function hexToDecimal(color: string): number {
   return isNaN(parsed) ? 0xe74c3c : parsed;
 }
 
-function buildMention(settings: Settings): string {
+function buildMentionContent(settings: Settings): string | undefined {
   if (settings.mention_everyone) return '@everyone';
   if (settings.mention_role_id) return `<@&${settings.mention_role_id}>`;
-  return '';
+  return undefined;
+}
+
+function buildAllowedMentions(settings: Settings) {
+  const allowed: { parse?: string[]; roles?: string[] } = {};
+  if (settings.mention_everyone) {
+    allowed.parse = ['everyone'];
+  }
+  if (settings.mention_role_id) {
+    allowed.roles = [settings.mention_role_id];
+  }
+  return allowed;
+}
+
+async function postWebhook(
+  webhookUrl: string,
+  settings: Settings,
+  payload: { content?: string; embeds: object[] },
+): Promise<{ ok: boolean; error?: string }> {
+  const mention = buildMentionContent(settings);
+  const content = mention ? `${mention}\n${payload.content ?? ''}`.trim() : payload.content;
+
+  const response = await fetch(webhookUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      content: content || undefined,
+      embeds: payload.embeds,
+      allowed_mentions: buildAllowedMentions(settings),
+    }),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    return { ok: false, error: `Discord API error: ${response.status} ${text}` };
+  }
+
+  return { ok: true };
 }
 
 export async function sendDiscordNotification(
@@ -20,7 +57,6 @@ export async function sendDiscordNotification(
   customMessage?: string,
 ): Promise<{ ok: boolean; error?: string }> {
   const { schedule, type, minutesUntil, spawnAt } = event;
-  const mention = buildMention(settings);
   const color = hexToDecimal(schedule.boss_color || settings.embed_color);
   const scheduleLabel = getScheduleLabel(schedule, settings.timezone);
   const spawnFormatted = formatDateTime(spawnAt, settings.timezone);
@@ -67,59 +103,22 @@ export async function sendDiscordNotification(
     timestamp: new Date().toISOString(),
   };
 
-  const content = mention ? `${mention}\n` : undefined;
+  return postWebhook(webhookUrl, settings, { embeds: [embed] });
+}
 
-  const response = await fetch(webhookUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      content,
-      embeds: [embed],
-      allowed_mentions: {
-        parse: settings.mention_everyone ? ['everyone'] : [],
-        roles: settings.mention_role_id ? [settings.mention_role_id] : [],
-      },
-    }),
-  });
+async function validateWebhookUrl(webhookUrl: string): Promise<{ ok: boolean; error?: string }> {
+  const pattern = /^https:\/\/(discord\.com|discordapp\.com)\/api\/webhooks\/\d+\/[\w-]+$/;
+  if (!pattern.test(webhookUrl)) {
+    return { ok: false, error: 'Discord Webhook URL の形式が正しくありません' };
+  }
 
+  const response = await fetch(webhookUrl, { method: 'GET' });
   if (!response.ok) {
     const text = await response.text();
-    return { ok: false, error: `Discord API error: ${response.status} ${text}` };
+    return { ok: false, error: `Webhook に接続できません: ${response.status} ${text}` };
   }
 
   return { ok: true };
 }
 
-export async function sendTestNotification(
-  webhookUrl: string,
-  settings: Settings,
-): Promise<{ ok: boolean; error?: string }> {
-  const embed = {
-    title: '✅ 接続テスト成功',
-    description: 'MMORPG Boss Notifier の Discord 通知が正常に動作しています。',
-    color: hexToDecimal('#2ECC71'),
-    fields: [
-      { name: '🌏 タイムゾーン', value: settings.timezone, inline: true },
-      {
-        name: '⏰ テスト時刻',
-        value: formatDateTime(new Date(), settings.timezone),
-        inline: true,
-      },
-    ],
-    footer: { text: 'MMORPG Boss Notifier' },
-    timestamp: new Date().toISOString(),
-  };
-
-  const response = await fetch(webhookUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ embeds: [embed] }),
-  });
-
-  if (!response.ok) {
-    const text = await response.text();
-    return { ok: false, error: `Discord API error: ${response.status} ${text}` };
-  }
-
-  return { ok: true };
-}
+export { validateWebhookUrl };

@@ -331,7 +331,7 @@ async function loadSettings() {
   document.getElementById('notify-minutes').value = s.default_notify_minutes || '5,30';
   document.getElementById('mention-role').value = s.mention_role_id || '';
   document.getElementById('embed-color').value = s.embed_color || '#E74C3C';
-  document.getElementById('mention-everyone').checked = !!s.mention_everyone;
+  document.getElementById('mention-everyone').checked = s.mention_everyone !== 0;
 }
 
 document.getElementById('settings-form').addEventListener('submit', async (e) => {
@@ -356,7 +356,7 @@ document.getElementById('settings-form').addEventListener('submit', async (e) =>
 document.getElementById('btn-test-webhook').addEventListener('click', async () => {
   try {
     await api('/settings/test', { method: 'POST' });
-    toast('テスト通知を送信しました');
+    toast('Webhook の接続を確認しました');
   } catch (e) {
     toast(e.message, 'error');
   }

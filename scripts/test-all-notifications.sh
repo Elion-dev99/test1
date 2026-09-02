@@ -27,9 +27,8 @@ post_json() {
 }
 
 echo "==> 全ボス通知テスト開始 (delay=${DELAY}s)"
+echo "（接続テストはDiscord通知なし・スキップ）"
 echo ""
-
-post_json "接続テスト" "$API/settings/test"
 
 while IFS='|' read -r id boss notify_min; do
   [[ -z "$id" ]] && continue

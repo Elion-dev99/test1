@@ -1,7 +1,7 @@
 import type { Env, ApiResponse } from './types';
 import * as db from './db';
 import { collectNotificationEvents, getNextSpawnTime, getScheduleLabel } from './scheduler';
-import { sendDiscordNotification, sendTestNotification } from './discord';
+import { sendDiscordNotification, validateWebhookUrl } from './discord';
 
 function json<T>(data: ApiResponse<T>, status = 200): Response {
   return new Response(JSON.stringify(data), {
@@ -66,9 +66,9 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
       if (!settings.discord_webhook_url) {
         return json({ success: false, error: 'Discord Webhook URL が設定されていません' }, 400);
       }
-      const result = await sendTestNotification(settings.discord_webhook_url, settings);
+      const result = await validateWebhookUrl(settings.discord_webhook_url);
       if (!result.ok) return json({ success: false, error: result.error }, 500);
-      return json({ success: true, data: { message: 'テスト通知を送信しました' } });
+      return json({ success: true, data: { message: 'Webhook URL の接続を確認しました（Discordには通知しません）' } });
     }
 
     // Bosses
