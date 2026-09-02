@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MMORPG Boss Notifier</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="logo-icon">⚔️</span>
+        <h1>Boss Notifier</h1>
+      </div>
+      <nav>
+        <button class="nav-btn active" data-tab="dashboard">📊 ダッシュボード</button>
+        <button class="nav-btn" data-tab="bosses">👹 ボス管理</button>
+        <button class="nav-btn" data-tab="schedules">📅 スケジュール</button>
+        <button class="nav-btn" data-tab="settings">⚙️ 設定</button>
+        <button class="nav-btn" data-tab="logs">📜 通知履歴</button>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <!-- Dashboard -->
+      <section id="tab-dashboard" class="tab active">
+        <header class="page-header">
+          <h2>ダッシュボード</h2>
+          <button class="btn btn-secondary" id="btn-run-cron">🔄 通知チェック実行</button>
+        </header>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value" id="stat-bosses">-</div>
+            <div class="stat-label">有効なボス</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="stat-schedules">-</div>
+            <div class="stat-label">有効なスケジュール</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="stat-notifications">-</div>
+            <div class="stat-label">24時間の通知</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>次の出現予定</h3>
+          <div id="upcoming-list" class="upcoming-list"></div>
+        </div>
+      </section>
+
+      <!-- Bosses -->
+      <section id="tab-bosses" class="tab">
+        <header class="page-header">
+          <h2>ボス管理</h2>
+          <button class="btn btn-primary" id="btn-add-boss">+ ボス追加</button>
+        </header>
+        <div id="bosses-list" class="item-grid"></div>
+      </section>
+
+      <!-- Schedules -->
+      <section id="tab-schedules" class="tab">
+        <header class="page-header">
+          <h2>スケジュール管理</h2>
+          <button class="btn btn-primary" id="btn-add-schedule">+ スケジュール追加</button>
+        </header>
+        <div id="schedules-list" class="schedule-list"></div>
+      </section>
+
+      <!-- Settings -->
+      <section id="tab-settings" class="tab">
+        <header class="page-header">
+          <h2>Discord 設定</h2>
+          <button class="btn btn-secondary" id="btn-test-webhook">🔔 テスト通知</button>
+        </header>
+        <form id="settings-form" class="card form-card">
+          <div class="form-group">
+            <label for="webhook-url">Discord Webhook URL</label>
+            <input type="url" id="webhook-url" placeholder="https://discord.com/api/webhooks/...">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="timezone">タイムゾーン</label>
+              <select id="timezone">
+                <option value="Asia/Tokyo">Asia/Tokyo (JST)</option>
+                <option value="Asia/Seoul">Asia/Seoul (KST)</option>
+                <option value="America/Los_Angeles">America/Los_Angeles (PST)</option>
+                <option value="America/New_York">America/New_York (EST)</option>
+                <option value="Europe/London">Europe/London (GMT)</option>
+                <option value="UTC">UTC</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="notify-minutes">事前通知（分・カンマ区切り）</label>
+              <input type="text" id="notify-minutes" placeholder="5,15,30">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="mention-role">メンション Role ID（任意）</label>
+              <input type="text" id="mention-role" placeholder="123456789012345678">
+            </div>
+            <div class="form-group">
+              <label for="embed-color">埋め込みカラー</label>
+              <input type="color" id="embed-color" value="#E74C3C">
+            </div>
+          </div>
+          <div class="form-group checkbox-group">
+            <label>
+              <input type="checkbox" id="mention-everyone">
+              @everyone をメンションする
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary">設定を保存</button>
+        </form>
+      </section>
+
+      <!-- Logs -->
+      <section id="tab-logs" class="tab">
+        <header class="page-header">
+          <h2>通知履歴</h2>
+        </header>
+        <div id="logs-list" class="logs-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Boss Modal -->
+  <dialog id="boss-modal" class="modal">
+    <form id="boss-form" class="modal-content">
+      <h3 id="boss-modal-title">ボス追加</h3>
+      <input type="hidden" id="boss-id">
+      <div class="form-group">
+        <label for="boss-name">ボス名 *</label>
+        <input type="text" id="boss-name" required>
+      </div>
+      <div class="form-group">
+        <label for="boss-location">出現場所</label>
+        <input type="text" id="boss-location">
+      </div>
+      <div class="form-group">
+        <label for="boss-description">説明</label>
+        <textarea id="boss-description" rows="3"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="boss-respawn">リスポン時間（分）</label>
+          <input type="number" id="boss-respawn" min="0" value="0">
+        </div>
+        <div class="form-group">
+          <label for="boss-color">カラー</label>
+          <input type="color" id="boss-color" value="#E74C3C">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="boss-image">画像URL（任意）</label>
+        <input type="url" id="boss-image">
+      </div>
+      <div class="form-group checkbox-group">
+        <label>
+          <input type="checkbox" id="boss-enabled" checked>
+          有効
+        </label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" data-close>キャンセル</button>
+        <button type="submit" class="btn btn-primary">保存</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Schedule Modal -->
+  <dialog id="schedule-modal" class="modal">
+    <form id="schedule-form" class="modal-content">
+      <h3 id="schedule-modal-title">スケジュール追加</h3>
+      <input type="hidden" id="schedule-id">
+      <div class="form-group">
+        <label for="schedule-boss">ボス *</label>
+        <select id="schedule-boss" required></select>
+      </div>
+      <div class="form-group">
+        <label for="schedule-type">スケジュール種別 *</label>
+        <select id="schedule-type" required>
+          <option value="daily">毎日（定時出現）</option>
+          <option value="weekly">毎週（曜日指定）</option>
+          <option value="respawn">リスポンタイマー</option>
+          <option value="fixed">固定日時（1回限り）</option>
+        </select>
+      </div>
+      <div id="schedule-daily-fields">
+        <div class="form-group">
+          <label for="schedule-time">出現時刻 (HH:MM)</label>
+          <input type="time" id="schedule-time">
+        </div>
+      </div>
+      <div id="schedule-weekly-fields" class="hidden">
+        <div class="form-group">
+          <label>曜日</label>
+          <div class="weekday-checks">
+            <label><input type="checkbox" value="0" class="weekday-cb"> 日</label>
+            <label><input type="checkbox" value="1" class="weekday-cb"> 月</label>
+            <label><input type="checkbox" value="2" class="weekday-cb"> 火</label>
+            <label><input type="checkbox" value="3" class="weekday-cb"> 水</label>
+            <label><input type="checkbox" value="4" class="weekday-cb"> 木</label>
+            <label><input type="checkbox" value="5" class="weekday-cb"> 金</label>
+            <label><input type="checkbox" value="6" class="weekday-cb"> 土</label>
+          </div>
+        </div>
+      </div>
+      <div id="schedule-fixed-fields" class="hidden">
+        <div class="form-group">
+          <label for="schedule-datetime">出現日時</label>
+          <input type="datetime-local" id="schedule-datetime">
+        </div>
+      </div>
+      <div id="schedule-respawn-fields" class="hidden">
+        <p class="hint">ボスのリスポン時間を使用します。「討伐」ボタンでタイマーを開始してください。</p>
+      </div>
+      <div class="form-group">
+        <label for="schedule-notify">事前通知（分・カンマ区切り・空欄でデフォルト）</label>
+        <input type="text" id="schedule-notify" placeholder="5,15,30">
+      </div>
+      <div class="form-group">
+        <label for="schedule-notes">メモ</label>
+        <textarea id="schedule-notes" rows="2"></textarea>
+      </div>
+      <div class="form-group checkbox-group">
+        <label>
+          <input type="checkbox" id="schedule-enabled" checked>
+          有効
+        </label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" data-close>キャンセル</button>
+        <button type="submit" class="btn btn-primary">保存</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
