@@ -25,24 +25,28 @@ export async function sendDiscordNotification(
   const scheduleLabel = getScheduleLabel(schedule, settings.timezone);
   const spawnFormatted = formatDateTime(spawnAt, settings.timezone);
 
+  const locationText = schedule.boss_location || '未設定（ゲーム内ボス情報→マップで確認）';
+  const moveHint = '左メニュー「ボス」→マップアイコン→クイック移動';
+
   let title: string;
   let description: string;
 
   if (customMessage) {
     title = `🔔 ${schedule.boss_name}`;
-    description = customMessage;
+    description = `${customMessage}\n\n📍 **出現場所:** ${locationText}`;
   } else if (type === 'spawn') {
     title = `⚔️ ボス出現！ ${schedule.boss_name}`;
-    description = `**${schedule.boss_name}** が出現しました！`;
+    description = `**${schedule.boss_name}** が出現しました！\n\n📍 **出現場所:** ${locationText}`;
   } else {
     title = `⏰ ボス出現予告 ${schedule.boss_name}`;
-    description = `**${schedule.boss_name}** が **${minutesUntil}分後** に出現予定です。`;
+    description = `**${schedule.boss_name}** が **${minutesUntil}分後** に出現予定です。\n\n📍 **出現場所:** ${locationText}`;
   }
 
   const fields = [
-    { name: '📍 出現場所', value: schedule.boss_location || '未設定', inline: true },
+    { name: '📍 出現場所', value: locationText, inline: false },
     { name: '🕐 出現予定', value: spawnFormatted, inline: true },
     { name: '📅 スケジュール', value: scheduleLabel, inline: true },
+    { name: '🗺️ 移動方法', value: moveHint, inline: false },
   ];
 
   if (schedule.boss_description) {
@@ -97,12 +101,14 @@ export async function sendKillNotification(
       ? `${schedule.boss_respawn_minutes}分後`
       : 'スケジュールに従います';
 
+  const locationText = schedule.boss_location || '未設定（ゲーム内ボス情報→マップで確認）';
+
   const embed = {
     title: `💀 ボス討伐 ${schedule.boss_name}`,
-    description: `**${schedule.boss_name}** が討伐されました。次の出現: ${respawnText}`,
+    description: `**${schedule.boss_name}** が討伐されました。\n\n📍 **出現場所:** ${locationText}\n次の出現: ${respawnText}`,
     color,
     fields: [
-      { name: '📍 場所', value: schedule.boss_location || '未設定', inline: true },
+      { name: '📍 出現場所', value: locationText, inline: false },
       {
         name: '🕐 討伐時刻',
         value: formatDateTime(new Date(), settings.timezone),
