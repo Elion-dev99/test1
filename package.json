@@ -7,6 +7,7 @@
     "deploy": "wrangler deploy",
     "db:migrate": "wrangler d1 migrations apply boss-notifier-db --local",
     "db:migrate:remote": "wrangler d1 migrations apply boss-notifier-db --remote",
+    "setup:cloudflare": "bash scripts/setup-cloudflare.sh",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

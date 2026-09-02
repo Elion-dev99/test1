@@ -1,0 +1,17 @@
+{
+  "name": "MMORPG Boss Notifier",
+  "install": "npm install && npx wrangler d1 migrations apply boss-notifier-db --local",
+  "start": "npx wrangler d1 migrations apply boss-notifier-db --local",
+  "terminals": [
+    {
+      "name": "wrangler-dev",
+      "command": "npm run dev"
+    }
+  ],
+  "ports": [
+    {
+      "name": "Dashboard",
+      "port": 8787
+    }
+  ]
+}
