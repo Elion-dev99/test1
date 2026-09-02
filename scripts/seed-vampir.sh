@@ -74,30 +74,30 @@ add_schedule() {
 # ワールドボス 12:00
 for name in ラルヴァ クラマムス エクセサ; do
   id=$(get_id "$name")
-  add_schedule "$id" '"schedule_type":"daily","daily_time":"12:00","notify_minutes":"5,10","enabled":1,"notes":"ワールドボス定時復活"'
+  add_schedule "$id" '"schedule_type":"daily","daily_time":"12:00","notify_minutes":"5,30","enabled":1,"notes":"ワールドボス定時復活"'
 done
 
 # ワールドボス 20:00
 for name in ブラーキウム デセルティ ウスルパトル; do
   id=$(get_id "$name")
-  add_schedule "$id" '"schedule_type":"daily","daily_time":"20:00","notify_minutes":"5,10","enabled":1,"notes":"ワールドボス定時復活"'
+  add_schedule "$id" '"schedule_type":"daily","daily_time":"20:00","notify_minutes":"5,30","enabled":1,"notes":"ワールドボス定時復活"'
 done
 
 # ゲヘナ ★1: 13:00, 17:00, 21:00（1スケジュールに統合）
 id=$(get_id "ゲヘナボス ★1")
-add_schedule "$id" '"schedule_type":"daily","daily_time":"13:00,17:00,21:00","notify_minutes":"5,10","enabled":1,"notes":"ゲヘナ★1 全区域"'
+add_schedule "$id" '"schedule_type":"daily","daily_time":"13:00,17:00,21:00","notify_minutes":"5,30","enabled":1,"notes":"ゲヘナ★1 全区域"'
 
 # ゲヘナ ★2: 13:00, 21:00
 id=$(get_id "ゲヘナボス ★2")
-add_schedule "$id" '"schedule_type":"daily","daily_time":"13:00,21:00","notify_minutes":"5,10","enabled":1,"notes":"ゲヘナ★2 第1区域下層"'
+add_schedule "$id" '"schedule_type":"daily","daily_time":"13:00,21:00","notify_minutes":"5,30","enabled":1,"notes":"ゲヘナ★2 第1区域下層"'
 
 # ゲヘナ ★3: 土曜 22:00
 id=$(get_id "ゲヘナボス ★3")
-add_schedule "$id" '"schedule_type":"weekly","daily_time":"22:00","weekly_days":"6","notify_minutes":"5,15","enabled":1,"notes":"ゲヘナ★3 第2区域・土曜限定"'
+add_schedule "$id" '"schedule_type":"weekly","daily_time":"22:00","weekly_days":"6","notify_minutes":"5,30","enabled":1,"notes":"ゲヘナ★3 第2区域・土曜限定"'
 
 # バルドゥン: 11:50, 19:50
 id=$(get_id "バルドゥン")
-add_schedule "$id" '"schedule_type":"daily","daily_time":"11:50,19:50","notify_minutes":"5","enabled":1,"notes":"レッドムーンフェスタ・WB10分前"'
+add_schedule "$id" '"schedule_type":"daily","daily_time":"11:50,19:50","notify_minutes":"5,30","enabled":1,"notes":"レッドムーンフェスタ・WB10分前"'
 
 echo "==> 完了!"
 curl -sf "$API/stats" | python3 -m json.tool

@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS settings (
   id INTEGER PRIMARY KEY CHECK (id = 1),
   discord_webhook_url TEXT,
   timezone TEXT NOT NULL DEFAULT 'Asia/Tokyo',
-  default_notify_minutes TEXT NOT NULL DEFAULT '5,15,30',
+  default_notify_minutes TEXT NOT NULL DEFAULT '5,30',
   mention_role_id TEXT,
   mention_everyone INTEGER NOT NULL DEFAULT 0,
   embed_color TEXT NOT NULL DEFAULT '#E74C3C',
