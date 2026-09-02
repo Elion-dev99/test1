@@ -1,0 +1,15 @@
+name: Scheduled Notification Check
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger cron endpoint
+        run: |
+          URL="${{ secrets.WORKER_URL }}/api/cron/run"
+          curl -sf -X POST "$URL" -H "Content-Type: application/json"
