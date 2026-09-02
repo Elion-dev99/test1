@@ -8,8 +8,18 @@ on:
 jobs:
   notify:
     runs-on: ubuntu-latest
+    if: ${{ secrets.WORKER_URL != '' }}
     steps:
       - name: Trigger cron endpoint
         run: |
-          URL="${{ secrets.WORKER_URL }}/api/cron/run"
-          curl -sf -X POST "$URL" -H "Content-Type: application/json"
+          curl -sf -X POST "${{ secrets.WORKER_URL }}/api/cron/run" \
+            -H "Content-Type: application/json"
+
+  worker-url-missing:
+    runs-on: ubuntu-latest
+    if: ${{ secrets.WORKER_URL == '' }}
+    steps:
+      - name: Skip cron (WORKER_URL not configured)
+        run: |
+          echo "::warning::WORKER_URL が未設定のため通知チェックをスキップしました。"
+          echo "例: https://mmorpg-boss-notifier.your-subdomain.workers.dev"
