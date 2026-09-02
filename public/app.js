@@ -356,7 +356,7 @@ document.getElementById('settings-form').addEventListener('submit', async (e) =>
 document.getElementById('btn-test-webhook').addEventListener('click', async () => {
   try {
     await api('/settings/test', { method: 'POST' });
-    toast('テスト通知を送信しました');
+    toast('Webhook の接続を確認しました');
   } catch (e) {
     toast(e.message, 'error');
   }

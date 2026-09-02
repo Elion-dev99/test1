@@ -106,33 +106,19 @@ export async function sendDiscordNotification(
   return postWebhook(webhookUrl, settings, { embeds: [embed] });
 }
 
-export async function sendTestNotification(
-  webhookUrl: string,
-  settings: Settings,
-): Promise<{ ok: boolean; error?: string }> {
-  const mentionMode = settings.mention_everyone
-    ? 'サーバー全体 (@everyone)'
-    : settings.mention_role_id
-      ? `ロール (<@&${settings.mention_role_id}>)`
-      : 'なし（チャンネル投稿のみ）';
+async function validateWebhookUrl(webhookUrl: string): Promise<{ ok: boolean; error?: string }> {
+  const pattern = /^https:\/\/(discord\.com|discordapp\.com)\/api\/webhooks\/\d+\/[\w-]+$/;
+  if (!pattern.test(webhookUrl)) {
+    return { ok: false, error: 'Discord Webhook URL の形式が正しくありません' };
+  }
 
-  const embed = {
-    title: '✅ 接続テスト成功',
-    description:
-      'MMORPG Boss Notifier の Discord 通知が正常に動作しています。\nボス出現・事前通知も同じメンション設定で送信されます。',
-    color: hexToDecimal('#2ECC71'),
-    fields: [
-      { name: '🌏 タイムゾーン', value: settings.timezone, inline: true },
-      {
-        name: '⏰ テスト時刻',
-        value: formatDateTime(new Date(), settings.timezone),
-        inline: true,
-      },
-      { name: '🔔 メンション', value: mentionMode, inline: false },
-    ],
-    footer: { text: 'MMORPG Boss Notifier' },
-    timestamp: new Date().toISOString(),
-  };
+  const response = await fetch(webhookUrl, { method: 'GET' });
+  if (!response.ok) {
+    const text = await response.text();
+    return { ok: false, error: `Webhook に接続できません: ${response.status} ${text}` };
+  }
 
-  return postWebhook(webhookUrl, settings, { embeds: [embed] });
+  return { ok: true };
 }
+
+export { validateWebhookUrl };
