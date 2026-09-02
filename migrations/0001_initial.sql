@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS settings (
   timezone TEXT NOT NULL DEFAULT 'Asia/Tokyo',
   default_notify_minutes TEXT NOT NULL DEFAULT '5,30',
   mention_role_id TEXT,
-  mention_everyone INTEGER NOT NULL DEFAULT 0,
+  mention_everyone INTEGER NOT NULL DEFAULT 1,
   embed_color TEXT NOT NULL DEFAULT '#E74C3C',
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );

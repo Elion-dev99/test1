@@ -331,7 +331,7 @@ async function loadSettings() {
   document.getElementById('notify-minutes').value = s.default_notify_minutes || '5,30';
   document.getElementById('mention-role').value = s.mention_role_id || '';
   document.getElementById('embed-color').value = s.embed_color || '#E74C3C';
-  document.getElementById('mention-everyone').checked = !!s.mention_everyone;
+  document.getElementById('mention-everyone').checked = s.mention_everyone !== 0;
 }
 
 document.getElementById('settings-form').addEventListener('submit', async (e) => {

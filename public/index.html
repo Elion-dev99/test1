@@ -107,9 +107,13 @@
           </div>
           <div class="form-group checkbox-group">
             <label>
-              <input type="checkbox" id="mention-everyone">
-              @everyone をメンションする
+              <input type="checkbox" id="mention-everyone" checked>
+              サーバー全体に通知 (@everyone)
             </label>
+            <p class="hint">
+              DiscordのWebhook作成時に「@everyone および @here メンションを許可する」を有効にしてください。
+              通知チャンネルでWebhookに「@everyone メンション」権限が必要です。
+            </p>
           </div>
           <button type="submit" class="btn btn-primary">設定を保存</button>
         </form>
