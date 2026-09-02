@@ -1,7 +1,7 @@
 import type { Env, ApiResponse } from './types';
 import * as db from './db';
 import { collectNotificationEvents, getNextSpawnTime, getScheduleLabel } from './scheduler';
-import { sendDiscordNotification, sendKillNotification, sendTestNotification } from './discord';
+import { sendDiscordNotification, sendTestNotification } from './discord';
 
 function json<T>(data: ApiResponse<T>, status = 200): Response {
   return new Response(JSON.stringify(data), {
@@ -209,15 +209,6 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
       if (!schedule) return json({ success: false, error: 'スケジュールが見つかりません' }, 404);
 
       const updated = await db.markBossKilled(env.DB, id);
-      const settings = await db.getSettings(env.DB);
-
-      if (settings.discord_webhook_url) {
-        const body = await parseBody<{ notify?: boolean }>(request);
-        if (body?.notify !== false) {
-          await sendKillNotification(settings.discord_webhook_url, settings, schedule);
-        }
-      }
-
       return json({ success: true, data: updated });
     }
 

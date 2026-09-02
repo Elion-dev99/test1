@@ -90,49 +90,6 @@ export async function sendDiscordNotification(
   return { ok: true };
 }
 
-export async function sendKillNotification(
-  webhookUrl: string,
-  settings: Settings,
-  schedule: ScheduleWithBoss,
-): Promise<{ ok: boolean; error?: string }> {
-  const color = hexToDecimal(schedule.boss_color || settings.embed_color);
-  const respawnText =
-    schedule.boss_respawn_minutes > 0
-      ? `${schedule.boss_respawn_minutes}分後`
-      : 'スケジュールに従います';
-
-  const locationText = schedule.boss_location || '未設定（ゲーム内ボス情報→マップで確認）';
-
-  const embed = {
-    title: `💀 ボス討伐 ${schedule.boss_name}`,
-    description: `**${schedule.boss_name}** が討伐されました。\n\n📍 **出現場所:** ${locationText}\n次の出現: ${respawnText}`,
-    color,
-    fields: [
-      { name: '📍 出現場所', value: locationText, inline: false },
-      {
-        name: '🕐 討伐時刻',
-        value: formatDateTime(new Date(), settings.timezone),
-        inline: true,
-      },
-    ],
-    footer: { text: 'MMORPG Boss Notifier' },
-    timestamp: new Date().toISOString(),
-  };
-
-  const response = await fetch(webhookUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ embeds: [embed] }),
-  });
-
-  if (!response.ok) {
-    const text = await response.text();
-    return { ok: false, error: `Discord API error: ${response.status} ${text}` };
-  }
-
-  return { ok: true };
-}
-
 export async function sendTestNotification(
   webhookUrl: string,
   settings: Settings,
