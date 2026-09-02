@@ -66,8 +66,8 @@ function minutesDiff(a: Date, b: Date): number {
   return Math.round((a.getTime() - b.getTime()) / 60000);
 }
 
-function formatDedupeKey(scheduleId: number, type: string, spawnAt: Date, minutesUntil: number): string {
-  return `${scheduleId}:${type}:${spawnAt.toISOString()}:${minutesUntil}`;
+function formatDedupeKey(bossId: number, type: string, spawnAt: Date, minutesUntil: number): string {
+  return `${bossId}:${type}:${spawnAt.toISOString()}:${minutesUntil}`;
 }
 
 function parseTime(timeStr: string): { hour: number; minute: number } | null {
@@ -79,20 +79,43 @@ function parseTime(timeStr: string): { hour: number; minute: number } | null {
   return { hour, minute };
 }
 
-function getNextDailySpawn(now: Date, dailyTime: string, timezone: string): Date | null {
-  const time = parseTime(dailyTime);
-  if (!time) return null;
-
+function getNextDailySpawnForTime(
+  now: Date,
+  hour: number,
+  minute: number,
+  timezone: string,
+): Date {
   const parts = getZonedParts(now, timezone);
-  let spawn = buildSpawnDate(parts.year, parts.month, parts.day, time.hour, time.minute, timezone);
+  let spawn = buildSpawnDate(parts.year, parts.month, parts.day, hour, minute, timezone);
 
   if (spawn.getTime() <= now.getTime()) {
     const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
     const tParts = getZonedParts(tomorrow, timezone);
-    spawn = buildSpawnDate(tParts.year, tParts.month, tParts.day, time.hour, time.minute, timezone);
+    spawn = buildSpawnDate(tParts.year, tParts.month, tParts.day, hour, minute, timezone);
   }
 
   return spawn;
+}
+
+function getNextDailySpawn(now: Date, dailyTime: string, timezone: string): Date | null {
+  const times = dailyTime
+    .split(',')
+    .map((t) => t.trim())
+    .filter(Boolean);
+
+  if (times.length === 0) return null;
+
+  let nearest: Date | null = null;
+  for (const timeStr of times) {
+    const time = parseTime(timeStr);
+    if (!time) continue;
+    const spawn = getNextDailySpawnForTime(now, time.hour, time.minute, timezone);
+    if (!nearest || spawn.getTime() < nearest.getTime()) {
+      nearest = spawn;
+    }
+  }
+
+  return nearest;
 }
 
 function getNextWeeklySpawn(
@@ -165,6 +188,7 @@ export function collectNotificationEvents(
   now = new Date(),
 ): NotificationEvent[] {
   const events: NotificationEvent[] = [];
+  const seenKeys = new Set<string>();
 
   for (const schedule of schedules) {
     if (!schedule.enabled) continue;
@@ -175,26 +199,27 @@ export function collectNotificationEvents(
     const minutesUntil = minutesDiff(spawnAt, now);
     const notifyMinutes = parseNotifyMinutes(schedule.notify_minutes, settings.default_notify_minutes);
 
-    if (minutesUntil === 0) {
+    const addEvent = (type: 'spawn' | 'warning', warningMinutes: number) => {
+      const dedupeKey = formatDedupeKey(schedule.boss_id, type, spawnAt, warningMinutes);
+      if (seenKeys.has(dedupeKey)) return;
+      seenKeys.add(dedupeKey);
       events.push({
         schedule,
-        type: 'spawn',
-        minutesUntil: 0,
+        type,
+        minutesUntil: type === 'spawn' ? 0 : warningMinutes,
         spawnAt,
-        dedupeKey: formatDedupeKey(schedule.id, 'spawn', spawnAt, 0),
+        dedupeKey,
       });
+    };
+
+    if (minutesUntil === 0) {
+      addEvent('spawn', 0);
       continue;
     }
 
     for (const warningMin of notifyMinutes) {
       if (warningMin > 0 && minutesUntil === warningMin) {
-        events.push({
-          schedule,
-          type: 'warning',
-          minutesUntil: warningMin,
-          spawnAt,
-          dedupeKey: formatDedupeKey(schedule.id, 'warning', spawnAt, warningMin),
-        });
+        addEvent('warning', warningMin);
       }
     }
   }
@@ -217,8 +242,14 @@ export function formatDateTime(date: Date, timezone: string): string {
 
 export function getScheduleLabel(schedule: ScheduleWithBoss, timezone: string): string {
   switch (schedule.schedule_type) {
-    case 'daily':
-      return `毎日 ${schedule.daily_time}`;
+    case 'daily': {
+      const times =
+        schedule.daily_time
+          ?.split(',')
+          .map((t) => t.trim())
+          .filter(Boolean) ?? [];
+      return times.length > 1 ? `毎日 ${times.join(' / ')}` : `毎日 ${schedule.daily_time}`;
+    }
     case 'weekly': {
       const dayNames = ['日', '月', '火', '水', '木', '金', '土'];
       const days = (schedule.weekly_days ?? '')

@@ -83,17 +83,13 @@ for name in ブラーキウム デセルティ ウスルパトル; do
   add_schedule "$id" '"schedule_type":"daily","daily_time":"20:00","notify_minutes":"5,10","enabled":1,"notes":"ワールドボス定時復活"'
 done
 
-# ゲヘナ ★1: 13:00, 17:00, 21:00
+# ゲヘナ ★1: 13:00, 17:00, 21:00（1スケジュールに統合）
 id=$(get_id "ゲヘナボス ★1")
-for time in 13:00 17:00 21:00; do
-  add_schedule "$id" "\"schedule_type\":\"daily\",\"daily_time\":\"$time\",\"notify_minutes\":\"5,10\",\"enabled\":1,\"notes\":\"ゲヘナ★1 全区域\""
-done
+add_schedule "$id" '"schedule_type":"daily","daily_time":"13:00,17:00,21:00","notify_minutes":"5,10","enabled":1,"notes":"ゲヘナ★1 全区域"'
 
 # ゲヘナ ★2: 13:00, 21:00
 id=$(get_id "ゲヘナボス ★2")
-for time in 13:00 21:00; do
-  add_schedule "$id" "\"schedule_type\":\"daily\",\"daily_time\":\"$time\",\"notify_minutes\":\"5,10\",\"enabled\":1,\"notes\":\"ゲヘナ★2 第1区域下層\""
-done
+add_schedule "$id" '"schedule_type":"daily","daily_time":"13:00,21:00","notify_minutes":"5,10","enabled":1,"notes":"ゲヘナ★2 第1区域下層"'
 
 # ゲヘナ ★3: 土曜 22:00
 id=$(get_id "ゲヘナボス ★3")
@@ -101,9 +97,7 @@ add_schedule "$id" '"schedule_type":"weekly","daily_time":"22:00","weekly_days":
 
 # バルドゥン: 11:50, 19:50
 id=$(get_id "バルドゥン")
-for time in 11:50 19:50; do
-  add_schedule "$id" "\"schedule_type\":\"daily\",\"daily_time\":\"$time\",\"notify_minutes\":\"5\",\"enabled\":1,\"notes\":\"レッドムーンフェスタ・WB10分前\""
-done
+add_schedule "$id" '"schedule_type":"daily","daily_time":"11:50,19:50","notify_minutes":"5","enabled":1,"notes":"レッドムーンフェスタ・WB10分前"'
 
 echo "==> 完了!"
 curl -sf "$API/stats" | python3 -m json.tool

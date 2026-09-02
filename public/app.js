@@ -208,7 +208,7 @@ async function loadSchedules() {
 
 window.killBoss = async (id) => {
   try {
-    await api(`/schedules/${id}/kill`, { method: 'POST', body: JSON.stringify({ notify: true }) });
+    await api(`/schedules/${id}/kill`, { method: 'POST' });
     toast('討伐を記録しました');
     loadSchedules();
   } catch (e) {
