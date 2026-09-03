@@ -21,6 +21,7 @@
   ],
   "backfill": {
     "baseline_version": "2026.08.19",
-    "latest_from_created_at": "2026-09-03"
+    "latest_version": "2026.09.02",
+    "latest_name_list": "vampir-enhance/viper-orbs.json"
   }
 }
