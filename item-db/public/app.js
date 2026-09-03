@@ -15,6 +15,20 @@ const categoryLabel = {
   other: 'その他',
 };
 
+const ARMOR_SLOTS = ['ヘルム', 'アーマー', 'グローブ', 'ブーツ'];
+const ACCESSORY_SLOTS = ['イヤリング', 'ネックレス', 'ブレスレット', 'ベルト', 'リング'];
+const BURIAL_SLOTS = ['セフィラ', '紋章', 'オルゴール', '懐中時計', 'ゴブレット', '日記帳', '万年筆', '仮面', '香水'];
+
+const state = {
+  view: 'home',
+  stats: null,
+  catalog: [],
+  bosses: [],
+  openAcc: 'items',
+  browse: { q: '', category: '', rarity: '', slot: '', label: '' },
+  detailId: null,
+};
+
 async function api(path, options = {}) {
   const res = await fetch(`/api${path}`, {
     headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
@@ -32,125 +46,493 @@ function toast(message, type = '') {
   setTimeout(() => el.classList.add('hidden'), 2800);
 }
 
-function switchTab(name) {
-  document.querySelectorAll('.tab').forEach((t) => t.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach((b) => b.classList.remove('active'));
-  document.getElementById(`tab-${name}`).classList.add('active');
-  document.querySelector(`.nav-btn[data-tab="${name}"]`).classList.add('active');
+function escapeHtml(s) {
+  return String(s ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
 }
 
-document.querySelectorAll('.nav-btn').forEach((btn) => {
-  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
-});
-
-async function loadStats() {
-  const s = await api('/stats');
-  document.getElementById('stats').innerHTML =
-    `items ${s.items}<br>variants ${s.variants}<br>snapshots ${s.snapshots}<br>drops ${s.drops}<br>bosses ${s.bosses}`;
+function monogram(name) {
+  const t = String(name || '?').trim();
+  return escapeHtml(t.slice(0, 1) || '?');
 }
 
-async function searchItems() {
-  const q = document.getElementById('search-q').value.trim();
-  const category = document.getElementById('search-category').value;
-  const rarity = document.getElementById('search-rarity').value;
-  const params = new URLSearchParams();
-  if (q) params.set('q', q);
-  if (category) params.set('category', category);
-  if (rarity) params.set('rarity', rarity);
-  const items = await api(`/items?${params}`);
-  const list = document.getElementById('item-list');
-  document.getElementById('item-detail').classList.add('hidden');
+function countBy(pred) {
+  return state.catalog.filter(pred).length;
+}
 
-  if (!items.length) {
-    list.innerHTML = '<p class="meta">該当なし</p>';
-    return;
+function slotGroup(item) {
+  const slot = item.slot || '';
+  if (item.category !== 'equipment') return null;
+  if (slot === '武器') return 'weapon';
+  if (ARMOR_SLOTS.includes(slot)) return 'armor';
+  if (ACCESSORY_SLOTS.includes(slot)) return 'accessory';
+  if (BURIAL_SLOTS.includes(slot) || slot) return 'burial';
+  return 'equipment_other';
+}
+
+function setTopNav(view) {
+  document.querySelectorAll('.top-link').forEach((btn) => {
+    const nav = btn.dataset.nav;
+    const admin = ['add', 'drops', 'price'].includes(view);
+    btn.classList.toggle('active', admin ? nav === view : nav === 'home');
+  });
+}
+
+function showView(name) {
+  state.view = name;
+  document.querySelectorAll('.view').forEach((el) => el.classList.remove('active'));
+  const target = document.getElementById(`view-${name}`);
+  if (target) target.classList.add('active');
+  setTopNav(name);
+  renderBreadcrumb();
+}
+
+function crumb(label, action) {
+  if (!action) return `<span class="current">${escapeHtml(label)}</span>`;
+  return `<button type="button" data-crumb="${escapeHtml(action)}">${escapeHtml(label)}</button>`;
+}
+
+function renderBreadcrumb() {
+  const el = document.getElementById('breadcrumb');
+  const parts = [crumb('ホーム', 'home')];
+  if (state.view === 'home') {
+    parts.push('<span class="sep">›</span>', crumb('データベース'));
+  } else if (state.view === 'results') {
+    parts.push('<span class="sep">›</span>', crumb('データベース', 'home'));
+    parts.push('<span class="sep">›</span>', crumb(state.browse.label || '検索結果'));
+  } else if (state.view === 'detail') {
+    parts.push('<span class="sep">›</span>', crumb('データベース', 'home'));
+    if (state.browse.label) {
+      parts.push('<span class="sep">›</span>', crumb(state.browse.label, 'results'));
+    }
+    parts.push('<span class="sep">›</span>', crumb('詳細'));
+  } else if (state.view === 'add') {
+    parts.push('<span class="sep">›</span>', crumb('登録'));
+  } else if (state.view === 'drops') {
+    parts.push('<span class="sep">›</span>', crumb('ドロップ'));
+  } else if (state.view === 'price') {
+    parts.push('<span class="sep">›</span>', crumb('相場'));
   }
+  el.innerHTML = parts.join('');
+  el.querySelectorAll('[data-crumb]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const a = btn.dataset.crumb;
+      if (a === 'home') goHome();
+      else if (a === 'results') goResults(state.browse);
+    });
+  });
+}
 
-  list.innerHTML = items
+function renderStats() {
+  const s = state.stats || {};
+  document.getElementById('top-stats').textContent =
+    `items ${s.items ?? '—'} · variants ${s.variants ?? '—'} · bosses ${s.bosses ?? '—'}`;
+  document.getElementById('home-version').textContent =
+    `収録アイテム ${s.items ?? 0} 件 / バリアント ${s.variants ?? 0} 件`;
+  const rail = document.getElementById('rail-stats');
+  rail.innerHTML = `
+    <dt>アイテム</dt><dd>${s.items ?? 0}</dd>
+    <dt>強化段階</dt><dd>${s.variants ?? 0}</dd>
+    <dt>ドロップ</dt><dd>${s.drops ?? 0}</dd>
+    <dt>ボス</dt><dd>${s.bosses ?? 0}</dd>
+    <dt>相場記録</dt><dd>${s.snapshots ?? 0}</dd>
+  `;
+}
+
+function renderAccordion() {
+  const itemsTotal = state.catalog.length;
+  const weapon = countBy((i) => slotGroup(i) === 'weapon');
+  const armor = countBy((i) => slotGroup(i) === 'armor');
+  const accessory = countBy((i) => slotGroup(i) === 'accessory');
+  const burial = countBy((i) => slotGroup(i) === 'burial');
+  const material = countBy((i) => i.category === 'material');
+  const consumable = countBy((i) => i.category === 'consumable');
+  const skillbook = countBy((i) => i.category === 'skillbook');
+  const collection = countBy((i) => i.category === 'collection');
+  const other = countBy((i) => i.category === 'other');
+
+  const rarityLinks = Object.entries(rarityLabel)
+    .map(([key, label]) => {
+      const n = countBy((i) => i.rarity === key);
+      return `<li><button type="button" data-browse='${JSON.stringify({ rarity: key, label })}'>${label} <span class="n">(${n})</span></button></li>`;
+    })
+    .join('');
+
+  const bossLinks = state.bosses
     .map(
-      (i) => `
-    <div class="item-row" data-id="${i.id}">
-      <div>
-        <h3>${i.name}</h3>
-        <div class="meta">#${i.id} · ${categoryLabel[i.category] || i.category} · ${rarityLabel[i.rarity] || i.rarity}</div>
-      </div>
-      <span class="badge">${i.tradeable ? '取引可' : '帰属'}</span>
-    </div>`,
+      (b) =>
+        `<li><button type="button" data-boss="${escapeHtml(b.name)}">${escapeHtml(b.name)}</button></li>`,
     )
     .join('');
 
-  list.querySelectorAll('.item-row').forEach((row) => {
-    row.addEventListener('click', () => showDetail(Number(row.dataset.id)));
+  const root = document.getElementById('category-accordion');
+  root.innerHTML = `
+    <div class="acc-item ${state.openAcc === 'items' ? 'open' : ''}" data-acc="items">
+      <button type="button" class="acc-head">
+        <span>アイテム <span class="count">（${itemsTotal}件）</span></span>
+        <span class="chev" aria-hidden="true"></span>
+      </button>
+      <div class="acc-body">
+        <ul class="subcat-grid">
+          <li><button type="button" data-browse='{"category":"equipment","slot":"武器","label":"武器"}'>武器 <span class="n">(${weapon})</span></button></li>
+          <li><button type="button" data-browse='{"category":"equipment","slotGroup":"armor","label":"防具"}'>防具 <span class="n">(${armor})</span></button></li>
+          <li><button type="button" data-browse='{"category":"equipment","slotGroup":"accessory","label":"アクセサリ"}'>アクセサリ <span class="n">(${accessory})</span></button></li>
+          <li><button type="button" data-browse='{"category":"equipment","slotGroup":"burial","label":"副葬品・その他装備"}'>副葬品・その他 <span class="n">(${burial})</span></button></li>
+          <li><button type="button" data-browse='{"category":"material","label":"素材"}'>素材 <span class="n">(${material})</span></button></li>
+          <li><button type="button" data-browse='{"category":"consumable","label":"消費"}'>消費 <span class="n">(${consumable})</span></button></li>
+          <li><button type="button" data-browse='{"category":"skillbook","label":"スキルブック"}'>スキルブック <span class="n">(${skillbook})</span></button></li>
+          <li><button type="button" data-browse='{"category":"collection","label":"収集品"}'>収集品 <span class="n">(${collection})</span></button></li>
+          <li><button type="button" data-browse='{"category":"other","label":"その他"}'>その他 <span class="n">(${other})</span></button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="acc-item ${state.openAcc === 'rarity' ? 'open' : ''}" data-acc="rarity">
+      <button type="button" class="acc-head">
+        <span>レアリティから検索</span>
+        <span class="chev" aria-hidden="true"></span>
+      </button>
+      <div class="acc-body"><ul class="subcat-grid">${rarityLinks}</ul></div>
+    </div>
+    <div class="acc-item ${state.openAcc === 'boss' ? 'open' : ''}" data-acc="boss">
+      <button type="button" class="acc-head">
+        <span>ボス <span class="count">（${state.bosses.length}件）</span></span>
+        <span class="chev" aria-hidden="true"></span>
+      </button>
+      <div class="acc-body"><ul class="subcat-grid">${bossLinks || '<li class="n">ボス未登録</li>'}</ul></div>
+    </div>
+  `;
+
+  root.querySelectorAll('.acc-head').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.acc-item');
+      const key = item.dataset.acc;
+      state.openAcc = state.openAcc === key ? '' : key;
+      renderAccordion();
+    });
   });
+  bindBrowseButtons(root);
+  root.querySelectorAll('[data-boss]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      showView('drops');
+      document.getElementById('drop-boss').value = btn.dataset.boss;
+      document.getElementById('drop-search-form').requestSubmit();
+    });
+  });
+}
+
+function bindBrowseButtons(scope = document) {
+  scope.querySelectorAll('[data-browse]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const payload = JSON.parse(btn.dataset.browse);
+      goResults(payload);
+    });
+  });
+}
+
+function filterCatalog(browse) {
+  return state.catalog.filter((item) => {
+    if (browse.q) {
+      const q = browse.q.toLowerCase();
+      if (!String(item.name).toLowerCase().includes(q)) return false;
+    }
+    if (browse.category && item.category !== browse.category) return false;
+    if (browse.rarity && item.rarity !== browse.rarity) return false;
+    if (browse.slot && item.slot !== browse.slot) return false;
+    if (browse.slotGroup) {
+      if (slotGroup(item) !== browse.slotGroup) return false;
+    }
+    return true;
+  });
+}
+
+function browseLabel(browse) {
+  if (browse.label) return browse.label;
+  if (browse.q) return `「${browse.q}」の検索結果`;
+  if (browse.slot) return browse.slot;
+  if (browse.category) return categoryLabel[browse.category] || browse.category;
+  if (browse.rarity) return rarityLabel[browse.rarity] || browse.rarity;
+  return '検索結果';
+}
+
+function renderResultsSide(active) {
+  const el = document.getElementById('results-side');
+  const links = [
+    { label: 'すべて', browse: { label: 'すべて' } },
+    { label: '武器', browse: { category: 'equipment', slot: '武器', label: '武器' } },
+    { label: '防具', browse: { category: 'equipment', slotGroup: 'armor', label: '防具' } },
+    { label: 'アクセサリ', browse: { category: 'equipment', slotGroup: 'accessory', label: 'アクセサリ' } },
+    { label: '素材', browse: { category: 'material', label: '素材' } },
+    { label: '消費', browse: { category: 'consumable', label: '消費' } },
+    { label: 'スキルブック', browse: { category: 'skillbook', label: 'スキルブック' } },
+    { label: '収集品', browse: { category: 'collection', label: '収集品' } },
+    { label: '伝説', browse: { rarity: 'legendary', label: '伝説' } },
+    { label: '英雄', browse: { rarity: 'heroic', label: '英雄' } },
+  ];
+  const activeKey = JSON.stringify({
+    category: active.category || '',
+    rarity: active.rarity || '',
+    slot: active.slot || '',
+    slotGroup: active.slotGroup || '',
+  });
+  el.innerHTML = `
+    <div class="side-group">
+      <span class="side-label">カテゴリ</span>
+      ${links
+        .map((l) => {
+          const key = JSON.stringify({
+            category: l.browse.category || '',
+            rarity: l.browse.rarity || '',
+            slot: l.browse.slot || '',
+            slotGroup: l.browse.slotGroup || '',
+          });
+          return `<button type="button" class="${key === activeKey ? 'active' : ''}" data-browse='${JSON.stringify(l.browse)}'>${l.label}</button>`;
+        })
+        .join('')}
+    </div>
+  `;
+  bindBrowseButtons(el);
+}
+
+async function goResults(browse = {}) {
+  const next = {
+    q: browse.q || '',
+    category: browse.category || '',
+    rarity: browse.rarity || '',
+    slot: browse.slot || '',
+    slotGroup: browse.slotGroup || '',
+    label: browseLabel(browse),
+  };
+  state.browse = next;
+  document.getElementById('results-q').value = next.q;
+  document.getElementById('results-rarity').value = next.rarity;
+  document.getElementById('results-heading').textContent = next.label;
+
+  // Prefer local catalog (full snapshot). Fall back to API when empty/stale.
+  let items = filterCatalog(next);
+  if (!state.catalog.length) {
+    const params = new URLSearchParams();
+    if (next.q) params.set('q', next.q);
+    if (next.category) params.set('category', next.category);
+    if (next.rarity) params.set('rarity', next.rarity);
+    if (next.slot) params.set('slot', next.slot);
+    params.set('limit', '500');
+    items = await api(`/items?${params}`);
+  }
+
+  renderResultsSide(next);
+  const body = document.getElementById('results-body');
+  const empty = document.getElementById('results-empty');
+  document.getElementById('results-meta').textContent = `全 ${items.length} 件`;
+
+  if (!items.length) {
+    body.innerHTML = '';
+    empty.classList.remove('hidden');
+  } else {
+    empty.classList.add('hidden');
+    body.innerHTML = items
+      .map((item) => {
+        const cat = categoryLabel[item.category] || item.category;
+        const rarity = rarityLabel[item.rarity] || item.rarity;
+        const slot = item.slot || '—';
+        return `
+          <tr data-id="${item.id}">
+            <td>
+              <div class="item-cell">
+                <div class="item-icon r-${escapeHtml(item.rarity)}">${monogram(item.name)}</div>
+                <div>
+                  <span class="item-sub">${escapeHtml(cat)}${item.slot ? ' / ' + escapeHtml(item.slot) : ''}</span>
+                  <span class="item-name">${escapeHtml(item.name)}</span>
+                </div>
+              </div>
+            </td>
+            <td class="rarity-text r-${escapeHtml(item.rarity)}">${escapeHtml(rarity)}</td>
+            <td>${escapeHtml(slot)}</td>
+            <td>${item.tradeable ? '取引可' : '帰属'}</td>
+          </tr>`;
+      })
+      .join('');
+    body.querySelectorAll('tr[data-id]').forEach((row) => {
+      row.addEventListener('click', () => showDetail(Number(row.dataset.id)));
+    });
+  }
+
+  showView('results');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 async function showDetail(id) {
   const detail = await api(`/items/${id}`);
-  const el = document.getElementById('item-detail');
-  el.classList.remove('hidden');
-  const extra = detail.extra || (detail.stats?.extra_json ? JSON.parse(detail.stats.extra_json) : null) || {};
-  const extraBits = [
-    extra.tier ? `tier ${extra.tier}` : null,
+  state.detailId = id;
+  const item = detail.item;
+  const extra =
+    detail.extra ||
+    (detail.stats?.extra_json ? JSON.parse(detail.stats.extra_json) : null) ||
+    {};
+  const table = extra.enhance_table || [];
+  const chips = [
+    extra.tier ? `Tier ${extra.tier}` : null,
+    extra.class ? extra.class : null,
+    extra.weapon_type || null,
+    extra.weight != null ? `重量 ${extra.weight}` : null,
     extra.skill_damage != null ? `スキルダメージ ${extra.skill_damage}` : null,
     extra.normal_monster_damage != null ? `通常モンスターダメージ ${extra.normal_monster_damage}` : null,
     extra.magic_attack != null ? `魔法攻撃力 ${extra.magic_attack}` : null,
     extra.crit_damage != null ? `クリティカルダメージ ${extra.crit_damage}` : null,
     extra.pvp_attack != null ? `PvP攻撃力 ${extra.pvp_attack}` : null,
+    detail.stats?.attack != null ? `攻撃 ${detail.stats.attack}` : null,
   ].filter(Boolean);
-  const extraLine = extraBits.length ? `<p class="desc">${extraBits.join(' · ')}</p>` : '';
-  const table = extra.enhance_table || [];
+
   const enhanceHtml = table.length
-    ? `<h3>強化段階ステータス</h3>
-      <table class="stats-table">
-        <thead>
-          <tr>
-            <th>強化</th>
-            <th>最低攻撃</th>
-            <th>最大攻撃</th>
-            <th>追加攻撃</th>
-            <th>命中</th>
-            <th>スキルダメ</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${table
-            .map((r) => {
-              const cls = r.enhance_level === 7 || r.enhance_level === 10 ? 'breakpoint' : '';
-              return `<tr class="${cls}">
-                <td>+${r.enhance_level}</td>
-                <td>${r.weapon_min_atk}</td>
-                <td>${r.weapon_max_atk}</td>
-                <td>+${r.weapon_add_atk}</td>
-                <td>${r.accuracy ? '+' + r.accuracy : '—'}</td>
-                <td>${r.skill_damage != null && r.skill_damage !== '' ? r.skill_damage : '—'}</td>
-              </tr>`;
-            })
-            .join('')}
-        </tbody>
-      </table>
+    ? `
+      <h3><span class="diamond" aria-hidden="true"></span>強化段階ステータス</h3>
+      <div class="result-table-wrap">
+        <table class="stats-table">
+          <thead>
+            <tr>
+              <th>強化</th>
+              <th>最低攻撃</th>
+              <th>最大攻撃</th>
+              <th>追加攻撃</th>
+              <th>命中</th>
+              <th>スキルダメ</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${table
+              .map((r) => {
+                const cls = r.enhance_level === 7 || r.enhance_level === 10 ? 'breakpoint' : '';
+                return `<tr class="${cls}">
+                  <td>+${r.enhance_level}</td>
+                  <td>${r.weapon_min_atk ?? '—'}</td>
+                  <td>${r.weapon_max_atk ?? '—'}</td>
+                  <td>+${r.weapon_add_atk ?? 0}</td>
+                  <td>${r.accuracy ? '+' + r.accuracy : '—'}</td>
+                  <td>${r.skill_damage != null && r.skill_damage !== '' ? r.skill_damage : '—'}</td>
+                </tr>`;
+              })
+              .join('')}
+          </tbody>
+        </table>
+      </div>
       ${
         extra.scaling_notes
-          ? `<p class="meta">${[].concat(extra.scaling_notes).join('<br>')}</p>`
+          ? `<p class="scaling-note">${[].concat(extra.scaling_notes).map(escapeHtml).join('<br>')}</p>`
           : ''
       }`
     : '';
 
-  el.innerHTML = `
-    <h2>${detail.item.name}</h2>
-    <div class="meta">ID ${detail.item.id} / ${detail.item.slot || ''} / ${rarityLabel[detail.item.rarity] || detail.item.rarity}</div>
-    ${detail.item.description ? `<p class="desc">${detail.item.description}</p>` : ''}
-    ${extraLine}
+  const sources = (detail.sources || [])
+    .map((s) => `<li>${escapeHtml(s.label)}${s.ref_note ? ` — ${escapeHtml(s.ref_note)}` : ''}</li>`)
+    .join('');
+  const drops = (detail.drops || [])
+    .map((d) => `<li>${escapeHtml(d.boss_name)}${d.drop_note ? ` — ${escapeHtml(d.drop_note)}` : ''}</li>`)
+    .join('');
+  const variants = (detail.variants || [])
+    .slice()
+    .sort((a, b) => a.enhance_level - b.enhance_level)
+    .map((v) => `<li>+${v.enhance_level}${v.blessed ? ' 祝福' : ''}${v.option_summary ? ` · ${escapeHtml(v.option_summary)}` : ''}</li>`)
+    .join('');
+
+  document.getElementById('detail-sheet').innerHTML = `
+    <div class="detail-head">
+      <div class="item-icon r-${escapeHtml(item.rarity)}">${monogram(item.name)}</div>
+      <div>
+        <h2 class="rarity-text r-${escapeHtml(item.rarity)}">${escapeHtml(item.name)}</h2>
+        <div class="detail-meta">
+          <span>ID ${item.id}</span>
+          <span>${escapeHtml(categoryLabel[item.category] || item.category)}</span>
+          <span class="rarity-text r-${escapeHtml(item.rarity)}">${escapeHtml(rarityLabel[item.rarity] || item.rarity)}</span>
+          ${item.slot ? `<span>${escapeHtml(item.slot)}</span>` : ''}
+          <span>${item.tradeable ? '取引可' : '帰属'}</span>
+          ${item.verified ? '<span>検証済</span>' : ''}
+        </div>
+      </div>
+    </div>
+    ${item.description ? `<p class="detail-desc">${escapeHtml(item.description)}</p>` : ''}
+    ${chips.length ? `<div class="stat-chips">${chips.map((c) => `<span class="stat-chip">${escapeHtml(c)}</span>`).join('')}</div>` : ''}
     ${enhanceHtml}
-    <pre>${JSON.stringify(detail, null, 2)}</pre>
+    <div class="detail-blocks">
+      ${
+        sources
+          ? `<div class="detail-block"><h4>入手先</h4><ul>${sources}</ul></div>`
+          : ''
+      }
+      ${
+        drops
+          ? `<div class="detail-block"><h4>ボストロップ</h4><ul>${drops}</ul></div>`
+          : ''
+      }
+      ${
+        variants
+          ? `<div class="detail-block"><h4>登録バリアント</h4><ul>${variants}</ul></div>`
+          : ''
+      }
+      ${
+        detail.aliases?.length
+          ? `<div class="detail-block"><h4>別名</h4><ul>${detail.aliases.map((a) => `<li>${escapeHtml(a)}</li>`).join('')}</ul></div>`
+          : ''
+      }
+    </div>
+    <button type="button" class="raw-toggle" id="raw-toggle">生データ表示</button>
+    <pre class="raw-json hidden" id="raw-json">${escapeHtml(JSON.stringify(detail, null, 2))}</pre>
   `;
+  document.getElementById('raw-toggle').addEventListener('click', () => {
+    document.getElementById('raw-json').classList.toggle('hidden');
+  });
+  showView('detail');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-document.getElementById('btn-search').addEventListener('click', () => {
-  searchItems().catch((e) => toast(e.message, 'error'));
+function goHome() {
+  showView('home');
+  renderAccordion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function bootstrap() {
+  const [stats, items, bosses] = await Promise.all([
+    api('/stats'),
+    api('/items?limit=500'),
+    api('/bosses').catch(() => []),
+  ]);
+  state.stats = stats;
+  state.catalog = items;
+  state.bosses = bosses;
+  renderStats();
+  renderAccordion();
+
+  const list = document.getElementById('boss-list');
+  list.innerHTML = bosses.map((b) => `<option value="${escapeHtml(b.name)}"></option>`).join('');
+}
+
+document.querySelectorAll('[data-nav]').forEach((el) => {
+  el.addEventListener('click', (e) => {
+    e.preventDefault();
+    const nav = el.dataset.nav;
+    if (nav === 'home') goHome();
+    else showView(nav);
+  });
 });
-document.getElementById('search-q').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') searchItems().catch((err) => toast(err.message, 'error'));
+
+document.getElementById('home-search-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const q = document.getElementById('home-q').value.trim();
+  goResults({ q, label: q ? `「${q}」の検索結果` : '検索結果' }).catch((err) => toast(err.message, 'error'));
 });
+
+document.getElementById('results-search-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  goResults({
+    ...state.browse,
+    q: document.getElementById('results-q').value.trim(),
+    rarity: document.getElementById('results-rarity').value,
+  }).catch((err) => toast(err.message, 'error'));
+});
+
+bindBrowseButtons(document);
 
 document.getElementById('add-form').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -176,36 +558,37 @@ document.getElementById('add-form').addEventListener('submit', async (e) => {
     });
     toast(`登録しました #${item.id}`);
     e.target.reset();
-    loadStats();
+    await bootstrap();
   } catch (err) {
     toast(err.message, 'error');
   }
 });
 
-document.getElementById('btn-drop-search').addEventListener('click', async () => {
+document.getElementById('drop-search-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
   const boss = document.getElementById('drop-boss').value.trim();
   if (!boss) return toast('ボス名を入力', 'error');
   try {
     const drops = await api(`/drops?boss=${encodeURIComponent(boss)}`);
     const list = document.getElementById('drop-list');
     if (!drops.length) {
-      list.innerHTML = '<p class="meta">ドロップ未登録</p>';
+      list.innerHTML = '<p class="empty">ドロップ未登録</p>';
       return;
     }
     list.innerHTML = drops
       .map(
         (d) => `
-      <div class="item-row">
+      <div class="drop-row">
         <div>
-          <h3>${d.item_name}</h3>
-          <div class="meta">item #${d.item_id} · ${d.drop_note || 'メモなし'}</div>
+          <strong>${escapeHtml(d.item_name)}</strong>
+          <div class="meta">item #${d.item_id} · ${escapeHtml(d.drop_note || 'メモなし')}</div>
         </div>
-        <span class="badge">${d.boss_name}</span>
+        <span class="meta">${escapeHtml(d.boss_name)}</span>
       </div>`,
       )
       .join('');
-  } catch (e) {
-    toast(e.message, 'error');
+  } catch (err) {
+    toast(err.message, 'error');
   }
 });
 
@@ -223,7 +606,7 @@ document.getElementById('drop-form').addEventListener('submit', async (e) => {
     });
     toast('ドロップを追加しました');
     e.target.reset();
-    loadStats();
+    await bootstrap();
   } catch (err) {
     toast(err.message, 'error');
   }
@@ -247,11 +630,12 @@ document.getElementById('price-form').addEventListener('submit', async (e) => {
       }),
     });
     toast('相場を記録しました');
-    loadStats();
+    await bootstrap();
   } catch (err) {
     toast(err.message, 'error');
   }
 });
 
-loadStats().catch((e) => toast(e.message, 'error'));
-searchItems().catch(() => {});
+bootstrap()
+  .then(() => showView('home'))
+  .catch((e) => toast(e.message, 'error'));

@@ -37,7 +37,7 @@ export async function getStats(db: D1Database) {
 
 export async function listItems(
   db: D1Database,
-  opts: { q?: string; category?: string; rarity?: string; limit?: number } = {},
+  opts: { q?: string; category?: string; rarity?: string; slot?: string; limit?: number } = {},
 ): Promise<Item[]> {
   const limit = Math.min(opts.limit ?? 100, 500);
   const clauses: string[] = [];
@@ -60,6 +60,10 @@ export async function listItems(
   if (opts.rarity) {
     clauses.push('i.rarity = ?');
     binds.push(opts.rarity);
+  }
+  if (opts.slot) {
+    clauses.push('i.slot = ?');
+    binds.push(opts.slot);
   }
 
   const where = clauses.length ? `WHERE ${clauses.join(' AND ')}` : '';

@@ -3,145 +3,222 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MMORPG Item DB</title>
+  <title>VAMPIR データベース</title>
   <link rel="stylesheet" href="/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="app">
-    <aside class="sidebar">
-      <div class="brand">
-        <span class="brand-mark">IDB</span>
-        <div>
-          <strong>Item DB</strong>
-          <small>VAMPIR 互換マスタ</small>
-        </div>
+  <div class="site">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="#/" data-nav="home">
+          <span class="brand-mark">V</span>
+          <span class="brand-text">
+            <strong>VAMPIR</strong>
+            <small>Item Database</small>
+          </span>
+        </a>
+        <nav class="top-nav" aria-label="主要ナビ">
+          <button type="button" class="top-link active" data-nav="home">データベース</button>
+          <button type="button" class="top-link" data-nav="add">登録</button>
+          <button type="button" class="top-link" data-nav="drops">ドロップ</button>
+          <button type="button" class="top-link" data-nav="price">相場</button>
+        </nav>
+        <div class="top-meta" id="top-stats">読込中…</div>
       </div>
-      <nav>
-        <button class="nav-btn active" data-tab="search">検索</button>
-        <button class="nav-btn" data-tab="add">登録</button>
-        <button class="nav-btn" data-tab="drops">ドロップ</button>
-        <button class="nav-btn" data-tab="price">相場</button>
-      </nav>
-      <div class="stats" id="stats">読込中…</div>
-    </aside>
+    </header>
 
-    <main>
-      <section id="tab-search" class="tab active">
-        <header class="page-header">
-          <h1>アイテム検索</h1>
-          <p>名前・カテゴリ・レア度で検索</p>
-        </header>
-        <div class="toolbar">
-          <input type="search" id="search-q" placeholder="例: 魔物の証">
-          <select id="search-category">
-            <option value="">全カテゴリ</option>
-            <option value="equipment">装備</option>
-            <option value="skillbook">スキルブック</option>
-            <option value="collection">収集品</option>
-            <option value="material">素材</option>
-            <option value="consumable">消費</option>
-            <option value="other">その他</option>
-          </select>
-          <select id="search-rarity">
-            <option value="">全レア</option>
-            <option value="common">一般</option>
-            <option value="uncommon">高級</option>
-            <option value="rare">希少</option>
-            <option value="heroic">英雄</option>
-            <option value="legendary">伝説</option>
-          </select>
-          <button class="btn" id="btn-search">検索</button>
+    <div class="page-shell">
+      <nav class="breadcrumb" id="breadcrumb" aria-label="パンくず"></nav>
+      <h1 class="page-title">VAMPIR データベース</h1>
+
+      <div class="page-body">
+        <div class="content-col">
+          <!-- HOME -->
+          <section id="view-home" class="view active">
+            <p class="lead">
+              VAMPIR データベースでは、アイテムの検索や強化段階ごとのステータス確認ができます。
+              カテゴリ・レアリティ・部位はゲーム内の取引所仕様に合わせています。
+            </p>
+            <p class="version" id="home-version">読込中…</p>
+
+            <section class="panel">
+              <h2 class="section-heading"><span class="diamond" aria-hidden="true"></span>キーワードから検索</h2>
+              <form class="keyword-search" id="home-search-form">
+                <label class="sr-only" for="home-q">調べたいキーワードを入力</label>
+                <input id="home-q" type="search" placeholder="調べたいキーワードを入力" autocomplete="off">
+                <button type="submit" class="btn-search">検索</button>
+              </form>
+            </section>
+
+            <section class="panel">
+              <h2 class="section-heading"><span class="diamond" aria-hidden="true"></span>カテゴリから検索</h2>
+              <div class="accordion" id="category-accordion"></div>
+            </section>
+          </section>
+
+          <!-- RESULTS -->
+          <section id="view-results" class="view">
+            <div class="results-layout">
+              <aside class="cat-side" id="results-side"></aside>
+              <div class="results-main">
+                <div class="results-toolbar">
+                  <h2 id="results-heading">検索結果</h2>
+                  <form class="inline-search" id="results-search-form">
+                    <input id="results-q" type="search" placeholder="キーワード" autocomplete="off">
+                    <select id="results-rarity">
+                      <option value="">全レア</option>
+                      <option value="common">一般</option>
+                      <option value="uncommon">高級</option>
+                      <option value="rare">希少</option>
+                      <option value="heroic">英雄</option>
+                      <option value="legendary">伝説</option>
+                    </select>
+                    <button type="submit" class="btn-search compact">検索</button>
+                  </form>
+                </div>
+                <p class="pager-meta" id="results-meta"></p>
+                <div class="result-table-wrap">
+                  <table class="result-table">
+                    <thead>
+                      <tr>
+                        <th class="col-name">名称</th>
+                        <th class="col-rarity">レア</th>
+                        <th class="col-slot">部位</th>
+                        <th class="col-trade">取引</th>
+                      </tr>
+                    </thead>
+                    <tbody id="results-body"></tbody>
+                  </table>
+                </div>
+                <p class="empty hidden" id="results-empty">該当するアイテムはありません。</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- DETAIL -->
+          <section id="view-detail" class="view">
+            <article class="detail-sheet" id="detail-sheet"></article>
+          </section>
+
+          <!-- ADD -->
+          <section id="view-add" class="view">
+            <header class="view-head">
+              <h2>アイテム登録</h2>
+              <p>取引所UI互換のマスタを追加</p>
+            </header>
+            <form id="add-form" class="admin-form">
+              <label>名前 *<input name="name" required></label>
+              <label>別名（カンマ区切り）<input name="aliases" placeholder="Larva token"></label>
+              <div class="form-row">
+                <label>カテゴリ
+                  <select name="category">
+                    <option value="material">素材</option>
+                    <option value="equipment">装備</option>
+                    <option value="skillbook">スキルブック</option>
+                    <option value="collection">収集品</option>
+                    <option value="consumable">消費</option>
+                    <option value="other">その他</option>
+                  </select>
+                </label>
+                <label>レア
+                  <select name="rarity">
+                    <option value="common">一般</option>
+                    <option value="uncommon">高級</option>
+                    <option value="rare">希少</option>
+                    <option value="heroic">英雄</option>
+                    <option value="legendary">伝説</option>
+                  </select>
+                </label>
+              </div>
+              <label>部位（装備）<input name="slot" placeholder="武器 / ヘルム …"></label>
+              <label>説明<textarea name="description" rows="3"></textarea></label>
+              <label>出典URL<input name="source_url" type="url"></label>
+              <label class="check"><input type="checkbox" name="tradeable" checked> 取引可</label>
+              <label class="check"><input type="checkbox" name="verified"> 検証済み</label>
+              <button class="btn-primary" type="submit">登録</button>
+            </form>
+          </section>
+
+          <!-- DROPS -->
+          <section id="view-drops" class="view">
+            <header class="view-head">
+              <h2>ボストロップ</h2>
+              <p>ボス名でドロップ一覧 / 紐付け登録</p>
+            </header>
+            <form class="toolbar-form" id="drop-search-form">
+              <input id="drop-boss" placeholder="例: ラルヴァ" list="boss-list">
+              <datalist id="boss-list"></datalist>
+              <button type="submit" class="btn-search">検索</button>
+            </form>
+            <div id="drop-list" class="drop-list"></div>
+            <form id="drop-form" class="admin-form compact">
+              <h3>ドロップ登録</h3>
+              <label>アイテムID<input name="item_id" type="number" required></label>
+              <label>ボス名<input name="boss_name" required></label>
+              <label>メモ<input name="drop_note"></label>
+              <button class="btn-primary" type="submit">追加</button>
+            </form>
+          </section>
+
+          <!-- PRICE -->
+          <section id="view-price" class="view">
+            <header class="view-head">
+              <h2>相場スナップショット</h2>
+              <p>取引所で見た最安・出品数を記録</p>
+            </header>
+            <form id="price-form" class="admin-form">
+              <label>アイテムID *<input name="item_id" type="number" required></label>
+              <div class="form-row">
+                <label>強化<input name="enhance_level" type="number" value="0" min="0"></label>
+                <label class="check"><input type="checkbox" name="blessed"> 祝福</label>
+              </div>
+              <div class="form-row">
+                <label>最低価格<input name="min_price" type="number" min="0"></label>
+                <label>出品数<input name="listing_count" type="number" min="0" value="0"></label>
+              </div>
+              <div class="form-row">
+                <label>在庫数<input name="stock_qty" type="number" min="0" value="0"></label>
+                <label>28日完了数<input name="traded_28d" type="number" min="0" value="0"></label>
+              </div>
+              <label>メモ<input name="note"></label>
+              <button class="btn-primary" type="submit">記録</button>
+            </form>
+          </section>
         </div>
-        <div id="item-list" class="item-list"></div>
-        <div id="item-detail" class="detail hidden"></div>
-      </section>
 
-      <section id="tab-add" class="tab">
-        <header class="page-header">
-          <h1>アイテム登録</h1>
-          <p>取引所UI互換のマスタを追加</p>
-        </header>
-        <form id="add-form" class="form">
-          <label>名前 *<input name="name" required></label>
-          <label>別名（カンマ区切り）<input name="aliases" placeholder="Larva token, 마물의 증표"></label>
-          <div class="row">
-            <label>カテゴリ
-              <select name="category">
-                <option value="material">素材</option>
-                <option value="equipment">装備</option>
-                <option value="skillbook">スキルブック</option>
-                <option value="collection">収集品</option>
-                <option value="consumable">消費</option>
-                <option value="other">その他</option>
-              </select>
-            </label>
-            <label>レア
-              <select name="rarity">
-                <option value="common">一般</option>
-                <option value="uncommon">高級</option>
-                <option value="rare">希少</option>
-                <option value="heroic">英雄</option>
-                <option value="legendary">伝説</option>
-              </select>
-            </label>
+        <aside class="rail">
+          <div class="rail-card">
+            <h3>収録状況</h3>
+            <dl class="rail-stats" id="rail-stats"></dl>
           </div>
-          <label>部位（装備）<input name="slot" placeholder="武器 / ヘルム …"></label>
-          <label>説明<textarea name="description" rows="3"></textarea></label>
-          <label>出典URL<input name="source_url" type="url"></label>
-          <label class="check"><input type="checkbox" name="tradeable" checked> 取引可</label>
-          <label class="check"><input type="checkbox" name="verified"> 検証済み</label>
-          <button class="btn primary" type="submit">登録</button>
-        </form>
-      </section>
+          <div class="rail-card">
+            <h3>強化の目安</h3>
+            <ul class="rail-notes">
+              <li>+1〜+6 追加攻撃 +3</li>
+              <li>+7〜+9 追加攻撃 +5 / 命中 +3</li>
+              <li>+10〜+15 追加攻撃 +10 / 命中 +6</li>
+            </ul>
+          </div>
+          <div class="rail-card soft">
+            <h3>ショートカット</h3>
+            <button type="button" class="rail-link" data-browse='{"category":"equipment","slot":"武器"}'>武器一覧</button>
+            <button type="button" class="rail-link" data-browse='{"rarity":"legendary"}'>伝説装備</button>
+            <button type="button" class="rail-link" data-browse='{"category":"material"}'>素材</button>
+            <button type="button" class="rail-link" data-nav="drops">ボストロップ</button>
+          </div>
+        </aside>
+      </div>
+    </div>
 
-      <section id="tab-drops" class="tab">
-        <header class="page-header">
-          <h1>ボストロップ</h1>
-          <p>ボス名でドロップ一覧 / 紐付け登録</p>
-        </header>
-        <div class="toolbar">
-          <input id="drop-boss" placeholder="例: ラルヴァ">
-          <button class="btn" id="btn-drop-search">検索</button>
-        </div>
-        <div id="drop-list" class="item-list"></div>
-        <form id="drop-form" class="form compact">
-          <h3>ドロップ登録</h3>
-          <label>アイテムID<input name="item_id" type="number" required></label>
-          <label>ボス名<input name="boss_name" required></label>
-          <label>メモ<input name="drop_note"></label>
-          <button class="btn primary" type="submit">追加</button>
-        </form>
-      </section>
-
-      <section id="tab-price" class="tab">
-        <header class="page-header">
-          <h1>相場スナップショット</h1>
-          <p>取引所で見た最安・出品数を記録</p>
-        </header>
-        <form id="price-form" class="form">
-          <label>アイテムID *<input name="item_id" type="number" required></label>
-          <div class="row">
-            <label>強化<input name="enhance_level" type="number" value="0" min="0"></label>
-            <label class="check"><input type="checkbox" name="blessed"> 祝福</label>
-          </div>
-          <div class="row">
-            <label>最低価格<input name="min_price" type="number" min="0"></label>
-            <label>出品数<input name="listing_count" type="number" min="0" value="0"></label>
-          </div>
-          <div class="row">
-            <label>在庫数<input name="stock_qty" type="number" min="0" value="0"></label>
-            <label>28日完了数<input name="traded_28d" type="number" min="0" value="0"></label>
-          </div>
-          <label>メモ<input name="note"></label>
-          <button class="btn primary" type="submit">記録</button>
-        </form>
-      </section>
-    </main>
+    <footer class="site-foot">
+      <p>非公式ファン向けマスタ · 仕様は VAMPIR 取引所に準拠</p>
+    </footer>
   </div>
-  <div id="toast" class="toast hidden"></div>
+
+  <div id="toast" class="toast hidden" role="status"></div>
   <script src="/app.js"></script>
 </body>
 </html>
