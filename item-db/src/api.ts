@@ -148,6 +148,24 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
       return json({ success: true, data: { variant, snapshot: snap } }, 201);
     }
 
+    if (path === '/api/bosses' && request.method === 'GET') {
+      const bosses = await db.listBosses(env.DB);
+      return json({ success: true, data: bosses });
+    }
+
+    if (path === '/api/bosses' && request.method === 'POST') {
+      const body = await parseBody<{
+        name: string;
+        boss_type?: 'world' | 'gehenna' | 'event' | 'other';
+        location?: string;
+        notes?: string;
+        external_boss_id?: number;
+      }>(request);
+      if (!body?.name) return json({ success: false, error: 'name は必須です' }, 400);
+      const boss = await db.upsertBoss(env.DB, body);
+      return json({ success: true, data: boss }, 201);
+    }
+
     if (path === '/api/drops' && request.method === 'GET') {
       const boss = url.searchParams.get('boss');
       if (!boss) return json({ success: false, error: 'boss クエリが必要です' }, 400);

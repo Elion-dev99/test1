@@ -14,6 +14,8 @@ export type ItemCategory =
 
 export type ItemRarity = 'common' | 'uncommon' | 'rare' | 'heroic' | 'legendary';
 
+export type BossType = 'world' | 'gehenna' | 'event' | 'other';
+
 export interface Item {
   id: number;
   name: string;
@@ -22,6 +24,7 @@ export interface Item {
   rarity: ItemRarity;
   slot: string | null;
   tradeable: number;
+  stackable: number;
   description: string | null;
   icon_url: string | null;
   verified: number;
@@ -49,11 +52,24 @@ export interface MarketSnapshot {
   min_trade_price: number | null;
   note: string | null;
   captured_at: string;
+  captured_by: string | null;
+}
+
+export interface Boss {
+  id: number;
+  name: string;
+  name_key: string;
+  boss_type: BossType;
+  location: string | null;
+  notes: string | null;
+  external_boss_id: number | null;
+  created_at: string;
 }
 
 export interface Drop {
   id: number;
   item_id: number;
+  boss_id: number | null;
   boss_name: string;
   drop_note: string | null;
   verified: number;

@@ -1,4 +1,14 @@
-import type { Drop, Item, ItemCategory, ItemRarity, ItemVariant, MarketSnapshot, Source } from './types';
+import type {
+  Boss,
+  BossType,
+  Drop,
+  Item,
+  ItemCategory,
+  ItemRarity,
+  ItemVariant,
+  MarketSnapshot,
+  Source,
+} from './types';
 
 export function normalizeKey(name: string): string {
   return name
@@ -9,17 +19,19 @@ export function normalizeKey(name: string): string {
 }
 
 export async function getStats(db: D1Database) {
-  const [items, variants, snapshots, drops] = await Promise.all([
+  const [items, variants, snapshots, drops, bosses] = await Promise.all([
     db.prepare('SELECT COUNT(*) as c FROM items').first<{ c: number }>(),
     db.prepare('SELECT COUNT(*) as c FROM item_variants').first<{ c: number }>(),
     db.prepare('SELECT COUNT(*) as c FROM market_snapshots').first<{ c: number }>(),
     db.prepare('SELECT COUNT(*) as c FROM drops').first<{ c: number }>(),
+    db.prepare('SELECT COUNT(*) as c FROM bosses').first<{ c: number }>(),
   ]);
   return {
     items: items?.c ?? 0,
     variants: variants?.c ?? 0,
     snapshots: snapshots?.c ?? 0,
     drops: drops?.c ?? 0,
+    bosses: bosses?.c ?? 0,
   };
 }
 
@@ -86,6 +98,7 @@ export async function createItem(
     rarity?: ItemRarity;
     slot?: string | null;
     tradeable?: number;
+    stackable?: number;
     description?: string | null;
     icon_url?: string | null;
     verified?: number;
@@ -96,8 +109,9 @@ export async function createItem(
   const nameKey = normalizeKey(data.name);
   const result = await db
     .prepare(
-      `INSERT INTO items (name, name_key, category, rarity, slot, tradeable, description, icon_url, verified, source_url)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO items
+        (name, name_key, category, rarity, slot, tradeable, stackable, description, icon_url, verified, source_url)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .bind(
       data.name,
@@ -106,6 +120,7 @@ export async function createItem(
       data.rarity ?? 'common',
       data.slot ?? null,
       data.tradeable ?? 1,
+      data.stackable ?? 1,
       data.description ?? null,
       data.icon_url ?? null,
       data.verified ?? 0,
@@ -114,15 +129,13 @@ export async function createItem(
     .run();
 
   const id = Number(result.meta.last_row_id);
-  const aliases = data.aliases ?? [];
-  for (const alias of aliases) {
+  for (const alias of data.aliases ?? []) {
     await db
       .prepare('INSERT OR IGNORE INTO item_aliases (item_id, alias, alias_key) VALUES (?, ?, ?)')
       .bind(id, alias, normalizeKey(alias))
       .run();
   }
 
-  // default base variant +0 / not blessed
   await db
     .prepare('INSERT INTO item_variants (item_id, enhance_level, blessed) VALUES (?, 0, 0)')
     .bind(id)
@@ -142,6 +155,7 @@ export async function updateItem(
     rarity: ItemRarity;
     slot: string | null;
     tradeable: number;
+    stackable: number;
     description: string | null;
     icon_url: string | null;
     verified: number;
@@ -203,9 +217,7 @@ export async function ensureVariant(
   if (existing) return existing;
 
   const result = await db
-    .prepare(
-      'INSERT INTO item_variants (item_id, enhance_level, blessed) VALUES (?, ?, ?)',
-    )
+    .prepare('INSERT INTO item_variants (item_id, enhance_level, blessed) VALUES (?, ?, ?)')
     .bind(itemId, enhanceLevel, blessed)
     .run();
 
@@ -227,13 +239,14 @@ export async function addSnapshot(
     traded_28d?: number;
     min_trade_price?: number | null;
     note?: string | null;
+    captured_by?: string;
   },
 ): Promise<MarketSnapshot> {
   const result = await db
     .prepare(
       `INSERT INTO market_snapshots
-        (variant_id, min_price, listing_count, stock_qty, traded_28d, min_trade_price, note)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        (variant_id, min_price, listing_count, stock_qty, traded_28d, min_trade_price, note, captured_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .bind(
       variantId,
@@ -243,12 +256,34 @@ export async function addSnapshot(
       data.traded_28d ?? 0,
       data.min_trade_price ?? null,
       data.note ?? null,
+      data.captured_by ?? 'manual',
+    )
+    .run();
+
+  const snapshotId = Number(result.meta.last_row_id);
+  await db
+    .prepare(
+      `INSERT INTO market_latest (variant_id, snapshot_id, min_price, listing_count, traded_28d, updated_at)
+       VALUES (?, ?, ?, ?, ?, datetime('now'))
+       ON CONFLICT(variant_id) DO UPDATE SET
+         snapshot_id = excluded.snapshot_id,
+         min_price = excluded.min_price,
+         listing_count = excluded.listing_count,
+         traded_28d = excluded.traded_28d,
+         updated_at = datetime('now')`,
+    )
+    .bind(
+      variantId,
+      snapshotId,
+      data.min_price ?? null,
+      data.listing_count ?? 0,
+      data.traded_28d ?? 0,
     )
     .run();
 
   const row = await db
     .prepare('SELECT * FROM market_snapshots WHERE id = ?')
-    .bind(Number(result.meta.last_row_id))
+    .bind(snapshotId)
     .first<MarketSnapshot>();
   if (!row) throw new Error('Failed to create snapshot');
   return row;
@@ -260,29 +295,103 @@ export async function latestSnapshot(
 ): Promise<MarketSnapshot | null> {
   return db
     .prepare(
-      'SELECT * FROM market_snapshots WHERE variant_id = ? ORDER BY captured_at DESC LIMIT 1',
+      `SELECT s.* FROM market_latest l
+       JOIN market_snapshots s ON s.id = l.snapshot_id
+       WHERE l.variant_id = ?`,
     )
     .bind(variantId)
     .first<MarketSnapshot>();
 }
 
-export async function addDrop(
+export async function upsertBoss(
   db: D1Database,
-  data: { item_id: number; boss_name: string; drop_note?: string | null; verified?: number },
-): Promise<Drop> {
+  data: {
+    name: string;
+    boss_type?: BossType;
+    location?: string | null;
+    notes?: string | null;
+    external_boss_id?: number | null;
+  },
+): Promise<Boss> {
+  const key = normalizeKey(data.name);
+  const existing = await db
+    .prepare('SELECT * FROM bosses WHERE name_key = ?')
+    .bind(key)
+    .first<Boss>();
+  if (existing) return existing;
+
   const result = await db
     .prepare(
-      'INSERT INTO drops (item_id, boss_name, drop_note, verified) VALUES (?, ?, ?, ?)',
+      `INSERT INTO bosses (name, name_key, boss_type, location, notes, external_boss_id)
+       VALUES (?, ?, ?, ?, ?, ?)`,
     )
-    .bind(data.item_id, data.boss_name, data.drop_note ?? null, data.verified ?? 0)
+    .bind(
+      data.name,
+      key,
+      data.boss_type ?? 'world',
+      data.location ?? null,
+      data.notes ?? null,
+      data.external_boss_id ?? null,
+    )
+    .run();
+
+  const row = await db
+    .prepare('SELECT * FROM bosses WHERE id = ?')
+    .bind(Number(result.meta.last_row_id))
+    .first<Boss>();
+  if (!row) throw new Error('Failed to create boss');
+  return row;
+}
+
+export async function listBosses(db: D1Database): Promise<Boss[]> {
+  return db
+    .prepare('SELECT * FROM bosses ORDER BY name')
+    .all<Boss>()
+    .then((r) => r.results ?? []);
+}
+
+export async function addDrop(
+  db: D1Database,
+  data: {
+    item_id: number;
+    boss_name: string;
+    boss_id?: number | null;
+    drop_note?: string | null;
+    verified?: number;
+  },
+): Promise<Drop> {
+  let bossId = data.boss_id ?? null;
+  if (!bossId) {
+    const boss = await upsertBoss(db, { name: data.boss_name });
+    bossId = boss.id;
+  }
+
+  const result = await db
+    .prepare(
+      `INSERT INTO drops (item_id, boss_id, boss_name, drop_note, verified)
+       VALUES (?, ?, ?, ?, ?)
+       ON CONFLICT(item_id, boss_name) DO UPDATE SET
+         boss_id = excluded.boss_id,
+         drop_note = excluded.drop_note,
+         verified = excluded.verified`,
+    )
+    .bind(data.item_id, bossId, data.boss_name, data.drop_note ?? null, data.verified ?? 0)
     .run();
 
   const row = await db
     .prepare('SELECT * FROM drops WHERE id = ?')
     .bind(Number(result.meta.last_row_id))
     .first<Drop>();
-  if (!row) throw new Error('Failed to create drop');
-  return row;
+
+  if (row) return row;
+
+  // ON CONFLICT update may not set last_row_id; fetch by unique key
+  const updated = await db
+    .prepare('SELECT * FROM drops WHERE item_id = ? AND boss_name = ?')
+    .bind(data.item_id, data.boss_name)
+    .first<Drop>();
+  if (!updated) throw new Error('Failed to create drop');
+  return updated;
 }
 
 export async function listDropsByBoss(db: D1Database, bossName: string) {
@@ -337,7 +446,7 @@ export async function getItemDetail(db: D1Database, id: number) {
   const item = await getItem(db, id);
   if (!item) return null;
 
-  const [variants, drops, sources, aliases] = await Promise.all([
+  const [variants, drops, sources, aliases, stats] = await Promise.all([
     listVariants(db, id),
     listDropsByItem(db, id),
     listSources(db, id),
@@ -346,6 +455,7 @@ export async function getItemDetail(db: D1Database, id: number) {
       .bind(id)
       .all<{ alias: string }>()
       .then((r) => (r.results ?? []).map((a) => a.alias)),
+    db.prepare('SELECT * FROM item_stats WHERE item_id = ?').bind(id).first(),
   ]);
 
   const markets = [];
@@ -354,5 +464,5 @@ export async function getItemDetail(db: D1Database, id: number) {
     markets.push({ variant: v, latest: snap });
   }
 
-  return { item, aliases, variants, drops, sources, markets };
+  return { item, aliases, variants, drops, sources, markets, stats };
 }
