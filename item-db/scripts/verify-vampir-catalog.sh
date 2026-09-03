@@ -17,7 +17,8 @@ expected_names = [i['name'] for i in catalog['items']]
 expected_bosses = [b['name'] for b in catalog['bosses']]
 
 def get(path):
-  with urllib.request.urlopen(api + path, timeout=60) as r:
+  req=urllib.request.Request(api + path, headers={'User-Agent':'Mozilla/5.0 (compatible; VampirItemDB-Verify/1.0)'})
+  with urllib.request.urlopen(req, timeout=60) as r:
     return json.loads(r.read().decode())
 
 stats = get('/api/stats')
