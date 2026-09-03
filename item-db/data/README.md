@@ -17,7 +17,17 @@ Included (verified against GameWith pages linked in `meta.sources`):
 - Event-only temporary buffs
 - Every Sephira individual roll / every skillbook variant name beyond the rarity tiers named in guides
 
-Re-run seed after deploy:
+## Enhance tables (in-game screenshots)
+
+`vampir-enhance/seiei-furubita-orb.json` — ヴァイパー専用 T4 一般武器「精鋭の古びたオーブ」の +0〜+15。
+取引所のアイテム詳細スクショ（黄色の強化ボーナス）から照合済み。
+
+```bash
+bash item-db/scripts/seed-worn-orb-enhance.sh https://mmorpg-item-db.enchanting-supernova.workers.dev
+bash item-db/scripts/verify-worn-orb-enhance.sh https://mmorpg-item-db.enchanting-supernova.workers.dev
+```
+
+Re-run full catalog seed after deploy:
 
 ```bash
 bash item-db/scripts/seed-vampir-catalog.sh https://mmorpg-item-db.enchanting-supernova.workers.dev

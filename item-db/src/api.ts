@@ -118,6 +118,20 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
             drop_note?: string | null;
             verified?: number;
           }>;
+          enhance_levels?: Array<{
+            enhance_level: number;
+            weapon_min_atk?: number;
+            weapon_max_atk?: number;
+            weapon_add_atk?: number;
+            accuracy?: number;
+            skill_damage?: number;
+          }>;
+          stats?: {
+            attack?: number | null;
+            defense?: number | null;
+            accuracy?: number | null;
+            extra_json?: unknown;
+          };
         }>;
       }>(request);
 
@@ -129,6 +143,7 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
         items_existing: 0,
         sources_added: 0,
         drops_added: 0,
+        variants_upserted: 0,
         errors: [] as string[],
       };
 
@@ -194,6 +209,36 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
               verified: drop.verified,
             });
             summary.drops_added += 1;
+          }
+
+          if (raw.enhance_levels?.length) {
+            for (const lv of raw.enhance_levels) {
+              const parts: string[] = [];
+              if (lv.weapon_add_atk) parts.push(`追加攻撃+${lv.weapon_add_atk}`);
+              if (lv.accuracy) parts.push(`命中+${lv.accuracy}`);
+              await db.ensureVariant(
+                env.DB,
+                item.id,
+                lv.enhance_level,
+                0,
+                parts.length ? parts.join(' / ') : '基礎値',
+              );
+              summary.variants_upserted += 1;
+            }
+          }
+
+          if (raw.stats || raw.enhance_levels?.length) {
+            const extra =
+              raw.stats?.extra_json ??
+              (raw.enhance_levels
+                ? { enhance_table: raw.enhance_levels }
+                : undefined);
+            await db.upsertItemStats(env.DB, item.id, {
+              attack: raw.stats?.attack ?? raw.enhance_levels?.[0]?.weapon_max_atk ?? null,
+              defense: raw.stats?.defense ?? null,
+              accuracy: raw.stats?.accuracy ?? 0,
+              extra_json: extra ? JSON.stringify(extra) : null,
+            });
           }
         } catch (err) {
           summary.errors.push(`item ${raw.name}: ${err instanceof Error ? err.message : 'fail'}`);

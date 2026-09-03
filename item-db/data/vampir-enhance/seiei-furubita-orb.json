@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "game": "VAMPIR",
+    "item_name": "精鋭の古びたオーブ",
+    "class": "ヴァイパー",
+    "slot": "武器",
+    "weapon_type": "オーブ",
+    "rarity": "common",
+    "tier": "T4",
+    "source_url": "https://121.gigafile.nu/0906-99fc7fe577ff16953eaabeb0932dc938",
+    "source_note": "取引所アイテム詳細スクショ 16枚（IMG_7586〜IMG_7601 = +0〜+15）。黄色ボーナス数値を切り出して照合。",
+    "verified": 1,
+    "notes": [
+      "武器最低/最大攻撃力とスキルダメージは全強化段階で固定",
+      "+1〜+6: 武器追加攻撃力 +3/段階、命中なし",
+      "+7〜+9: 武器追加攻撃力 +5/段階、命中 +3/段階（+7から命中が付与）",
+      "+10〜+15: 武器追加攻撃力 +10/段階、命中 +6/段階"
+    ]
+  },
+  "item": {
+    "name": "精鋭の古びたオーブ",
+    "category": "equipment",
+    "rarity": "common",
+    "slot": "武器",
+    "tradeable": 1,
+    "stackable": 0,
+    "verified": 1,
+    "description": "ヴァイパー専用 T4 一般武器（オーブ）。村ショップ「光輝のゆりかご」。重量 60.00",
+    "source_url": "https://121.gigafile.nu/0906-99fc7fe577ff16953eaabeb0932dc938",
+    "aliases": ["精鋭の古びたオーブ T4", "Elite Worn Orb"],
+    "acquire_sources": [
+      {
+        "source_type": "shop",
+        "label": "村ショップ 光輝のゆりかご",
+        "ref_note": "取引所アイテム詳細の獲得先"
+      }
+    ]
+  },
+  "base_stats": {
+    "weapon_min_atk": 20,
+    "weapon_max_atk": 84,
+    "weapon_add_atk": 0,
+    "accuracy": 0,
+    "skill_damage": 3,
+    "weight": 60.0,
+    "class": "ヴァイパー",
+    "tier": "T4"
+  },
+  "enhance_levels": [
+    {"enhance_level": 0, "weapon_min_atk": 20, "weapon_max_atk": 84, "weapon_add_atk": 0, "accuracy": 0, "skill_damage": 3},
+    {"enhance_level": 1, "weapon_min_atk": 20, "weapon_max_atk": 84, "weapon_add_atk": 3, "accuracy": 0, "skill_damage": 3},
+    {"enhance_level": 2, "weapon_min_atk": 20, "weapon_max_atk": 84, "weapon_add_atk": 6, "accuracy": 0, "skill_damage": 3},
+    {"enhance_level": 3, "weapon_min_atk": 20, "weapon_max_atk": 84, "weapon_add_atk": 9, "accuracy": 0, "skill_damage": 3},
+    {"enhance_level": 4, "weapon_min_atk": 20, "weapon_max_atk": 84, "weapon_add_atk": 12, "accuracy": 0, "skill_damage": 3},
+    {"enhance_level": 5, "weapon_min_atk": 20, "weapon_max_atk": 84, "weapon_add_atk": 15, "accuracy": 0, "skill_damage": 3},
+    {"enhance_level": 6, "weapon_min_atk": 20, "weapon_max_atk": 84, "weapon_add_atk": 18, "accuracy": 0, "skill_damage": 3},
+    {"enhance_level": 7, "weapon_min_atk": 20, "weapon_max_atk": 84, "weapon_add_atk": 23, "accuracy": 3, "skill_damage": 3},
+    {"enhance_level": 8, "weapon_min_atk": 20, "weapon_max_atk": 84, "weapon_add_atk": 28, "accuracy": 6, "skill_damage": 3},
+    {"enhance_level": 9, "weapon_min_atk": 20, "weapon_max_atk": 84, "weapon_add_atk": 33, "accuracy": 9, "skill_damage": 3},
+    {"enhance_level": 10, "weapon_min_atk": 20, "weapon_max_atk": 84, "weapon_add_atk": 43, "accuracy": 15, "skill_damage": 3},
+    {"enhance_level": 11, "weapon_min_atk": 20, "weapon_max_atk": 84, "weapon_add_atk": 53, "accuracy": 21, "skill_damage": 3},
+    {"enhance_level": 12, "weapon_min_atk": 20, "weapon_max_atk": 84, "weapon_add_atk": 63, "accuracy": 27, "skill_damage": 3},
+    {"enhance_level": 13, "weapon_min_atk": 20, "weapon_max_atk": 84, "weapon_add_atk": 73, "accuracy": 33, "skill_damage": 3},
+    {"enhance_level": 14, "weapon_min_atk": 20, "weapon_max_atk": 84, "weapon_add_atk": 83, "accuracy": 39, "skill_damage": 3},
+    {"enhance_level": 15, "weapon_min_atk": 20, "weapon_max_atk": 84, "weapon_add_atk": 93, "accuracy": 45, "skill_damage": 3}
+  ]
+}
