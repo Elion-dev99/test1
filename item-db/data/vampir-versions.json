@@ -1,0 +1,26 @@
+{
+  "meta": {
+    "game": "VAMPIR",
+    "note": "公式アップデート日に対応する DB バージョン。Lodestone の Patch 相当。"
+  },
+  "versions": [
+    {
+      "version_key": "2026.08.19",
+      "label": "2026年8月19日アップデート",
+      "released_at": "2026-08-19",
+      "notes": "霊廟・ナリツァニエ谷・レッドムーンフェスタ開始",
+      "is_current": 0
+    },
+    {
+      "version_key": "2026.09.02",
+      "label": "2026年9月2日アップデート",
+      "released_at": "2026-09-02",
+      "notes": "残夢の果て・古代の工房第8区画・クラス変更イベント告知",
+      "is_current": 1
+    }
+  ],
+  "backfill": {
+    "baseline_version": "2026.08.19",
+    "latest_from_created_at": "2026-09-03"
+  }
+}

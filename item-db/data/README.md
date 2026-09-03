@@ -38,3 +38,13 @@ bash item-db/scripts/verify-viper-orbs.sh https://mmorpg-item-db.enchanting-supe
 ```
 
 `vampir-enhance/seiei-furubita-orb.json` — 「精鋭の古びたオーブ」単体シード（後方互換。全種 JSON にも含まれる）。
+
+## Game versions
+
+`vampir-versions.json` — Lodestone の Patch 相当。現行は `2026.09.02`。
+
+```bash
+bash item-db/scripts/seed-vampir-versions.sh https://mmorpg-item-db.enchanting-supernova.workers.dev
+```
+
+UI では `Version: …` 表示と「最新アップデート検索」が使えます。

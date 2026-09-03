@@ -17,6 +17,7 @@
 		}
 	],
 	"vars": {
-		"GAME_NAME": "VAMPIR"
+		"GAME_NAME": "VAMPIR",
+		"GAME_VERSION": "2026.09.02"
 	}
 }

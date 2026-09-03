@@ -202,7 +202,9 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 .version {
   margin: 0 0 1.25rem;
   color: var(--gold);
-  font-size: 0.82rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .panel {
@@ -238,6 +240,43 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   grid-template-columns: 1fr auto;
   gap: 0.65rem;
   align-items: center;
+}
+.btn-latest {
+  margin-top: 0.85rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-align: left;
+  border: 1px solid var(--gold-dim);
+  border-radius: 4px;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  color: var(--text);
+  background:
+    linear-gradient(120deg, rgba(212, 177, 90, 0.16), rgba(158, 47, 60, 0.12) 55%, rgba(27, 42, 68, 0.55));
+  font: inherit;
+}
+.btn-latest:hover {
+  border-color: var(--gold);
+  background:
+    linear-gradient(120deg, rgba(212, 177, 90, 0.24), rgba(158, 47, 60, 0.16) 55%, rgba(27, 42, 68, 0.65));
+}
+.btn-latest .latest-mark {
+  color: var(--gold);
+  font-size: 1.35rem;
+  line-height: 1;
+}
+.btn-latest strong {
+  display: block;
+  color: var(--gold);
+  font-size: 0.98rem;
+}
+.btn-latest small {
+  display: block;
+  color: var(--muted);
+  margin-top: 0.15rem;
+  font-size: 0.78rem;
 }
 .keyword-search input,
 .inline-search input,
@@ -770,5 +809,5 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   .top-meta { width: 100%; }
   .keyword-search { grid-template-columns: 1fr; }
   .admin-form .form-row { grid-template-columns: 1fr; }
-  .col-slot, .col-trade { display: none; }
+  .col-slot, .col-trade, .col-version { display: none; }
 }
