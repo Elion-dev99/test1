@@ -1,0 +1,3989 @@
+{
+  "meta": {
+    "game": "VAMPIR",
+    "note": "Public GameWith guides only. Not a complete official Netmarble dump. Common/uncommon field gear names are not fully published on GameWith equipment lists (heroic/legendary focused).",
+    "sources": {
+      "weapons": "https://gamewith.jp/vampir/568323",
+      "armor": "https://gamewith.jp/vampir/568375",
+      "accessories": "https://gamewith.jp/vampir/568379",
+      "burial": "https://gamewith.jp/vampir/568380",
+      "craft": "https://gamewith.jp/vampir/569008",
+      "buff": "https://gamewith.jp/vampir/573377",
+      "wb": "https://gamewith.jp/vampir/570617",
+      "gehenna": "https://gamewith.jp/vampir/569771",
+      "portrait": "https://gamewith.jp/vampir/570360",
+      "sephira": "https://gamewith.jp/vampir/568932",
+      "trinity": "https://gamewith.jp/vampir/568764",
+      "collection": "https://gamewith.jp/vampir/567588",
+      "daily": "https://gamewith.jp/vampir/567160"
+    },
+    "item_count": 192
+  },
+  "bosses": [
+    {
+      "name": "ラルヴァ",
+      "boss_type": "world",
+      "location": "ワールド（12:00）"
+    },
+    {
+      "name": "クラマムス",
+      "boss_type": "world",
+      "location": "ワールド（12:00）"
+    },
+    {
+      "name": "エクセサ",
+      "boss_type": "world",
+      "location": "ワールド（12:00）"
+    },
+    {
+      "name": "ブラーキウム",
+      "boss_type": "world",
+      "location": "ワールド（20:00）"
+    },
+    {
+      "name": "デセルティ",
+      "boss_type": "world",
+      "location": "ワールド（20:00）"
+    },
+    {
+      "name": "ウスルパトル",
+      "boss_type": "world",
+      "location": "ワールド（20:00）"
+    },
+    {
+      "name": "ゲヘナボス ★1",
+      "boss_type": "gehenna",
+      "location": "ゲヘナ"
+    },
+    {
+      "name": "ゲヘナボス ★2",
+      "boss_type": "gehenna",
+      "location": "ゲヘナ"
+    },
+    {
+      "name": "ゲヘナボス ★3",
+      "boss_type": "gehenna",
+      "location": "ゲヘナ"
+    },
+    {
+      "name": "忘れ去られた君主エノク",
+      "boss_type": "gehenna",
+      "location": "ゲヘナ第2区域 ★3",
+      "notes": "紋章ドロップ源"
+    },
+    {
+      "name": "バルドゥン",
+      "boss_type": "event",
+      "location": "イベント"
+    }
+  ],
+  "items": [
+    {
+      "name": "魔王のトンファー",
+      "category": "equipment",
+      "rarity": "legendary",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アカシャ向け武器 legendary T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "偉大な預言者のトンファー",
+      "category": "equipment",
+      "rarity": "legendary",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アカシャ向け武器 legendary T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "地獄の息吹トンファー",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アカシャ向け武器 heroic T2 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T2"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "霜王のトンファー",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アカシャ向け武器 heroic T3 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T3"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "審判の閃光トンファー",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アカシャ向け武器 heroic T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "預言者のトンファー",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アカシャ向け武器 heroic T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "魔王の銃",
+      "category": "equipment",
+      "rarity": "legendary",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "カーネイジ向け武器 legendary T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "偉大な預言者の銃",
+      "category": "equipment",
+      "rarity": "legendary",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "カーネイジ向け武器 legendary T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "地獄の息吹の銃",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "カーネイジ向け武器 heroic T2 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T2"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "霜王の銃",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "カーネイジ向け武器 heroic T3 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T3"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "審判の閃光銃",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "カーネイジ向け武器 heroic T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "預言者の銃",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "カーネイジ向け武器 heroic T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "魔王の鎌",
+      "category": "equipment",
+      "rarity": "legendary",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "グリムリーパー向け武器 legendary T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "偉大な預言者の鎌",
+      "category": "equipment",
+      "rarity": "legendary",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "グリムリーパー向け武器 legendary T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "地獄の息吹の鎌",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "グリムリーパー向け武器 heroic T2 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T2"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "霜王の鎌",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "グリムリーパー向け武器 heroic T3 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T3"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "審判の閃光鎌",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "グリムリーパー向け武器 heroic T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "預言者の鎌",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "グリムリーパー向け武器 heroic T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "魔王の剣",
+      "category": "equipment",
+      "rarity": "legendary",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "ブラッドステイン向け武器 legendary T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "偉大な預言者の剣",
+      "category": "equipment",
+      "rarity": "legendary",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "ブラッドステイン向け武器 legendary T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "地獄の息吹の剣",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "ブラッドステイン向け武器 heroic T2 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T2"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "霜王の剣",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "ブラッドステイン向け武器 heroic T3 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T3"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "審判の閃光剣",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "ブラッドステイン向け武器 heroic T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "預言者の剣",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "ブラッドステイン向け武器 heroic T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "魔王のオーブ",
+      "category": "equipment",
+      "rarity": "legendary",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "ヴァイパー向け武器 legendary T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "偉大な預言者のオーブ",
+      "category": "equipment",
+      "rarity": "legendary",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "ヴァイパー向け武器 legendary T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "地獄の息吹のオーブ",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "ヴァイパー向け武器 heroic T2 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T2"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "霜王のオーブ",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "ヴァイパー向け武器 heroic T3 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T3"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "審判の閃光オーブ",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "ヴァイパー向け武器 heroic T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "預言者のオーブ",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "武器",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "ヴァイパー向け武器 heroic T1 / GameWith武器一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568323",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "地獄の息吹のヘルム",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "ヘルム",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "防具 T2 / GameWith防具一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568375",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T2"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "霜王のヘルム",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "ヘルム",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "防具 T3 / GameWith防具一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568375",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T3"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "深淵の死神のヘルム",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "ヘルム",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "防具 T1 / GameWith防具一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568375",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "魔王のヘルム",
+      "category": "equipment",
+      "rarity": "legendary",
+      "slot": "ヘルム",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "防具 T1 / GameWith防具一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568375",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "地獄の息吹のアーマー",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "アーマー",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "防具 T2 / GameWith防具一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568375",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T2"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "霜王のアーマー",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "アーマー",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "防具 T3 / GameWith防具一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568375",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T3"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "深淵の死神のアーマー",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "アーマー",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "防具 T1 / GameWith防具一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568375",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "魔王のアーマー",
+      "category": "equipment",
+      "rarity": "legendary",
+      "slot": "アーマー",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "防具 T1 / GameWith防具一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568375",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "地獄の息吹のグローブ",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "グローブ",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "防具 T2 / GameWith防具一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568375",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T2"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "霜王のグローブ",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "グローブ",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "防具 T3 / GameWith防具一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568375",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T3"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "深淵の死神のグローブ",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "グローブ",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "防具 T1 / GameWith防具一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568375",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "魔王のグローブ",
+      "category": "equipment",
+      "rarity": "legendary",
+      "slot": "グローブ",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "防具 T1 / GameWith防具一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568375",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "地獄の息吹のブーツ",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "ブーツ",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "防具 T2 / GameWith防具一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568375",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T2"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "霜王のブーツ",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "ブーツ",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "防具 T3 / GameWith防具一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568375",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T3"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "深淵の死神のブーツ",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "ブーツ",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "防具 T1 / GameWith防具一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568375",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "魔王のブーツ",
+      "category": "equipment",
+      "rarity": "legendary",
+      "slot": "ブーツ",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "防具 T1 / GameWith防具一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568375",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "血濡れた王のベルト",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "ベルト",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アクセサリー T2 / GameWithアクセサリー一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568379",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T2"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "死神のベルト",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "ベルト",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アクセサリー T3 / GameWithアクセサリー一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568379",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T3"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "深淵の女王のベルト",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "ベルト",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アクセサリー T1 / GameWithアクセサリー一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568379",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "血濡れた王のネックレス",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "ネックレス",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アクセサリー T2 / GameWithアクセサリー一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568379",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T2"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "死神のネックレス",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "ネックレス",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アクセサリー T3 / GameWithアクセサリー一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568379",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T3"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "深淵の女王のネックレス",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "ネックレス",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アクセサリー T1 / GameWithアクセサリー一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568379",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "血濡れた王のイヤリング",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "イヤリング",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アクセサリー T2 / GameWithアクセサリー一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568379",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T2"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "死神のイヤリング",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "イヤリング",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アクセサリー T3 / GameWithアクセサリー一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568379",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T3"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "深淵の女王のイヤリング",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "イヤリング",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アクセサリー T1 / GameWithアクセサリー一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568379",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "血濡れた王のブレスレット",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "ブレスレット",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アクセサリー T2 / GameWithアクセサリー一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568379",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T2"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "死神のブレスレット",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "ブレスレット",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アクセサリー T3 / GameWithアクセサリー一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568379",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T3"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "深淵の女王のブレスレット",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "ブレスレット",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アクセサリー T1 / GameWithアクセサリー一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568379",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "血濡れた王のリング",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "リング",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アクセサリー T2 / GameWithアクセサリー一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568379",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T2"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "死神のリング",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "リング",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アクセサリー T3 / GameWithアクセサリー一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568379",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T3"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "深淵の女王のリング",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "リング",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アクセサリー T1 / GameWithアクセサリー一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568379",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "亡者の囁きの紋章",
+      "category": "equipment",
+      "rarity": "heroic",
+      "slot": "紋章",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アクセサリー T1 / GameWithアクセサリー一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568379",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "装備製作",
+          "ref_note": "T1"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "夜の香り",
+      "category": "equipment",
+      "rarity": "rare",
+      "slot": "香水",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "副葬品 / GameWith副葬品一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568380",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "副葬品製作（残像200個）"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "夜の香りの残像",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "副葬品製作素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "副葬品分解・強化失敗"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "夜の聖杯",
+      "category": "equipment",
+      "rarity": "rare",
+      "slot": "ゴブレット",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "副葬品 / GameWith副葬品一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568380",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "副葬品製作（残像200個）"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "夜の聖杯の残像",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "副葬品製作素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "副葬品分解・強化失敗"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "夜の遺言",
+      "category": "equipment",
+      "rarity": "rare",
+      "slot": "万年筆",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "副葬品 / GameWith副葬品一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568380",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "副葬品製作（残像200個）"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "夜の遺言の残像",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "副葬品製作素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "副葬品分解・強化失敗"
+        },
+        {
+          "source_type": "boss",
+          "label": "ゲヘナ",
+          "ref_note": "夜の遺言の残像はゲヘナで入手"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "夜の時間",
+      "category": "equipment",
+      "rarity": "rare",
+      "slot": "懐中時計",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "副葬品 / GameWith副葬品一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568380",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "副葬品製作（残像200個）"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "夜の時間の残像",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "副葬品製作素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "副葬品分解・強化失敗"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "夜の記録",
+      "category": "equipment",
+      "rarity": "rare",
+      "slot": "日記帳",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "副葬品 / GameWith副葬品一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568380",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "副葬品製作（残像200個）"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "夜の記録の残像",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "副葬品製作素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "副葬品分解・強化失敗"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "夜の旋律",
+      "category": "equipment",
+      "rarity": "rare",
+      "slot": "オルゴール",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "副葬品 / GameWith副葬品一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568380",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "副葬品製作（残像200個）"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "夜の旋律の残像",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "副葬品製作素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "副葬品分解・強化失敗"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "夜の顔",
+      "category": "equipment",
+      "rarity": "rare",
+      "slot": "仮面",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "副葬品 / GameWith副葬品一覧掲載",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568380",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "副葬品製作（残像200個）"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "夜の顔の残像",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "副葬品製作素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "副葬品分解・強化失敗"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "武器の欠片",
+      "category": "material",
+      "rarity": "common",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "製作素材（フィールド/創造の深淵）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "フィールド/創造の深淵"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "上級武器の欠片",
+      "category": "material",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "製作素材（フィールド/創造の深淵）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "フィールド/創造の深淵"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "最上級武器の欠片",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "製作素材（フィールド/創造の深淵）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "フィールド/創造の深淵"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "防具の欠片",
+      "category": "material",
+      "rarity": "common",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "製作素材（フィールド/創造の深淵）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "フィールド/創造の深淵"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "上級防具の欠片",
+      "category": "material",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "製作素材（フィールド/創造の深淵）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "フィールド/創造の深淵"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "最上級防具の欠片",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "製作素材（フィールド/創造の深淵）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "フィールド/創造の深淵"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "アクセサリーの欠片",
+      "category": "material",
+      "rarity": "common",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "製作素材（Lv48+狩り場）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "field",
+          "label": "Lv48+狩り場"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "上級アクセサリーの欠片",
+      "category": "material",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "製作素材（Lv48+狩り場）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "field",
+          "label": "Lv48+狩り場"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "最上級アクセサリーの欠片",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "製作素材（Lv48+狩り場）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "field",
+          "label": "Lv48+狩り場"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "灰色結晶",
+      "category": "material",
+      "rarity": "common",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "製作素材（分解・強化失敗・創造の深淵）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "分解・強化失敗・創造の深淵"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "上級灰色結晶",
+      "category": "material",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "製作素材（分解・強化失敗・創造の深淵）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "分解・強化失敗・創造の深淵"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "最上級灰色結晶",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "製作素材（分解・強化失敗・創造の深淵）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "分解・強化失敗・創造の深淵"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "ペリドット",
+      "category": "material",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "製作素材（創造の深淵/エピック/クラン/ボス）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "創造の深淵/エピック/クラン/ボス"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "上級ペリドット",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "製作素材（創造の深淵/エピック/クラン/ボス）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "創造の深淵/エピック/クラン/ボス"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "最上級ペリドット",
+      "category": "material",
+      "rarity": "heroic",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "製作素材（創造の深淵/エピック/クラン/ボス）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "創造の深淵/エピック/クラン/ボス"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "ゴールド",
+      "category": "other",
+      "rarity": "common",
+      "slot": null,
+      "tradeable": 0,
+      "stackable": 1,
+      "description": "通貨",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568764",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "各種コンテンツ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "トリニティ",
+      "category": "material",
+      "rarity": "common",
+      "slot": null,
+      "tradeable": 0,
+      "stackable": 1,
+      "description": "細工・祝福・掟・魔力研究の基幹素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568764",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "デイリークエスト/分解/ダンジョン等"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "ダイヤ",
+      "category": "other",
+      "rarity": "common",
+      "slot": null,
+      "tradeable": 0,
+      "stackable": 1,
+      "description": "課金・取引所通貨",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568764",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "shop",
+          "label": "ショップ/課金"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "青き魔力結晶",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "製作素材（青き魔力オーラから製作）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "製作"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "青き魔力オーラ",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "希少装備分解・強化失敗",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "希少装備分解"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "永遠なる魔力結晶",
+      "category": "material",
+      "rarity": "heroic",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "英雄T2+製作素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "製作"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "永遠なる魔力オーラ",
+      "category": "material",
+      "rarity": "heroic",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "英雄装備分解・強化失敗",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "英雄装備分解"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "フロストサファイア",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "希少T4〜英雄T2製作",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "創造の深淵/エピック/ボス"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "英雄武器製作書",
+      "category": "material",
+      "rarity": "heroic",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "英雄武器製作",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "創造の深淵第2区域+/ボス"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "英雄防具製作書",
+      "category": "material",
+      "rarity": "heroic",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "英雄防具製作",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "創造の深淵第2区域+/ボス"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "英雄アクセサリー製作書",
+      "category": "material",
+      "rarity": "heroic",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "英雄アクセサリー製作",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "創造の深淵第2区域+/ボス"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "英雄装備製作書の断片",
+      "category": "material",
+      "rarity": "heroic",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "製作書の材料",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "ダンジョン/ボス"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "伝説武器製作書",
+      "category": "material",
+      "rarity": "legendary",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "伝説武器製作",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "クラン守護ランキング報酬"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "伝説防具製作書",
+      "category": "material",
+      "rarity": "legendary",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "伝説防具製作",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "クラン守護ランキング報酬"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "灼熱地獄の憤怒",
+      "category": "material",
+      "rarity": "heroic",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "英雄T2+製作素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "boss",
+          "label": "クラン任務/ボス/ゲヘナ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "灼熱地獄の忍耐",
+      "category": "material",
+      "rarity": "heroic",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "英雄T2+製作素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "boss",
+          "label": "クラン任務/ボス/ゲヘナ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "血濡れた王の無慈悲",
+      "category": "material",
+      "rarity": "heroic",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "英雄T2+製作素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "boss",
+          "label": "クラン任務/ボス/ゲヘナ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "偉大なる者の神器",
+      "category": "material",
+      "rarity": "heroic",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "英雄T3製作素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "boss",
+          "label": "ゲヘナボス"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "霜王の猛攻",
+      "category": "material",
+      "rarity": "heroic",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "英雄T3製作素材（製作のみ）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "製作"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "霜王の守護",
+      "category": "material",
+      "rarity": "heroic",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "英雄T3製作素材（製作のみ）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "製作"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "死神の呪い",
+      "category": "material",
+      "rarity": "heroic",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "英雄T3製作素材（製作のみ）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "製作"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "伝説的な武力の証",
+      "category": "material",
+      "rarity": "legendary",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "伝説装備製作",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "業績/クラン守護ランキング"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "伝説的な守護の証",
+      "category": "material",
+      "rarity": "legendary",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "伝説装備製作",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "業績/クラン守護ランキング"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "紋章の飾り",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "紋章製作専用素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569008",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "紋章製作"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "武器強化呪文書",
+      "category": "material",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "武器強化用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567160",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "ノーマルダンジョン等"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "防具強化呪文書",
+      "category": "material",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "防具強化用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567160",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "ノーマルダンジョン等"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "祝福されし武器強化呪文書",
+      "category": "material",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "祝福付き武器強化",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567160",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "ノーマルダンジョン等"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "祝福されし防具強化呪文書",
+      "category": "material",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "祝福付き防具強化",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567160",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "ノーマルダンジョン等"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "復元チケット",
+      "category": "material",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "希少以上装備の復旧",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567160",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "ノーマルダンジョン等"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "スキルブック（一般）",
+      "category": "skillbook",
+      "rarity": "common",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "スキル習得用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569771",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "boss",
+          "label": "ゲヘナ/各種コンテンツ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "スキルブック（高級）",
+      "category": "skillbook",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "スキル習得用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569771",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "boss",
+          "label": "ゲヘナ/各種コンテンツ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "スキルブック（希少）",
+      "category": "skillbook",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "スキル習得用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569771",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "boss",
+          "label": "ゲヘナ/各種コンテンツ"
+        }
+      ],
+      "drops": [
+        {
+          "boss_name": "ゲヘナボス",
+          "drop_note": "報酬",
+          "verified": 0
+        }
+      ]
+    },
+    {
+      "name": "スキルブックページ（一般）",
+      "category": "skillbook",
+      "rarity": "common",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "スキル習得用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569771",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "boss",
+          "label": "ゲヘナ/各種コンテンツ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "スキルブックページ（高級）",
+      "category": "skillbook",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "スキル習得用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569771",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "boss",
+          "label": "ゲヘナ/各種コンテンツ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "暗黒オーラの闇取引ボックス",
+      "category": "consumable",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "闇取引用アイテムが入るボックス",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570617",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "boss",
+          "label": "ワールドボス参加報酬"
+        }
+      ],
+      "drops": [
+        {
+          "boss_name": "ラルヴァ",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "クラマムス",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "エクセサ",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "ブラーキウム",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "デセルティ",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "ウスルパトル",
+          "drop_note": "参加報酬",
+          "verified": 1
+        }
+      ]
+    },
+    {
+      "name": "魔物の証",
+      "category": "collection",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "ワールドボス貢献のコレクション素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570617",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "boss",
+          "label": "ワールドボス参加報酬"
+        }
+      ],
+      "drops": [
+        {
+          "boss_name": "ラルヴァ",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "クラマムス",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "エクセサ",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "ブラーキウム",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "デセルティ",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "ウスルパトル",
+          "drop_note": "参加報酬",
+          "verified": 1
+        }
+      ]
+    },
+    {
+      "name": "討伐者の肖像画復元剤",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "討伐者肖像画の強化素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570617",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "boss",
+          "label": "ワールドボス参加報酬"
+        }
+      ],
+      "drops": [
+        {
+          "boss_name": "ラルヴァ",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "クラマムス",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "エクセサ",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "ブラーキウム",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "デセルティ",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "ウスルパトル",
+          "drop_note": "参加報酬",
+          "verified": 1
+        }
+      ]
+    },
+    {
+      "name": "セフィラの欠片",
+      "category": "material",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "セフィラ召喚チケット製作素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570617",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "boss",
+          "label": "ワールドボス参加報酬"
+        }
+      ],
+      "drops": [
+        {
+          "boss_name": "ラルヴァ",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "クラマムス",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "エクセサ",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "ブラーキウム",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "デセルティ",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "ウスルパトル",
+          "drop_note": "参加報酬",
+          "verified": 1
+        }
+      ]
+    },
+    {
+      "name": "微かな強化の痕跡",
+      "category": "material",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "強化関連素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570617",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "boss",
+          "label": "ワールドボス参加報酬"
+        }
+      ],
+      "drops": [
+        {
+          "boss_name": "ラルヴァ",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "クラマムス",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "エクセサ",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "ブラーキウム",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "デセルティ",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "ウスルパトル",
+          "drop_note": "参加報酬",
+          "verified": 1
+        }
+      ]
+    },
+    {
+      "name": "永遠のコイン",
+      "category": "other",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "永遠のコイン商人での交換通貨",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570617",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "boss",
+          "label": "ワールドボス参加報酬"
+        }
+      ],
+      "drops": [
+        {
+          "boss_name": "ラルヴァ",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "クラマムス",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "エクセサ",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "ブラーキウム",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "デセルティ",
+          "drop_note": "参加報酬",
+          "verified": 1
+        },
+        {
+          "boss_name": "ウスルパトル",
+          "drop_note": "参加報酬",
+          "verified": 1
+        }
+      ]
+    },
+    {
+      "name": "ゲヘナの旗",
+      "category": "collection",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "収集品",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569771",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "field",
+          "label": "ゲヘナ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "ゲヘナの証",
+      "category": "collection",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "収集品",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569771",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "field",
+          "label": "ゲヘナ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "金床",
+      "category": "collection",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "ゲヘナ収集品",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569771",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "field",
+          "label": "ゲヘナ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "ゲヘナ製作素材ボックス",
+      "category": "consumable",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "製作素材ボックス",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569771",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "field",
+          "label": "ゲヘナ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "ミラの貴重な装備ボックス",
+      "category": "consumable",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "装備ボックス",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569771",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "field",
+          "label": "ゲヘナ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "夜の遺言ボックス",
+      "category": "consumable",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "副葬品関連ボックス",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569771",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "field",
+          "label": "ゲヘナ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "ゲヘナの魔力玉",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "ゲヘナ素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569771",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "field",
+          "label": "ゲヘナ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "進化の魔力玉",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "進化関連",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569771",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "field",
+          "label": "ゲヘナ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "進化石",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "進化関連",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569771",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "field",
+          "label": "ゲヘナ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "古代進化石",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "進化関連",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569771",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "field",
+          "label": "ゲヘナ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "魔力の精髄",
+      "category": "material",
+      "rarity": "heroic",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "高レア素材",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569771",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "field",
+          "label": "ゲヘナ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "金塊",
+      "category": "material",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "ゴールド関連",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569771",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "field",
+          "label": "ゲヘナ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "黄金の欠片",
+      "category": "material",
+      "rarity": "common",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "ゴールド関連",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569771",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "field",
+          "label": "ゲヘナ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "創造の証",
+      "category": "collection",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "コレクション登録素材（ノーマルダンジョン「創造の深淵」）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567588",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "ノーマルダンジョン「創造の深淵」"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "褪せた証",
+      "category": "collection",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "コレクション登録素材（ノーマルダンジョン「褪せた遺産」）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567588",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "ノーマルダンジョン「褪せた遺産」"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "進化の証",
+      "category": "collection",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "コレクション登録素材（ノーマルダンジョン「進化の起源」）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567588",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "ノーマルダンジョン「進化の起源」"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "感情の名残",
+      "category": "collection",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "コレクション登録素材（製作限定コレクション）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567588",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "製作限定コレクション"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "成長の証",
+      "category": "collection",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "コレクション登録素材（業績）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567588",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "業績"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "支配者の証",
+      "category": "collection",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "コレクション登録素材（業績）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567588",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "業績"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "記憶片",
+      "category": "collection",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "コレクション登録素材（ブラッドライン）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567588",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "ブラッドライン"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "協力の証",
+      "category": "collection",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "コレクション登録素材（エピックダンジョン）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567588",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "エピックダンジョン"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "挑戦の証",
+      "category": "collection",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "コレクション登録素材（クラン）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567588",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "クラン"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "石板",
+      "category": "collection",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "コレクション登録素材（クラン遺物）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567588",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "クラン遺物"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "暗黒商団の契約書",
+      "category": "collection",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "コレクション登録素材（暗黒商団コインショップ）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567588",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "暗黒商団コインショップ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "棺装飾品",
+      "category": "collection",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "コレクション登録素材（霊廟）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567588",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "霊廟"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "琥珀",
+      "category": "collection",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "コレクション登録素材（精鋭ダンジョン）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567588",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "精鋭ダンジョン"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "経験の血清",
+      "category": "consumable",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "経験値追加獲得量+10％",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/573377",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "shop",
+          "label": "拠点ショップ/各種報酬"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "精製された経験の血清",
+      "category": "consumable",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "経験値追加獲得量+30％",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/573377",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "shop",
+          "label": "拠点ショップ/各種報酬"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "金貨の血清",
+      "category": "consumable",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "ゴールド獲得量+30％",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/573377",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "shop",
+          "label": "拠点ショップ/各種報酬"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "冒険者の血清",
+      "category": "consumable",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "経験値+15％ / ゴールド+15％",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/573377",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "shop",
+          "label": "拠点ショップ/各種報酬"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "加速の血清",
+      "category": "consumable",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "速度上昇",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/573377",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "shop",
+          "label": "拠点ショップ/各種報酬"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "防御の血清",
+      "category": "consumable",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "耐久上昇",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/573377",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "shop",
+          "label": "拠点ショップ/各種報酬"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "攻撃の血清",
+      "category": "consumable",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "火力上昇",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/573377",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "shop",
+          "label": "拠点ショップ/各種報酬"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "精製された加速の血清",
+      "category": "consumable",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "速度上昇（強化版）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/573377",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "shop",
+          "label": "拠点ショップ/各種報酬"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "精製された防御の血清",
+      "category": "consumable",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "耐久上昇（強化版）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/573377",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "shop",
+          "label": "拠点ショップ/各種報酬"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "精製された攻撃の血清",
+      "category": "consumable",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "火力上昇（強化版）",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/573377",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "shop",
+          "label": "拠点ショップ/各種報酬"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "血の晩餐",
+      "category": "consumable",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "攻撃力と防御力が上昇",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/573377",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "shop",
+          "label": "拠点ショップ/各種報酬"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "純粋な捕食者の血石",
+      "category": "consumable",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "PvP特化バフ",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/573377",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "shop",
+          "label": "拠点ショップ/各種報酬"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "純粋な虐殺者の血石",
+      "category": "consumable",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "ボス特化バフ",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/573377",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "shop",
+          "label": "拠点ショップ/各種報酬"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "純粋な征服者の血石",
+      "category": "consumable",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "通常モンスター特化バフ",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/573377",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "shop",
+          "label": "拠点ショップ/各種報酬"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "セフィラ召喚チケット",
+      "category": "consumable",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "セフィラ新規獲得用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/568932",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "craft",
+          "label": "セフィラの欠片+トリニティで製作"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "セフィラ（アツィルト）",
+      "category": "equipment",
+      "rarity": "rare",
+      "slot": "セフィラ",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "アツィルト形状セフィラ（レア度は個体による）",
+      "verified": 0,
+      "source_url": "https://gamewith.jp/vampir/568932",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "召喚/合成"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "セフィラ（ブリアー）",
+      "category": "equipment",
+      "rarity": "rare",
+      "slot": "セフィラ",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "ブリアー形状セフィラ（レア度は個体による）",
+      "verified": 0,
+      "source_url": "https://gamewith.jp/vampir/568932",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "召喚/合成"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "セフィラ（イェツィラ）",
+      "category": "equipment",
+      "rarity": "rare",
+      "slot": "セフィラ",
+      "tradeable": 1,
+      "stackable": 0,
+      "description": "イェツィラ形状セフィラ（レア度は個体による）",
+      "verified": 0,
+      "source_url": "https://gamewith.jp/vampir/568932",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "召喚/合成"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "フランツの肖像画",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "肖像画強化用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570360",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "各種コンテンツ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "ヴァイパーの肖像画",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "肖像画強化用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570360",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "各種コンテンツ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "グリムリーパーの肖像画",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "肖像画強化用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570360",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "各種コンテンツ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "カーネイジの肖像画",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "肖像画強化用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570360",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "各種コンテンツ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "ブラッドステインの肖像画",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "肖像画強化用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570360",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "各種コンテンツ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "アカシャの肖像画",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "肖像画強化用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570360",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "各種コンテンツ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "大君主の肖像画",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "肖像画強化用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570360",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "各種コンテンツ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "永劫者の肖像画",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "肖像画強化用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570360",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "各種コンテンツ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "討伐者の肖像画",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "肖像画強化用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570360",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "各種コンテンツ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "征服者の肖像画",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "肖像画強化用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570360",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "各種コンテンツ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "行商人の肖像画",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "肖像画強化用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570360",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "各種コンテンツ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "闇商人シギルの肖像画",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "肖像画強化用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570360",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "各種コンテンツ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "復習者の肖像画",
+      "category": "material",
+      "rarity": "rare",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "肖像画強化用",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570360",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "各種コンテンツ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "暗黒商団のコイン",
+      "category": "other",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 0,
+      "stackable": 1,
+      "description": "闇取引ショップ通貨",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567588",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "shop",
+          "label": "闇取引"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "クランコイン",
+      "category": "other",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 0,
+      "stackable": 1,
+      "description": "クランショップ通貨",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/570360",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "other",
+          "label": "クランコンテンツ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "ゲヘナポイント",
+      "category": "other",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 0,
+      "stackable": 1,
+      "description": "ゲヘナショップ通貨",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/569771",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "field",
+          "label": "ゲヘナ"
+        }
+      ],
+      "drops": []
+    },
+    {
+      "name": "アーティファクト強化石",
+      "category": "material",
+      "rarity": "uncommon",
+      "slot": null,
+      "tradeable": 1,
+      "stackable": 1,
+      "description": "アーティファクト強化",
+      "verified": 1,
+      "source_url": "https://gamewith.jp/vampir/567160",
+      "aliases": [],
+      "acquire_sources": [
+        {
+          "source_type": "dungeon",
+          "label": "創造の深淵"
+        }
+      ],
+      "drops": []
+    }
+  ]
+}

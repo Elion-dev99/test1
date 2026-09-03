@@ -12,7 +12,7 @@
 		{
 			"binding": "DB",
 			"database_name": "item-db",
-			"database_id": "00000000-0000-0000-0000-000000000000",
+			"database_id": "98ef299f-8d09-4eba-bea9-b26e939b5aed",
 			"migrations_dir": "migrations"
 		}
 	],
