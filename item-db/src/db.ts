@@ -207,6 +207,7 @@ export async function ensureVariant(
   itemId: number,
   enhanceLevel = 0,
   blessed = 0,
+  optionSummary?: string | null,
 ): Promise<ItemVariant> {
   const existing = await db
     .prepare(
@@ -214,11 +215,22 @@ export async function ensureVariant(
     )
     .bind(itemId, enhanceLevel, blessed)
     .first<ItemVariant>();
-  if (existing) return existing;
+  if (existing) {
+    if (optionSummary !== undefined && optionSummary !== existing.option_summary) {
+      await db
+        .prepare('UPDATE item_variants SET option_summary = ? WHERE id = ?')
+        .bind(optionSummary, existing.id)
+        .run();
+      return { ...existing, option_summary: optionSummary ?? null };
+    }
+    return existing;
+  }
 
   const result = await db
-    .prepare('INSERT INTO item_variants (item_id, enhance_level, blessed) VALUES (?, ?, ?)')
-    .bind(itemId, enhanceLevel, blessed)
+    .prepare(
+      'INSERT INTO item_variants (item_id, enhance_level, blessed, option_summary) VALUES (?, ?, ?, ?)',
+    )
+    .bind(itemId, enhanceLevel, blessed, optionSummary ?? null)
     .run();
 
   const row = await db
@@ -227,6 +239,48 @@ export async function ensureVariant(
     .first<ItemVariant>();
   if (!row) throw new Error('Failed to create variant');
   return row;
+}
+
+export async function upsertItemStats(
+  db: D1Database,
+  itemId: number,
+  data: {
+    attack?: number | null;
+    defense?: number | null;
+    accuracy?: number | null;
+    crit_rate?: number | null;
+    hp?: number | null;
+    mp?: number | null;
+    extra_json?: string | null;
+  },
+) {
+  await db
+    .prepare(
+      `INSERT INTO item_stats (item_id, attack, defense, accuracy, crit_rate, hp, mp, extra_json, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+       ON CONFLICT(item_id) DO UPDATE SET
+         attack = excluded.attack,
+         defense = excluded.defense,
+         accuracy = excluded.accuracy,
+         crit_rate = excluded.crit_rate,
+         hp = excluded.hp,
+         mp = excluded.mp,
+         extra_json = excluded.extra_json,
+         updated_at = datetime('now')`,
+    )
+    .bind(
+      itemId,
+      data.attack ?? null,
+      data.defense ?? null,
+      data.accuracy ?? null,
+      data.crit_rate ?? null,
+      data.hp ?? null,
+      data.mp ?? null,
+      data.extra_json ?? null,
+    )
+    .run();
+
+  return db.prepare('SELECT * FROM item_stats WHERE item_id = ?').bind(itemId).first();
 }
 
 export async function addSnapshot(
@@ -467,11 +521,20 @@ export async function getItemDetail(db: D1Database, id: number) {
     db.prepare('SELECT * FROM item_stats WHERE item_id = ?').bind(id).first(),
   ]);
 
+  let extra: Record<string, unknown> | null = null;
+  if (stats && typeof (stats as { extra_json?: string }).extra_json === 'string') {
+    try {
+      extra = JSON.parse((stats as { extra_json: string }).extra_json) as Record<string, unknown>;
+    } catch {
+      extra = null;
+    }
+  }
+
   const markets = [];
   for (const v of variants) {
     const snap = await latestSnapshot(db, v.id);
     markets.push({ variant: v, latest: snap });
   }
 
-  return { item, aliases, variants, drops, sources, markets, stats };
+  return { item, aliases, variants, drops, sources, markets, stats, extra };
 }

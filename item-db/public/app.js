@@ -88,9 +88,49 @@ async function showDetail(id) {
   const detail = await api(`/items/${id}`);
   const el = document.getElementById('item-detail');
   el.classList.remove('hidden');
+  const extra = detail.extra || (detail.stats?.extra_json ? JSON.parse(detail.stats.extra_json) : null) || {};
+  const table = extra.enhance_table || [];
+  const enhanceHtml = table.length
+    ? `<h3>強化段階ステータス</h3>
+      <table class="stats-table">
+        <thead>
+          <tr>
+            <th>強化</th>
+            <th>最低攻撃</th>
+            <th>最大攻撃</th>
+            <th>追加攻撃</th>
+            <th>命中</th>
+            <th>スキルダメ</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${table
+            .map((r) => {
+              const cls = r.enhance_level === 7 || r.enhance_level === 10 ? 'breakpoint' : '';
+              return `<tr class="${cls}">
+                <td>+${r.enhance_level}</td>
+                <td>${r.weapon_min_atk}</td>
+                <td>${r.weapon_max_atk}</td>
+                <td>+${r.weapon_add_atk}</td>
+                <td>${r.accuracy ? '+' + r.accuracy : '—'}</td>
+                <td>${r.skill_damage}</td>
+              </tr>`;
+            })
+            .join('')}
+        </tbody>
+      </table>
+      ${
+        extra.scaling_notes
+          ? `<p class="meta">${[].concat(extra.scaling_notes).join('<br>')}</p>`
+          : ''
+      }`
+    : '';
+
   el.innerHTML = `
     <h2>${detail.item.name}</h2>
-    <div class="meta">ID ${detail.item.id} / key ${detail.item.name_key}</div>
+    <div class="meta">ID ${detail.item.id} / ${detail.item.slot || ''} / ${rarityLabel[detail.item.rarity] || detail.item.rarity}</div>
+    ${detail.item.description ? `<p class="desc">${detail.item.description}</p>` : ''}
+    ${enhanceHtml}
     <pre>${JSON.stringify(detail, null, 2)}</pre>
   `;
 }
