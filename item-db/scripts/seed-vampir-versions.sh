@@ -9,10 +9,11 @@ if [[ -z "$API_BASE" ]]; then
 fi
 API_BASE="${API_BASE%/}"
 DATA="$ROOT/data/vampir-versions.json"
-python3 -u - "$API_BASE" "$DATA" <<'PY'
-import json, sys, urllib.request, urllib.error, urllib.parse
+python3 -u - "$API_BASE" "$DATA" "$ROOT" <<'PY'
+import json, sys, urllib.request, urllib.error
+from pathlib import Path
 
-api, path = sys.argv[1], sys.argv[2]
+api, path, root = sys.argv[1], sys.argv[2], Path(sys.argv[3])
 doc = json.load(open(path, encoding='utf-8'))
 UA = 'Mozilla/5.0 (compatible; VampirItemDB-Seed/1.0)'
 
@@ -38,48 +39,39 @@ print('versions', code, body.get('data') or body)
 if code >= 400:
     raise SystemExit(1)
 
-# Backfill via tagging items returned from catalog
 baseline = doc['backfill']['baseline_version']
-latest_from = doc['backfill']['latest_from_created_at']
-current = next(v['version_key'] for v in doc['versions'] if v.get('is_current'))
+latest = doc['backfill']['latest_version']
+orb_path = root / 'data' / doc['backfill']['latest_name_list']
+latest_names = {row['name'] for row in json.load(open(orb_path, encoding='utf-8'))['items']}
+# 精鋭の古びたオーブ is in the orb set; keep all viper orbs as latest catalog additions
+print('latest name set', len(latest_names))
 
 code, listing = call('GET', '/api/items?limit=500')
 items = listing.get('data') or []
 print('catalog', len(items))
 
-baseline_items = []
-latest_items = []
-for it in items:
-    created = (it.get('created_at') or '')[:10]
-    if created >= latest_from:
-        latest_items.append(it['name'])
-    else:
-        baseline_items.append(it['name'])
+baseline_items = [i['name'] for i in items if i['name'] not in latest_names]
+latest_items = [i['name'] for i in items if i['name'] in latest_names]
 
 def tag(names, version):
     chunk = [{'name': n, 'game_version': version} for n in names]
-    # seed update requires category etc. if creating; for existing, updateItem only sets provided fields
-    # Our seed update always passes category from raw — if missing may set undefined.
-    # So fetch each item fields... Better: send minimal via a dedicated path.
-    # Use seed with only name + game_version; updateItem ignores undefined category if we fix API.
-    # Current updateItem: `if (value === undefined) continue` — but seed always passes category: raw.category which is undefined → skipped. Good.
-    ok = 0
     BATCH = 40
     for i in range(0, len(chunk), BATCH):
-        part = chunk[i:i+BATCH]
+        part = chunk[i:i + BATCH]
         c, b = call('POST', '/api/seed', {'items': part})
         d = b.get('data') or {}
-        print(f'tag {version} batch {i//BATCH+1} http={c} existing={d.get("items_existing")} created={d.get("items_created")} err={d.get("errors")}')
+        print(f'tag {version} batch {i // BATCH + 1} http={c} existing={d.get("items_existing")} err={d.get("errors")}')
         if c >= 400 or d.get('errors'):
             raise SystemExit(1)
-        ok += len(part)
-    return ok
+    return len(names)
 
 print('baseline tag', tag(baseline_items, baseline))
-print('latest tag', tag(latest_items, current))
+print('latest tag', tag(latest_items, latest))
 
 code, ver = call('GET', '/api/versions')
 print('current', (ver.get('data') or {}).get('current'))
 code, stats = call('GET', '/api/stats')
 print('stats', stats.get('data'))
+code, latest_list = call('GET', '/api/items?version=latest&limit=10')
+print('latest sample', [i['name'] for i in (latest_list.get('data') or [])])
 PY
