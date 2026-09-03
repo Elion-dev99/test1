@@ -54,6 +54,7 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
         q: url.searchParams.get('q') ?? undefined,
         category: url.searchParams.get('category') ?? undefined,
         rarity: url.searchParams.get('rarity') ?? undefined,
+        slot: url.searchParams.get('slot') ?? undefined,
         limit: parseInt(url.searchParams.get('limit') ?? '100', 10),
       });
       return json({ success: true, data: items });
