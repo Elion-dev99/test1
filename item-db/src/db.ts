@@ -366,14 +366,31 @@ export async function addDrop(
     bossId = boss.id;
   }
 
+  const existing = await db
+    .prepare('SELECT * FROM drops WHERE item_id = ? AND boss_name = ?')
+    .bind(data.item_id, data.boss_name)
+    .first<Drop>();
+
+  if (existing) {
+    await db
+      .prepare(
+        `UPDATE drops SET boss_id = ?, drop_note = ?, verified = ?
+         WHERE id = ?`,
+      )
+      .bind(bossId, data.drop_note ?? null, data.verified ?? 0, existing.id)
+      .run();
+    const updated = await db
+      .prepare('SELECT * FROM drops WHERE id = ?')
+      .bind(existing.id)
+      .first<Drop>();
+    if (!updated) throw new Error('Failed to update drop');
+    return updated;
+  }
+
   const result = await db
     .prepare(
       `INSERT INTO drops (item_id, boss_id, boss_name, drop_note, verified)
-       VALUES (?, ?, ?, ?, ?)
-       ON CONFLICT(item_id, boss_name) DO UPDATE SET
-         boss_id = excluded.boss_id,
-         drop_note = excluded.drop_note,
-         verified = excluded.verified`,
+       VALUES (?, ?, ?, ?, ?)`,
     )
     .bind(data.item_id, bossId, data.boss_name, data.drop_note ?? null, data.verified ?? 0)
     .run();
@@ -382,16 +399,8 @@ export async function addDrop(
     .prepare('SELECT * FROM drops WHERE id = ?')
     .bind(Number(result.meta.last_row_id))
     .first<Drop>();
-
-  if (row) return row;
-
-  // ON CONFLICT update may not set last_row_id; fetch by unique key
-  const updated = await db
-    .prepare('SELECT * FROM drops WHERE item_id = ? AND boss_name = ?')
-    .bind(data.item_id, data.boss_name)
-    .first<Drop>();
-  if (!updated) throw new Error('Failed to create drop');
-  return updated;
+  if (!row) throw new Error('Failed to create drop');
+  return row;
 }
 
 export async function listDropsByBoss(db: D1Database, bossName: string) {
