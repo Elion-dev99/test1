@@ -89,6 +89,15 @@ async function showDetail(id) {
   const el = document.getElementById('item-detail');
   el.classList.remove('hidden');
   const extra = detail.extra || (detail.stats?.extra_json ? JSON.parse(detail.stats.extra_json) : null) || {};
+  const extraBits = [
+    extra.tier ? `tier ${extra.tier}` : null,
+    extra.skill_damage != null ? `スキルダメージ ${extra.skill_damage}` : null,
+    extra.normal_monster_damage != null ? `通常モンスターダメージ ${extra.normal_monster_damage}` : null,
+    extra.magic_attack != null ? `魔法攻撃力 ${extra.magic_attack}` : null,
+    extra.crit_damage != null ? `クリティカルダメージ ${extra.crit_damage}` : null,
+    extra.pvp_attack != null ? `PvP攻撃力 ${extra.pvp_attack}` : null,
+  ].filter(Boolean);
+  const extraLine = extraBits.length ? `<p class="desc">${extraBits.join(' · ')}</p>` : '';
   const table = extra.enhance_table || [];
   const enhanceHtml = table.length
     ? `<h3>強化段階ステータス</h3>
@@ -113,7 +122,7 @@ async function showDetail(id) {
                 <td>${r.weapon_max_atk}</td>
                 <td>+${r.weapon_add_atk}</td>
                 <td>${r.accuracy ? '+' + r.accuracy : '—'}</td>
-                <td>${r.skill_damage}</td>
+                <td>${r.skill_damage != null && r.skill_damage !== '' ? r.skill_damage : '—'}</td>
               </tr>`;
             })
             .join('')}
@@ -130,6 +139,7 @@ async function showDetail(id) {
     <h2>${detail.item.name}</h2>
     <div class="meta">ID ${detail.item.id} / ${detail.item.slot || ''} / ${rarityLabel[detail.item.rarity] || detail.item.rarity}</div>
     ${detail.item.description ? `<p class="desc">${detail.item.description}</p>` : ''}
+    ${extraLine}
     ${enhanceHtml}
     <pre>${JSON.stringify(detail, null, 2)}</pre>
   `;
