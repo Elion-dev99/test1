@@ -120,6 +120,12 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   flex: 1;
 }
 
+.top-link[hidden],
+button.top-link[hidden],
+.nav-btn[hidden] {
+  display: none !important;
+}
+
 .top-link {
   border: 0;
   background: transparent;
