@@ -46,7 +46,7 @@ document.querySelectorAll('.nav-btn').forEach((btn) => {
 async function loadStats() {
   const s = await api('/stats');
   document.getElementById('stats').innerHTML =
-    `items ${s.items}<br>variants ${s.variants}<br>snapshots ${s.snapshots}<br>drops ${s.drops}`;
+    `items ${s.items}<br>variants ${s.variants}<br>snapshots ${s.snapshots}<br>drops ${s.drops}<br>bosses ${s.bosses}`;
 }
 
 async function searchItems() {
