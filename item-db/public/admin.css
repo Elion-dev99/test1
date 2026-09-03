@@ -98,6 +98,23 @@
   font-size: 0.85rem;
 }
 
+.field-hint {
+  margin: -0.35rem 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.admin-stat-preview {
+  min-height: 1.5rem;
+}
+
+.admin-stat-preview:empty::before {
+  content: "プレビューがここに出ます";
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
 .stat-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

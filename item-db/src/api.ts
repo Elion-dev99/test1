@@ -1,6 +1,7 @@
 import type { Env, ApiResponse, ItemCategory, ItemRarity } from './types';
 import * as db from './db';
 import { createAdminToken, getAdminPassword, requireAdmin, verifyAdminToken } from './auth';
+import { parseStatsText, statsExtraJson } from './statsText';
 
 function json<T>(data: ApiResponse<T>, status = 200): Response {
   return new Response(JSON.stringify(data), {
@@ -137,6 +138,8 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
         source_url?: string;
         game_version?: string | null;
         aliases?: string[];
+        /** Free-form stats (1 line per attribute). Preferred over structured stats. */
+        stats_text?: string;
         stats?: {
           attack?: number | null;
           defense?: number | null;
@@ -156,7 +159,18 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
 
       try {
         const item = await db.createItem(env.DB, body);
-        if (body.stats) {
+        const parsed = parseStatsText(body.stats_text);
+        if (parsed) {
+          await db.upsertItemStats(env.DB, item.id, {
+            attack: parsed.attack,
+            defense: parsed.defense,
+            accuracy: parsed.accuracy,
+            crit_rate: parsed.crit_rate,
+            hp: parsed.hp,
+            mp: parsed.mp,
+            extra_json: statsExtraJson(parsed),
+          });
+        } else if (body.stats) {
           const s = body.stats;
           const extra: Record<string, number> = {};
           const eva = s.evasion ?? s.eva;

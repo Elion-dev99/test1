@@ -70,11 +70,40 @@ function escapeAttr(s) {
     .replace(/</g, "&lt;");
 }
 
+function escapeHtml(s) {
+  return String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 function numOrNull(v) {
   if (v === "" || v == null) return null;
   const n = Number(v);
   return Number.isFinite(n) ? n : null;
 }
+
+/** Preview chips from free-form stats text (display only). */
+function previewStatsText(text) {
+  const lines = String(text || "")
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter((l) => l && !l.startsWith("#"));
+  const box = $("#stats-preview");
+  if (!box) return;
+  if (!lines.length) {
+    box.innerHTML = "";
+    return;
+  }
+  box.innerHTML = lines
+    .map((line) => `<span class="stat-chip">${escapeHtml(line)}</span>`)
+    .join("");
+}
+
+$("#stats-text")?.addEventListener("input", (e) => {
+  previewStatsText(e.target.value);
+});
 
 async function ensureSession() {
   if (!getToken()) {
@@ -151,15 +180,7 @@ $("#item-form")?.addEventListener("submit", async (e) => {
   e.preventDefault();
   const msg = $("#item-msg");
   const fd = new FormData(e.target);
-  const stats = {
-    atk: numOrNull(fd.get("atk")),
-    def: numOrNull(fd.get("def")),
-    hit: numOrNull(fd.get("hit")),
-    eva: numOrNull(fd.get("eva")),
-    hp: numOrNull(fd.get("hp")),
-    mp: numOrNull(fd.get("mp")),
-  };
-  const hasStats = Object.values(stats).some((v) => v != null);
+  const statsText = String(fd.get("stats_text") || "").trim();
   const payload = {
     name: String(fd.get("name") || "").trim(),
     category: String(fd.get("category") || "other"),
@@ -168,7 +189,7 @@ $("#item-form")?.addEventListener("submit", async (e) => {
     icon_url: String(fd.get("icon_url") || "").trim() || null,
     game_version: String(fd.get("game_version") || "").trim() || null,
     verified: 1,
-    ...(hasStats ? { stats } : {}),
+    ...(statsText ? { stats_text: statsText } : {}),
   };
   setMsg(msg, "登録中…", true);
   try {
@@ -178,6 +199,7 @@ $("#item-form")?.addEventListener("submit", async (e) => {
     });
     setMsg(msg, `登録しました: ${item?.name || payload.name} (id=${item?.id ?? "?"})`, true);
     e.target.reset();
+    previewStatsText("");
     await loadSuggestLists();
   } catch (err) {
     setMsg(msg, err.message || "登録に失敗しました", false);

@@ -76,17 +76,20 @@
           <label>説明 <textarea name="description" rows="3" maxlength="2000"></textarea></label>
           <label>アイコンURL <input name="icon_url" type="url" maxlength="500" /></label>
           <label>ゲームバージョン <input name="game_version" maxlength="32" placeholder="例: 2026.09.02" /></label>
-          <fieldset>
-            <legend>ステータス補正</legend>
-            <div class="stat-grid">
-              <label>攻撃 <input name="atk" type="number" /></label>
-              <label>防御 <input name="def" type="number" /></label>
-              <label>命中 <input name="hit" type="number" /></label>
-              <label>回避 <input name="eva" type="number" /></label>
-              <label>HP <input name="hp" type="number" /></label>
-              <label>MP <input name="mp" type="number" /></label>
-            </div>
-          </fieldset>
+          <label>
+            ステータス（自由記述・1行1項目）
+            <textarea
+              name="stats_text"
+              id="stats-text"
+              rows="7"
+              maxlength="4000"
+              placeholder="攻撃力 120&#10;命中 +15&#10;スキルダメージ 8%&#10;重量 2.5&#10;クラス ヴァイパー"
+            ></textarea>
+          </label>
+          <p class="field-hint">
+            「名前 値」の形式で書いてください。攻撃・防御・命中などは自動でコード側の項目に入り、未知のステータス名もそのまま保存・表示されます。
+          </p>
+          <div id="stats-preview" class="stat-chips admin-stat-preview" aria-live="polite"></div>
           <button type="submit" class="btn primary">登録する</button>
           <p id="item-msg" class="form-msg" role="status"></p>
         </form>

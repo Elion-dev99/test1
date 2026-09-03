@@ -443,6 +443,84 @@ async function goResults(browse = {}) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function formatStatValue(v) {
+  if (v == null || v === '') return '';
+  return String(v);
+}
+
+/**
+ * Prefer free-form stat_entries when present; otherwise show known columns
+ * and remaining scalar extra keys so new stats appear without UI changes.
+ */
+function buildStatChips(stats, extra) {
+  const chips = [];
+  const seen = new Set();
+  const push = (label, value) => {
+    const text =
+      value === '' || value == null ? String(label) : `${label} ${formatStatValue(value)}`.trim();
+    if (!text || seen.has(text)) return;
+    seen.add(text);
+    chips.push(text);
+  };
+
+  if (Array.isArray(extra.stat_entries) && extra.stat_entries.length) {
+    for (const e of extra.stat_entries) {
+      if (!e) continue;
+      push(e.label || '', e.value);
+    }
+    return chips;
+  }
+
+  const legacy = [
+    [extra.tier != null, 'Tier', extra.tier],
+    [extra.class, extra.class, ''],
+    [extra.weapon_type, extra.weapon_type, ''],
+    [extra.weight != null, '重量', extra.weight],
+    [extra.skill_damage != null, 'スキルダメージ', extra.skill_damage],
+    [extra.normal_monster_damage != null, '通常モンスターダメージ', extra.normal_monster_damage],
+    [extra.magic_attack != null, '魔法攻撃力', extra.magic_attack],
+    [extra.crit_damage != null, 'クリティカルダメージ', extra.crit_damage],
+    [extra.pvp_attack != null, 'PvP攻撃力', extra.pvp_attack],
+    [extra.evasion != null, '回避', extra.evasion],
+    [stats?.attack != null, '攻撃', stats.attack],
+    [stats?.defense != null, '防御', stats.defense],
+    [stats?.accuracy != null, '命中', stats.accuracy],
+    [stats?.crit_rate != null, 'クリ率', stats.crit_rate],
+    [stats?.hp != null, 'HP', stats.hp],
+    [stats?.mp != null, 'MP', stats.mp],
+  ];
+  for (const [cond, label, value] of legacy) {
+    if (!cond) continue;
+    if (value === '') push(label, null);
+    else push(label, value);
+  }
+
+  const skip = new Set([
+    'enhance_table',
+    'scaling_notes',
+    'source_note',
+    'stats_text',
+    'stat_entries',
+    'notes',
+    'tier',
+    'class',
+    'weapon_type',
+    'weight',
+    'skill_damage',
+    'normal_monster_damage',
+    'magic_attack',
+    'crit_damage',
+    'pvp_attack',
+    'evasion',
+  ]);
+  for (const [key, value] of Object.entries(extra || {})) {
+    if (skip.has(key)) continue;
+    if (value == null || typeof value === 'object') continue;
+    push(key, value);
+  }
+  return chips;
+}
+
 async function showDetail(id) {
   const detail = await api(`/items/${id}`);
   state.detailId = id;
@@ -452,18 +530,7 @@ async function showDetail(id) {
     (detail.stats?.extra_json ? JSON.parse(detail.stats.extra_json) : null) ||
     {};
   const table = extra.enhance_table || [];
-  const chips = [
-    extra.tier ? `Tier ${extra.tier}` : null,
-    extra.class ? extra.class : null,
-    extra.weapon_type || null,
-    extra.weight != null ? `重量 ${extra.weight}` : null,
-    extra.skill_damage != null ? `スキルダメージ ${extra.skill_damage}` : null,
-    extra.normal_monster_damage != null ? `通常モンスターダメージ ${extra.normal_monster_damage}` : null,
-    extra.magic_attack != null ? `魔法攻撃力 ${extra.magic_attack}` : null,
-    extra.crit_damage != null ? `クリティカルダメージ ${extra.crit_damage}` : null,
-    extra.pvp_attack != null ? `PvP攻撃力 ${extra.pvp_attack}` : null,
-    detail.stats?.attack != null ? `攻撃 ${detail.stats.attack}` : null,
-  ].filter(Boolean);
+  const chips = buildStatChips(detail.stats, extra);
 
   const enhanceHtml = table.length
     ? `
