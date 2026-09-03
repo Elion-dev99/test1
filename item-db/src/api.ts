@@ -174,7 +174,7 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
             });
           }
 
-          if (created) {
+          if (created || (await db.listSources(env.DB, item.id)).length === 0) {
             for (const src of raw.acquire_sources ?? []) {
               await db.addSource(env.DB, {
                 item_id: item.id,
