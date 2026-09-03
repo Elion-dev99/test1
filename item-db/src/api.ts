@@ -41,12 +41,28 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
 
   try {
     if (path === '/api/health' && request.method === 'GET') {
-      return json({ success: true, data: { ok: true, game: env.GAME_NAME } });
+      const current = await db.getCurrentVersion(env.DB).catch(() => null);
+      return json({
+        success: true,
+        data: {
+          ok: true,
+          game: env.GAME_NAME,
+          version: current?.version_key ?? env.GAME_VERSION ?? null,
+        },
+      });
     }
 
     if (path === '/api/stats' && request.method === 'GET') {
       const stats = await db.getStats(env.DB);
       return json({ success: true, data: stats });
+    }
+
+    if (path === '/api/versions' && request.method === 'GET') {
+      const [versions, current] = await Promise.all([
+        db.listVersions(env.DB),
+        db.getCurrentVersion(env.DB),
+      ]);
+      return json({ success: true, data: { current, versions } });
     }
 
     if (path === '/api/items' && request.method === 'GET') {
@@ -55,6 +71,7 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
         category: url.searchParams.get('category') ?? undefined,
         rarity: url.searchParams.get('rarity') ?? undefined,
         slot: url.searchParams.get('slot') ?? undefined,
+        version: url.searchParams.get('version') ?? undefined,
         limit: parseInt(url.searchParams.get('limit') ?? '100', 10),
       });
       return json({ success: true, data: items });
@@ -72,6 +89,7 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
         icon_url?: string;
         verified?: number;
         source_url?: string;
+        game_version?: string | null;
         aliases?: string[];
       }>(request);
 
@@ -98,6 +116,13 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
           notes?: string;
           external_boss_id?: number;
         }>;
+        versions?: Array<{
+          version_key: string;
+          label: string;
+          released_at?: string | null;
+          notes?: string | null;
+          is_current?: number;
+        }>;
         items?: Array<{
           name: string;
           category?: ItemCategory;
@@ -108,6 +133,7 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
           description?: string | null;
           verified?: number;
           source_url?: string | null;
+          game_version?: string | null;
           aliases?: string[];
           acquire_sources?: Array<{
             source_type: string;
@@ -140,6 +166,7 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
 
       const summary = {
         bosses_upserted: 0,
+        versions_upserted: 0,
         items_created: 0,
         items_existing: 0,
         sources_added: 0,
@@ -147,6 +174,15 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
         variants_upserted: 0,
         errors: [] as string[],
       };
+
+      for (const ver of body.versions ?? []) {
+        try {
+          await db.upsertVersion(env.DB, ver);
+          summary.versions_upserted += 1;
+        } catch (err) {
+          summary.errors.push(`version ${ver.version_key}: ${err instanceof Error ? err.message : 'fail'}`);
+        }
+      }
 
       for (const boss of body.bosses ?? []) {
         try {
@@ -172,6 +208,7 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
               description: raw.description,
               verified: raw.verified,
               source_url: raw.source_url,
+              game_version: raw.game_version,
               aliases: raw.aliases,
             });
             summary.items_created += 1;
@@ -187,6 +224,7 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
               description: raw.description ?? null,
               verified: raw.verified,
               source_url: raw.source_url ?? null,
+              ...(raw.game_version !== undefined ? { game_version: raw.game_version } : {}),
             });
           }
 

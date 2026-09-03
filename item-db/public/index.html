@@ -51,6 +51,13 @@
                 <input id="home-q" type="search" placeholder="調べたいキーワードを入力" autocomplete="off">
                 <button type="submit" class="btn-search">検索</button>
               </form>
+              <button type="button" class="btn-latest" id="btn-latest-version">
+                <span class="latest-mark" aria-hidden="true">✦</span>
+                <span>
+                  <strong>最新アップデート検索</strong>
+                  <small id="latest-version-label">現行バージョンのアイテム</small>
+                </span>
+              </button>
             </section>
 
             <section class="panel">
@@ -76,6 +83,9 @@
                       <option value="heroic">英雄</option>
                       <option value="legendary">伝説</option>
                     </select>
+                    <select id="results-version">
+                      <option value="">全バージョン</option>
+                    </select>
                     <button type="submit" class="btn-search compact">検索</button>
                   </form>
                 </div>
@@ -87,6 +97,7 @@
                         <th class="col-name">名称</th>
                         <th class="col-rarity">レア</th>
                         <th class="col-slot">部位</th>
+                        <th class="col-version">Ver</th>
                         <th class="col-trade">取引</th>
                       </tr>
                     </thead>
@@ -134,6 +145,11 @@
                 </label>
               </div>
               <label>部位（装備）<input name="slot" placeholder="武器 / ヘルム …"></label>
+              <label>追加バージョン
+                <select name="game_version" id="add-game-version">
+                  <option value="">現行バージョン</option>
+                </select>
+              </label>
               <label>説明<textarea name="description" rows="3"></textarea></label>
               <label>出典URL<input name="source_url" type="url"></label>
               <label class="check"><input type="checkbox" name="tradeable" checked> 取引可</label>

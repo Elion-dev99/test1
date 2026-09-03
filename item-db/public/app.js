@@ -24,8 +24,10 @@ const state = {
   stats: null,
   catalog: [],
   bosses: [],
+  versions: [],
+  currentVersion: null,
   openAcc: 'items',
-  browse: { q: '', category: '', rarity: '', slot: '', label: '' },
+  browse: { q: '', category: '', rarity: '', slot: '', version: '', label: '' },
   detailId: null,
 };
 
@@ -126,20 +128,60 @@ function renderBreadcrumb() {
   });
 }
 
+function versionLabel(key) {
+  if (!key) return '—';
+  const hit = state.versions.find((v) => v.version_key === key);
+  return hit ? hit.version_key : key;
+}
+
 function renderStats() {
   const s = state.stats || {};
+  const cur = state.currentVersion || s.current_version;
   document.getElementById('top-stats').textContent =
-    `items ${s.items ?? '—'} · variants ${s.variants ?? '—'} · bosses ${s.bosses ?? '—'}`;
-  document.getElementById('home-version').textContent =
-    `収録アイテム ${s.items ?? 0} 件 / バリアント ${s.variants ?? 0} 件`;
+    `Ver ${cur?.version_key ?? '—'} · items ${s.items ?? '—'} · bosses ${s.bosses ?? '—'}`;
+  document.getElementById('home-version').textContent = cur
+    ? `Version: ${cur.version_key}（${cur.label || cur.version_key}）`
+    : 'Version: —';
+  const latestLabel = document.getElementById('latest-version-label');
+  if (latestLabel) {
+    latestLabel.textContent = cur
+      ? `${cur.label || cur.version_key} のアイテム（${s.latest_item_count ?? 0}件）`
+      : '現行バージョンのアイテム';
+  }
   const rail = document.getElementById('rail-stats');
   rail.innerHTML = `
+    <dt>現行Ver</dt><dd>${escapeHtml(cur?.version_key ?? '—')}</dd>
     <dt>アイテム</dt><dd>${s.items ?? 0}</dd>
+    <dt>最新追加</dt><dd>${s.latest_item_count ?? 0}</dd>
     <dt>強化段階</dt><dd>${s.variants ?? 0}</dd>
     <dt>ドロップ</dt><dd>${s.drops ?? 0}</dd>
     <dt>ボス</dt><dd>${s.bosses ?? 0}</dd>
-    <dt>相場記録</dt><dd>${s.snapshots ?? 0}</dd>
   `;
+}
+
+function fillVersionSelects() {
+  const opts = ['<option value="">全バージョン</option>']
+    .concat(
+      state.versions.map((v) => {
+        const mark = v.is_current ? ' ★' : '';
+        return `<option value="${escapeHtml(v.version_key)}">${escapeHtml(v.version_key)}${mark}</option>`;
+      }),
+    )
+    .join('');
+  const results = document.getElementById('results-version');
+  if (results) {
+    const keep = results.value;
+    results.innerHTML = opts;
+    results.value = keep;
+  }
+  const add = document.getElementById('add-game-version');
+  if (add) {
+    add.innerHTML =
+      '<option value="">現行バージョン</option>' +
+      state.versions
+        .map((v) => `<option value="${escapeHtml(v.version_key)}">${escapeHtml(v.version_key)} — ${escapeHtml(v.label)}</option>`)
+        .join('');
+  }
 }
 
 function renderAccordion() {
@@ -166,6 +208,17 @@ function renderAccordion() {
       (b) =>
         `<li><button type="button" data-boss="${escapeHtml(b.name)}">${escapeHtml(b.name)}</button></li>`,
     )
+    .join('');
+
+  const versionLinks = state.versions
+    .map((v) => {
+      const n = countBy((i) => i.game_version === v.version_key);
+      const cur = v.is_current ? ' ★' : '';
+      return `<li><button type="button" data-browse='${JSON.stringify({
+        version: v.version_key,
+        label: v.version_key + cur,
+      })}'>${escapeHtml(v.version_key)} <span class="n">(${n})</span></button></li>`;
+    })
     .join('');
 
   const root = document.getElementById('category-accordion');
@@ -195,6 +248,13 @@ function renderAccordion() {
         <span class="chev" aria-hidden="true"></span>
       </button>
       <div class="acc-body"><ul class="subcat-grid">${rarityLinks}</ul></div>
+    </div>
+    <div class="acc-item ${state.openAcc === 'version' ? 'open' : ''}" data-acc="version">
+      <button type="button" class="acc-head">
+        <span>バージョンから検索 <span class="count">（${state.versions.length}）</span></span>
+        <span class="chev" aria-hidden="true"></span>
+      </button>
+      <div class="acc-body"><ul class="subcat-grid">${versionLinks || '<li class="n">バージョン未登録</li>'}</ul></div>
     </div>
     <div class="acc-item ${state.openAcc === 'boss' ? 'open' : ''}" data-acc="boss">
       <button type="button" class="acc-head">
@@ -233,6 +293,10 @@ function bindBrowseButtons(scope = document) {
 }
 
 function filterCatalog(browse) {
+  let versionKey = browse.version || '';
+  if (versionKey === 'latest' || versionKey === 'current') {
+    versionKey = state.currentVersion?.version_key || '';
+  }
   return state.catalog.filter((item) => {
     if (browse.q) {
       const q = browse.q.toLowerCase();
@@ -244,12 +308,17 @@ function filterCatalog(browse) {
     if (browse.slotGroup) {
       if (slotGroup(item) !== browse.slotGroup) return false;
     }
+    if (versionKey && item.game_version !== versionKey) return false;
     return true;
   });
 }
 
 function browseLabel(browse) {
   if (browse.label) return browse.label;
+  if (browse.version === 'latest' || browse.version === 'current') {
+    return `最新アップデート（${state.currentVersion?.version_key || '—'}）`;
+  }
+  if (browse.version) return `Version ${browse.version}`;
   if (browse.q) return `「${browse.q}」の検索結果`;
   if (browse.slot) return browse.slot;
   if (browse.category) return categoryLabel[browse.category] || browse.category;
@@ -270,12 +339,22 @@ function renderResultsSide(active) {
     { label: '収集品', browse: { category: 'collection', label: '収集品' } },
     { label: '伝説', browse: { rarity: 'legendary', label: '伝説' } },
     { label: '英雄', browse: { rarity: 'heroic', label: '英雄' } },
+    {
+      label: '最新Ver',
+      browse: {
+        version: 'latest',
+        label: `最新アップデート（${state.currentVersion?.version_key || '—'}）`,
+      },
+    },
   ];
   const activeKey = JSON.stringify({
     category: active.category || '',
     rarity: active.rarity || '',
     slot: active.slot || '',
     slotGroup: active.slotGroup || '',
+    version: active.version === 'latest' || active.version === 'current'
+      ? 'latest'
+      : active.version || '',
   });
   el.innerHTML = `
     <div class="side-group">
@@ -287,6 +366,9 @@ function renderResultsSide(active) {
             rarity: l.browse.rarity || '',
             slot: l.browse.slot || '',
             slotGroup: l.browse.slotGroup || '',
+            version: l.browse.version === 'latest' || l.browse.version === 'current'
+              ? 'latest'
+              : l.browse.version || '',
           });
           return `<button type="button" class="${key === activeKey ? 'active' : ''}" data-browse='${JSON.stringify(l.browse)}'>${l.label}</button>`;
         })
@@ -303,11 +385,20 @@ async function goResults(browse = {}) {
     rarity: browse.rarity || '',
     slot: browse.slot || '',
     slotGroup: browse.slotGroup || '',
+    version: browse.version || '',
     label: browseLabel(browse),
   };
   state.browse = next;
   document.getElementById('results-q').value = next.q;
   document.getElementById('results-rarity').value = next.rarity;
+  const verSelect = document.getElementById('results-version');
+  if (verSelect) {
+    const v =
+      next.version === 'latest' || next.version === 'current'
+        ? state.currentVersion?.version_key || ''
+        : next.version;
+    verSelect.value = v;
+  }
   document.getElementById('results-heading').textContent = next.label;
 
   // Prefer local catalog (full snapshot). Fall back to API when empty/stale.
@@ -318,6 +409,7 @@ async function goResults(browse = {}) {
     if (next.category) params.set('category', next.category);
     if (next.rarity) params.set('rarity', next.rarity);
     if (next.slot) params.set('slot', next.slot);
+    if (next.version) params.set('version', next.version);
     params.set('limit', '500');
     items = await api(`/items?${params}`);
   }
@@ -350,6 +442,7 @@ async function goResults(browse = {}) {
             </td>
             <td class="rarity-text r-${escapeHtml(item.rarity)}">${escapeHtml(rarity)}</td>
             <td>${escapeHtml(slot)}</td>
+            <td>${escapeHtml(versionLabel(item.game_version))}</td>
             <td>${item.tradeable ? '取引可' : '帰属'}</td>
           </tr>`;
       })
@@ -446,6 +539,7 @@ async function showDetail(id) {
           <span>${escapeHtml(categoryLabel[item.category] || item.category)}</span>
           <span class="rarity-text r-${escapeHtml(item.rarity)}">${escapeHtml(rarityLabel[item.rarity] || item.rarity)}</span>
           ${item.slot ? `<span>${escapeHtml(item.slot)}</span>` : ''}
+          ${item.game_version ? `<span>Ver ${escapeHtml(item.game_version)}</span>` : ''}
           <span>${item.tradeable ? '取引可' : '帰属'}</span>
           ${item.verified ? '<span>検証済</span>' : ''}
         </div>
@@ -493,14 +587,18 @@ function goHome() {
 }
 
 async function bootstrap() {
-  const [stats, items, bosses] = await Promise.all([
+  const [stats, items, bosses, versionData] = await Promise.all([
     api('/stats'),
     api('/items?limit=500'),
     api('/bosses').catch(() => []),
+    api('/versions').catch(() => ({ current: null, versions: [] })),
   ]);
   state.stats = stats;
   state.catalog = items;
   state.bosses = bosses;
+  state.versions = versionData.versions || [];
+  state.currentVersion = versionData.current || stats.current_version || null;
+  fillVersionSelects();
   renderStats();
   renderAccordion();
 
@@ -523,12 +621,20 @@ document.getElementById('home-search-form').addEventListener('submit', (e) => {
   goResults({ q, label: q ? `「${q}」の検索結果` : '検索結果' }).catch((err) => toast(err.message, 'error'));
 });
 
+document.getElementById('btn-latest-version').addEventListener('click', () => {
+  goResults({
+    version: 'latest',
+    label: `最新アップデート（${state.currentVersion?.version_key || '—'}）`,
+  }).catch((err) => toast(err.message, 'error'));
+});
+
 document.getElementById('results-search-form').addEventListener('submit', (e) => {
   e.preventDefault();
   goResults({
     ...state.browse,
     q: document.getElementById('results-q').value.trim(),
     rarity: document.getElementById('results-rarity').value,
+    version: document.getElementById('results-version').value,
   }).catch((err) => toast(err.message, 'error'));
 });
 
@@ -552,6 +658,7 @@ document.getElementById('add-form').addEventListener('submit', async (e) => {
         slot: fd.get('slot') || null,
         description: fd.get('description') || null,
         source_url: fd.get('source_url') || null,
+        game_version: fd.get('game_version') || null,
         tradeable: fd.get('tradeable') ? 1 : 0,
         verified: fd.get('verified') ? 1 : 0,
       }),

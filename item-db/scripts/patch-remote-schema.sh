@@ -43,8 +43,12 @@ add_column_if_missing market_snapshots captured_by \
   "ALTER TABLE market_snapshots ADD COLUMN captured_by TEXT DEFAULT 'manual';"
 add_column_if_missing drops boss_id \
   "ALTER TABLE drops ADD COLUMN boss_id INTEGER REFERENCES bosses(id) ON DELETE SET NULL;"
+add_column_if_missing items game_version \
+  "ALTER TABLE items ADD COLUMN game_version TEXT;"
 
 npx wrangler d1 execute "$DB_NAME" --remote --command \
   "CREATE INDEX IF NOT EXISTS idx_drops_boss_id ON drops(boss_id);" || true
+npx wrangler d1 execute "$DB_NAME" --remote --command \
+  "CREATE INDEX IF NOT EXISTS idx_items_game_version ON items(game_version);" || true
 
 echo "==> patch done"

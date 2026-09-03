@@ -2,6 +2,7 @@ export interface Env {
   DB: D1Database;
   ASSETS: Fetcher;
   GAME_NAME: string;
+  GAME_VERSION?: string;
 }
 
 export type ItemCategory =
@@ -29,8 +30,19 @@ export interface Item {
   icon_url: string | null;
   verified: number;
   source_url: string | null;
+  game_version: string | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface GameVersion {
+  id: number;
+  version_key: string;
+  label: string;
+  released_at: string | null;
+  notes: string | null;
+  is_current: number;
+  created_at: string;
 }
 
 export interface ItemVariant {

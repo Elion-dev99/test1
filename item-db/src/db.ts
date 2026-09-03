@@ -2,6 +2,7 @@ import type {
   Boss,
   BossType,
   Drop,
+  GameVersion,
   Item,
   ItemCategory,
   ItemRarity,
@@ -19,12 +20,22 @@ export function normalizeKey(name: string): string {
 }
 
 export async function getStats(db: D1Database) {
-  const [items, variants, snapshots, drops, bosses] = await Promise.all([
+  const [items, variants, snapshots, drops, bosses, currentVersion, latestCount] = await Promise.all([
     db.prepare('SELECT COUNT(*) as c FROM items').first<{ c: number }>(),
     db.prepare('SELECT COUNT(*) as c FROM item_variants').first<{ c: number }>(),
     db.prepare('SELECT COUNT(*) as c FROM market_snapshots').first<{ c: number }>(),
     db.prepare('SELECT COUNT(*) as c FROM drops').first<{ c: number }>(),
     db.prepare('SELECT COUNT(*) as c FROM bosses').first<{ c: number }>(),
+    getCurrentVersion(db),
+    db
+      .prepare(
+        `SELECT COUNT(*) as c FROM items i
+         WHERE i.game_version = (
+           SELECT version_key FROM game_versions WHERE is_current = 1 LIMIT 1
+         )`,
+      )
+      .first<{ c: number }>()
+      .catch(() => ({ c: 0 })),
   ]);
   return {
     items: items?.c ?? 0,
@@ -32,12 +43,80 @@ export async function getStats(db: D1Database) {
     snapshots: snapshots?.c ?? 0,
     drops: drops?.c ?? 0,
     bosses: bosses?.c ?? 0,
+    current_version: currentVersion
+      ? {
+          version_key: currentVersion.version_key,
+          label: currentVersion.label,
+          released_at: currentVersion.released_at,
+        }
+      : null,
+    latest_item_count: latestCount?.c ?? 0,
   };
+}
+
+export async function listVersions(db: D1Database): Promise<GameVersion[]> {
+  return db
+    .prepare('SELECT * FROM game_versions ORDER BY released_at DESC, id DESC')
+    .all<GameVersion>()
+    .then((r) => r.results ?? []);
+}
+
+export async function getCurrentVersion(db: D1Database): Promise<GameVersion | null> {
+  return db
+    .prepare('SELECT * FROM game_versions WHERE is_current = 1 ORDER BY id DESC LIMIT 1')
+    .first<GameVersion>();
+}
+
+export async function upsertVersion(
+  db: D1Database,
+  data: {
+    version_key: string;
+    label: string;
+    released_at?: string | null;
+    notes?: string | null;
+    is_current?: number;
+  },
+): Promise<GameVersion> {
+  if (data.is_current) {
+    await db.prepare('UPDATE game_versions SET is_current = 0').run();
+  }
+  await db
+    .prepare(
+      `INSERT INTO game_versions (version_key, label, released_at, notes, is_current)
+       VALUES (?, ?, ?, ?, ?)
+       ON CONFLICT(version_key) DO UPDATE SET
+         label = excluded.label,
+         released_at = excluded.released_at,
+         notes = excluded.notes,
+         is_current = excluded.is_current`,
+    )
+    .bind(
+      data.version_key,
+      data.label,
+      data.released_at ?? null,
+      data.notes ?? null,
+      data.is_current ? 1 : 0,
+    )
+    .run();
+
+  const row = await db
+    .prepare('SELECT * FROM game_versions WHERE version_key = ?')
+    .bind(data.version_key)
+    .first<GameVersion>();
+  if (!row) throw new Error('Failed to upsert version');
+  return row;
 }
 
 export async function listItems(
   db: D1Database,
-  opts: { q?: string; category?: string; rarity?: string; slot?: string; limit?: number } = {},
+  opts: {
+    q?: string;
+    category?: string;
+    rarity?: string;
+    slot?: string;
+    version?: string;
+    limit?: number;
+  } = {},
 ): Promise<Item[]> {
   const limit = Math.min(opts.limit ?? 100, 500);
   const clauses: string[] = [];
@@ -64,6 +143,17 @@ export async function listItems(
   if (opts.slot) {
     clauses.push('i.slot = ?');
     binds.push(opts.slot);
+  }
+  if (opts.version) {
+    let versionKey = opts.version;
+    if (versionKey === 'latest' || versionKey === 'current') {
+      const cur = await getCurrentVersion(db);
+      versionKey = cur?.version_key ?? '';
+    }
+    if (versionKey) {
+      clauses.push('i.game_version = ?');
+      binds.push(versionKey);
+    }
   }
 
   const where = clauses.length ? `WHERE ${clauses.join(' AND ')}` : '';
@@ -107,15 +197,21 @@ export async function createItem(
     icon_url?: string | null;
     verified?: number;
     source_url?: string | null;
+    game_version?: string | null;
     aliases?: string[];
   },
 ): Promise<Item> {
   const nameKey = normalizeKey(data.name);
+  let gameVersion = data.game_version ?? null;
+  if (!gameVersion) {
+    const cur = await getCurrentVersion(db);
+    gameVersion = cur?.version_key ?? null;
+  }
   const result = await db
     .prepare(
       `INSERT INTO items
-        (name, name_key, category, rarity, slot, tradeable, stackable, description, icon_url, verified, source_url)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        (name, name_key, category, rarity, slot, tradeable, stackable, description, icon_url, verified, source_url, game_version)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .bind(
       data.name,
@@ -129,6 +225,7 @@ export async function createItem(
       data.icon_url ?? null,
       data.verified ?? 0,
       data.source_url ?? null,
+      gameVersion,
     )
     .run();
 
@@ -164,6 +261,7 @@ export async function updateItem(
     icon_url: string | null;
     verified: number;
     source_url: string | null;
+    game_version: string | null;
   }>,
 ): Promise<Item | null> {
   const fields: string[] = [];
