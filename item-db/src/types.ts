@@ -3,6 +3,8 @@ export interface Env {
   ASSETS: Fetcher;
   GAME_NAME: string;
   GAME_VERSION?: string;
+  /** Cloudflare secret: wrangler secret put ADMIN_PASSWORD */
+  ADMIN_PASSWORD?: string;
 }
 
 export type ItemCategory =

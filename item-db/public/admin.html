@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>管理画面 — Item DB</title>
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/admin.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+  <header class="site-header topbar">
+    <div class="site-header-inner topbar-inner">
+      <a class="brand" href="/">
+        <span class="brand-mark">V</span>
+        <span class="brand-text">
+          <strong>VAMPIR</strong>
+          <small>管理画面</small>
+        </span>
+      </a>
+      <nav class="site-nav top-nav" aria-label="管理ナビ">
+        <a class="top-link top-link-a" href="/">公開サイト</a>
+        <button type="button" class="nav-btn top-link" id="logout-btn" hidden>ログアウト</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <section id="login-panel" class="admin-panel">
+      <h1>管理者ログイン</h1>
+      <p class="lede">パスワードを入力してください。登録・ドロップ編集はここから行います。</p>
+      <form id="login-form" class="admin-form">
+        <label>
+          パスワード
+          <input type="password" name="password" required autocomplete="current-password" />
+        </label>
+        <button type="submit" class="btn primary">ログイン</button>
+        <p id="login-msg" class="form-msg" role="status"></p>
+      </form>
+    </section>
+
+    <section id="admin-panel" class="admin-panel" hidden>
+      <h1>管理メニュー</h1>
+      <p class="lede">アイテム登録・ドロップ登録・ゲームバージョン管理</p>
+
+      <div class="admin-tabs" role="tablist">
+        <button type="button" class="admin-tab is-active" data-tab="item">アイテム登録</button>
+        <button type="button" class="admin-tab" data-tab="drop">ドロップ登録</button>
+        <button type="button" class="admin-tab" data-tab="version">バージョン</button>
+      </div>
+
+      <div id="tab-item" class="admin-tab-panel">
+        <form id="item-form" class="admin-form">
+          <label>名前 <input name="name" required maxlength="120" /></label>
+          <label>カテゴリ
+            <select name="category" required>
+              <option value="equipment">装備</option>
+              <option value="skillbook">スキルブック</option>
+              <option value="collection">コレクション</option>
+              <option value="material">素材</option>
+              <option value="consumable">消費</option>
+              <option value="other" selected>その他</option>
+            </select>
+          </label>
+          <label>レアリティ
+            <select name="rarity">
+              <option value="common">一般</option>
+              <option value="uncommon">高級</option>
+              <option value="rare">希少</option>
+              <option value="heroic">英雄</option>
+              <option value="legendary">伝説</option>
+            </select>
+          </label>
+          <label>説明 <textarea name="description" rows="3" maxlength="2000"></textarea></label>
+          <label>アイコンURL <input name="icon_url" type="url" maxlength="500" /></label>
+          <label>ゲームバージョン <input name="game_version" maxlength="32" placeholder="例: 2026.09.02" /></label>
+          <fieldset>
+            <legend>ステータス補正</legend>
+            <div class="stat-grid">
+              <label>攻撃 <input name="atk" type="number" /></label>
+              <label>防御 <input name="def" type="number" /></label>
+              <label>命中 <input name="hit" type="number" /></label>
+              <label>回避 <input name="eva" type="number" /></label>
+              <label>HP <input name="hp" type="number" /></label>
+              <label>MP <input name="mp" type="number" /></label>
+            </div>
+          </fieldset>
+          <button type="submit" class="btn primary">登録する</button>
+          <p id="item-msg" class="form-msg" role="status"></p>
+        </form>
+      </div>
+
+      <div id="tab-drop" class="admin-tab-panel" hidden>
+        <form id="drop-form" class="admin-form">
+          <label>ボス名 <input name="boss_name" required maxlength="120" list="boss-list" /></label>
+          <datalist id="boss-list"></datalist>
+          <label>出現場所 <input name="location" maxlength="200" /></label>
+          <label>アイテム名 <input name="item_name" required maxlength="120" list="item-list" /></label>
+          <datalist id="item-list"></datalist>
+          <label>ドロップ率(%) <input name="drop_rate" type="number" min="0" max="100" step="0.01" /></label>
+          <label>備考 <input name="notes" maxlength="500" /></label>
+          <button type="submit" class="btn primary">ドロップを登録</button>
+          <p id="drop-msg" class="form-msg" role="status"></p>
+        </form>
+      </div>
+
+      <div id="tab-version" class="admin-tab-panel" hidden>
+        <form id="version-form" class="admin-form">
+          <label>バージョンコード <input name="code" required maxlength="32" placeholder="2026.09.02" /></label>
+          <label>表示名 <input name="label" maxlength="120" /></label>
+          <label>リリース日 <input name="released_at" type="date" /></label>
+          <label>メモ <textarea name="notes" rows="2" maxlength="500"></textarea></label>
+          <label class="check"><input type="checkbox" name="is_current" /> このバージョンを最新にする</label>
+          <button type="submit" class="btn primary">バージョンを保存</button>
+          <p id="version-msg" class="form-msg" role="status"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="/admin.js" type="module"></script>
+</body>
+</html>

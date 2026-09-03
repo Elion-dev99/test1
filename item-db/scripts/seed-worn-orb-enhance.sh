@@ -2,15 +2,19 @@
 # Seed 精鋭の古びたオーブ +0〜+15 enhance stats
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+# shellcheck source=_seed_auth.sh
+source "$ROOT/scripts/_seed_auth.sh"
+require_admin_password
 API_BASE="${1:-${WORKER_URL:-}}"
 if [[ -z "$API_BASE" ]]; then
-  echo "Usage: $0 https://mmorpg-item-db.xxx.workers.dev"
+  echo "Usage: ADMIN_PASSWORD=... $0 https://mmorpg-item-db.xxx.workers.dev"
   exit 1
 fi
 API_BASE="${API_BASE%/}"
 DATA="$ROOT/data/vampir-enhance/seiei-furubita-orb.json"
+export ADMIN_PASSWORD
 python3 - "$API_BASE" "$DATA" <<'PY'
-import json, sys, urllib.request, urllib.error
+import json, os, sys, urllib.request, urllib.error
 
 api, path = sys.argv[1], sys.argv[2]
 doc = json.load(open(path, encoding='utf-8'))
@@ -33,6 +37,7 @@ req = urllib.request.Request(
   headers={
     'Content-Type': 'application/json; charset=utf-8',
     'User-Agent': 'Mozilla/5.0 (compatible; VampirItemDB-Seed/1.0)',
+    'X-Admin-Password': os.environ['ADMIN_PASSWORD'],
   },
 )
 try:
