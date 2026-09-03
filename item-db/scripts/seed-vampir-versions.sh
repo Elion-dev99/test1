@@ -2,26 +2,34 @@
 # Seed game versions and backfill items.game_version
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+# shellcheck source=_seed_auth.sh
+source "$ROOT/scripts/_seed_auth.sh"
+require_admin_password
 API_BASE="${1:-${WORKER_URL:-}}"
 if [[ -z "$API_BASE" ]]; then
-  echo "Usage: $0 https://mmorpg-item-db.xxx.workers.dev"
+  echo "Usage: ADMIN_PASSWORD=... $0 https://mmorpg-item-db.xxx.workers.dev"
   exit 1
 fi
 API_BASE="${API_BASE%/}"
 DATA="$ROOT/data/vampir-versions.json"
+export ADMIN_PASSWORD
 python3 -u - "$API_BASE" "$DATA" "$ROOT" <<'PY'
-import json, sys, urllib.request, urllib.error
+import json, os, sys, urllib.request, urllib.error
 from pathlib import Path
 
 api, path, root = sys.argv[1], sys.argv[2], Path(sys.argv[3])
 doc = json.load(open(path, encoding='utf-8'))
 UA = 'Mozilla/5.0 (compatible; VampirItemDB-Seed/1.0)'
+ADMIN = os.environ['ADMIN_PASSWORD']
 
 def call(method, p, payload=None):
     data = None if payload is None else json.dumps(payload, ensure_ascii=False).encode('utf-8')
+    headers = {'Content-Type': 'application/json; charset=utf-8', 'User-Agent': UA}
+    if method != 'GET':
+        headers['X-Admin-Password'] = ADMIN
     req = urllib.request.Request(
         api + p, data=data, method=method,
-        headers={'Content-Type': 'application/json; charset=utf-8', 'User-Agent': UA},
+        headers=headers,
     )
     try:
         with urllib.request.urlopen(req, timeout=120) as r:

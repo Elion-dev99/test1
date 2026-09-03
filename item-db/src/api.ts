@@ -1,5 +1,6 @@
 import type { Env, ApiResponse, ItemCategory, ItemRarity } from './types';
 import * as db from './db';
+import { createAdminToken, getAdminPassword, requireAdmin, verifyAdminToken } from './auth';
 
 function json<T>(data: ApiResponse<T>, status = 200): Response {
   return new Response(JSON.stringify(data), {
@@ -8,7 +9,7 @@ function json<T>(data: ApiResponse<T>, status = 200): Response {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Admin-Password',
     },
   });
 }
@@ -19,7 +20,7 @@ function cors(): Response {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Admin-Password',
     },
   });
 }
@@ -48,8 +49,28 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
           ok: true,
           game: env.GAME_NAME,
           version: current?.version_key ?? env.GAME_VERSION ?? null,
+          admin_configured: Boolean(getAdminPassword(env)),
         },
       });
+    }
+
+    if (path === '/api/admin/login' && request.method === 'POST') {
+      const body = await parseBody<{ password?: string }>(request);
+      const expected = getAdminPassword(env);
+      if (!expected) return json({ success: false, error: '管理パスワード未設定' }, 503);
+      if (!body?.password || body.password !== expected) {
+        return json({ success: false, error: 'パスワードが違います' }, 401);
+      }
+      const token = await createAdminToken(env);
+      return json({ success: true, data: { token, expires_in: 60 * 60 * 12 } });
+    }
+
+    if (path === '/api/admin/me' && request.method === 'GET') {
+      const auth = request.headers.get('Authorization') || '';
+      const bearer = auth.startsWith('Bearer ') ? auth.slice(7).trim() : '';
+      const ok = await verifyAdminToken(env, bearer);
+      if (!ok) return json({ success: false, error: '未ログイン' }, 401);
+      return json({ success: true, data: { ok: true, role: 'admin' } });
     }
 
     if (path === '/api/stats' && request.method === 'GET') {
@@ -65,6 +86,29 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
       return json({ success: true, data: { current, versions } });
     }
 
+    if (path === '/api/versions' && request.method === 'POST') {
+      const denied = await requireAdmin(request, env);
+      if (denied) return denied;
+      const body = await parseBody<{
+        code?: string;
+        version_key?: string;
+        label?: string;
+        released_at?: string | null;
+        notes?: string | null;
+        is_current?: boolean | number;
+      }>(request);
+      const versionKey = (body?.version_key || body?.code || '').trim();
+      if (!versionKey) return json({ success: false, error: 'version_key / code は必須です' }, 400);
+      const version = await db.upsertVersion(env.DB, {
+        version_key: versionKey,
+        label: (body?.label || versionKey).trim(),
+        released_at: body?.released_at ?? null,
+        notes: body?.notes ?? null,
+        is_current: body?.is_current ? 1 : 0,
+      });
+      return json({ success: true, data: version }, 201);
+    }
+
     if (path === '/api/items' && request.method === 'GET') {
       const items = await db.listItems(env.DB, {
         q: url.searchParams.get('q') ?? undefined,
@@ -78,6 +122,8 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
     }
 
     if (path === '/api/items' && request.method === 'POST') {
+      const denied = await requireAdmin(request, env);
+      if (denied) return denied;
       const body = await parseBody<{
         name: string;
         category?: ItemCategory;
@@ -91,12 +137,40 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
         source_url?: string;
         game_version?: string | null;
         aliases?: string[];
+        stats?: {
+          attack?: number | null;
+          defense?: number | null;
+          accuracy?: number | null;
+          crit_rate?: number | null;
+          hp?: number | null;
+          mp?: number | null;
+          evasion?: number | null;
+          atk?: number | null;
+          def?: number | null;
+          hit?: number | null;
+          eva?: number | null;
+        };
       }>(request);
 
       if (!body?.name) return json({ success: false, error: 'name は必須です' }, 400);
 
       try {
         const item = await db.createItem(env.DB, body);
+        if (body.stats) {
+          const s = body.stats;
+          const extra: Record<string, number> = {};
+          const eva = s.evasion ?? s.eva;
+          if (eva != null) extra.evasion = eva;
+          await db.upsertItemStats(env.DB, item.id, {
+            attack: s.attack ?? s.atk ?? null,
+            defense: s.defense ?? s.def ?? null,
+            accuracy: s.accuracy ?? s.hit ?? null,
+            crit_rate: s.crit_rate ?? null,
+            hp: s.hp ?? null,
+            mp: s.mp ?? null,
+            extra_json: Object.keys(extra).length ? JSON.stringify(extra) : null,
+          });
+        }
         return json({ success: true, data: item }, 201);
       } catch (err) {
         const message = err instanceof Error ? err.message : 'create failed';
@@ -108,6 +182,8 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
     }
 
     if (path === '/api/seed' && request.method === 'POST') {
+      const denied = await requireAdmin(request, env);
+      if (denied) return denied;
       const body = await parseBody<{
         bosses?: Array<{
           name: string;
@@ -307,6 +383,8 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
       }
 
       if (request.method === 'PUT') {
+        const denied = await requireAdmin(request, env);
+        if (denied) return denied;
         const body = await parseBody<Record<string, unknown>>(request);
         if (!body) return json({ success: false, error: 'Invalid JSON' }, 400);
         const item = await db.updateItem(env.DB, id, body as Parameters<typeof db.updateItem>[2]);
@@ -315,37 +393,12 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
       }
 
       if (request.method === 'DELETE') {
+        const denied = await requireAdmin(request, env);
+        if (denied) return denied;
         const ok = await db.deleteItem(env.DB, id);
         if (!ok) return json({ success: false, error: '見つかりません' }, 404);
         return json({ success: true, data: { deleted: true } });
       }
-    }
-
-    const priceMatch = path.match(/^\/api\/items\/(\d+)\/price$/);
-    if (priceMatch && request.method === 'POST') {
-      const itemId = parseInt(priceMatch[1], 10);
-      const item = await db.getItem(env.DB, itemId);
-      if (!item) return json({ success: false, error: '見つかりません' }, 404);
-
-      const body = await parseBody<{
-        enhance_level?: number;
-        blessed?: number;
-        min_price?: number;
-        listing_count?: number;
-        stock_qty?: number;
-        traded_28d?: number;
-        min_trade_price?: number;
-        note?: string;
-      }>(request);
-
-      const variant = await db.ensureVariant(
-        env.DB,
-        itemId,
-        body?.enhance_level ?? 0,
-        body?.blessed ?? 0,
-      );
-      const snap = await db.addSnapshot(env.DB, variant.id, body ?? {});
-      return json({ success: true, data: { variant, snapshot: snap } }, 201);
     }
 
     if (path === '/api/bosses' && request.method === 'GET') {
@@ -354,6 +407,8 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
     }
 
     if (path === '/api/bosses' && request.method === 'POST') {
+      const denied = await requireAdmin(request, env);
+      if (denied) return denied;
       const body = await parseBody<{
         name: string;
         boss_type?: 'world' | 'gehenna' | 'event' | 'other';
@@ -374,20 +429,49 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
     }
 
     if (path === '/api/drops' && request.method === 'POST') {
+      const denied = await requireAdmin(request, env);
+      if (denied) return denied;
       const body = await parseBody<{
-        item_id: number;
+        item_id?: number;
+        item_name?: string;
         boss_name: string;
-        drop_note?: string;
+        location?: string | null;
+        drop_rate?: number | null;
+        drop_note?: string | null;
+        notes?: string | null;
         verified?: number;
       }>(request);
-      if (!body?.item_id || !body?.boss_name) {
-        return json({ success: false, error: 'item_id と boss_name は必須です' }, 400);
+      if (!body?.boss_name) {
+        return json({ success: false, error: 'boss_name は必須です' }, 400);
       }
-      const drop = await db.addDrop(env.DB, body);
+      let itemId = body.item_id;
+      if (!itemId && body.item_name) {
+        const found = await db.findItemByName(env.DB, body.item_name);
+        if (!found) return json({ success: false, error: `アイテムが見つかりません: ${body.item_name}` }, 404);
+        itemId = found.id;
+      }
+      if (!itemId) {
+        return json({ success: false, error: 'item_id または item_name は必須です' }, 400);
+      }
+      if (body.location) {
+        await db.upsertBoss(env.DB, { name: body.boss_name, location: body.location });
+      }
+      const noteParts: string[] = [];
+      if (body.drop_rate != null) noteParts.push(`ドロップ率 ${body.drop_rate}%`);
+      if (body.drop_note) noteParts.push(body.drop_note);
+      if (body.notes) noteParts.push(body.notes);
+      const drop = await db.addDrop(env.DB, {
+        item_id: itemId,
+        boss_name: body.boss_name,
+        drop_note: noteParts.length ? noteParts.join(' / ') : null,
+        verified: body.verified,
+      });
       return json({ success: true, data: drop }, 201);
     }
 
     if (path === '/api/sources' && request.method === 'POST') {
+      const denied = await requireAdmin(request, env);
+      if (denied) return denied;
       const body = await parseBody<{
         item_id: number;
         source_type: string;

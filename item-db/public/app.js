@@ -76,10 +76,9 @@ function slotGroup(item) {
 }
 
 function setTopNav(view) {
-  document.querySelectorAll('.top-link').forEach((btn) => {
-    const nav = btn.dataset.nav;
-    const admin = ['add', 'drops', 'price'].includes(view);
-    btn.classList.toggle('active', admin ? nav === view : nav === 'home');
+  const active = view === 'drops' ? 'drops' : 'home';
+  document.querySelectorAll('.top-link[data-nav]').forEach((btn) => {
+    btn.classList.toggle('active', btn.dataset.nav === active);
   });
 }
 
@@ -111,12 +110,8 @@ function renderBreadcrumb() {
       parts.push('<span class="sep">›</span>', crumb(state.browse.label, 'results'));
     }
     parts.push('<span class="sep">›</span>', crumb('詳細'));
-  } else if (state.view === 'add') {
-    parts.push('<span class="sep">›</span>', crumb('登録'));
   } else if (state.view === 'drops') {
     parts.push('<span class="sep">›</span>', crumb('ドロップ'));
-  } else if (state.view === 'price') {
-    parts.push('<span class="sep">›</span>', crumb('相場'));
   }
   el.innerHTML = parts.join('');
   el.querySelectorAll('[data-crumb]').forEach((btn) => {
@@ -173,14 +168,6 @@ function fillVersionSelects() {
     const keep = results.value;
     results.innerHTML = opts;
     results.value = keep;
-  }
-  const add = document.getElementById('add-game-version');
-  if (add) {
-    add.innerHTML =
-      '<option value="">現行バージョン</option>' +
-      state.versions
-        .map((v) => `<option value="${escapeHtml(v.version_key)}">${escapeHtml(v.version_key)} — ${escapeHtml(v.label)}</option>`)
-        .join('');
   }
 }
 
@@ -640,37 +627,6 @@ document.getElementById('results-search-form').addEventListener('submit', (e) =>
 
 bindBrowseButtons(document);
 
-document.getElementById('add-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const fd = new FormData(e.target);
-  const aliases = String(fd.get('aliases') || '')
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean);
-  try {
-    const item = await api('/items', {
-      method: 'POST',
-      body: JSON.stringify({
-        name: fd.get('name'),
-        aliases,
-        category: fd.get('category'),
-        rarity: fd.get('rarity'),
-        slot: fd.get('slot') || null,
-        description: fd.get('description') || null,
-        source_url: fd.get('source_url') || null,
-        game_version: fd.get('game_version') || null,
-        tradeable: fd.get('tradeable') ? 1 : 0,
-        verified: fd.get('verified') ? 1 : 0,
-      }),
-    });
-    toast(`登録しました #${item.id}`);
-    e.target.reset();
-    await bootstrap();
-  } catch (err) {
-    toast(err.message, 'error');
-  }
-});
-
 document.getElementById('drop-search-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const boss = document.getElementById('drop-boss').value.trim();
@@ -694,50 +650,6 @@ document.getElementById('drop-search-form').addEventListener('submit', async (e)
       </div>`,
       )
       .join('');
-  } catch (err) {
-    toast(err.message, 'error');
-  }
-});
-
-document.getElementById('drop-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const fd = new FormData(e.target);
-  try {
-    await api('/drops', {
-      method: 'POST',
-      body: JSON.stringify({
-        item_id: Number(fd.get('item_id')),
-        boss_name: fd.get('boss_name'),
-        drop_note: fd.get('drop_note') || null,
-      }),
-    });
-    toast('ドロップを追加しました');
-    e.target.reset();
-    await bootstrap();
-  } catch (err) {
-    toast(err.message, 'error');
-  }
-});
-
-document.getElementById('price-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const fd = new FormData(e.target);
-  const itemId = Number(fd.get('item_id'));
-  try {
-    await api(`/items/${itemId}/price`, {
-      method: 'POST',
-      body: JSON.stringify({
-        enhance_level: Number(fd.get('enhance_level') || 0),
-        blessed: fd.get('blessed') ? 1 : 0,
-        min_price: fd.get('min_price') ? Number(fd.get('min_price')) : null,
-        listing_count: Number(fd.get('listing_count') || 0),
-        stock_qty: Number(fd.get('stock_qty') || 0),
-        traded_28d: Number(fd.get('traded_28d') || 0),
-        note: fd.get('note') || null,
-      }),
-    });
-    toast('相場を記録しました');
-    await bootstrap();
   } catch (err) {
     toast(err.message, 'error');
   }

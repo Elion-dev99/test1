@@ -31,6 +31,7 @@ Included (verified against GameWith pages linked in `meta.sources`):
 カタログシードのあとにオーブ強化テーブルを流す（カタログ側は stats を持たないので上書きしない）:
 
 ```bash
+export ADMIN_PASSWORD='…'   # Cloudflare Worker secret と同じ値
 bash item-db/scripts/seed-vampir-catalog.sh https://mmorpg-item-db.enchanting-supernova.workers.dev
 bash item-db/scripts/verify-vampir-catalog.sh https://mmorpg-item-db.enchanting-supernova.workers.dev
 bash item-db/scripts/seed-viper-orbs.sh https://mmorpg-item-db.enchanting-supernova.workers.dev
@@ -44,7 +45,13 @@ bash item-db/scripts/verify-viper-orbs.sh https://mmorpg-item-db.enchanting-supe
 `vampir-versions.json` — Lodestone の Patch 相当。現行は `2026.09.02`。
 
 ```bash
+export ADMIN_PASSWORD='…'
 bash item-db/scripts/seed-vampir-versions.sh https://mmorpg-item-db.enchanting-supernova.workers.dev
 ```
 
 UI では `Version: …` 表示と「最新アップデート検索」が使えます。
+
+## Admin
+
+公開 UI は閲覧専用。登録・ドロップ編集は `/admin.html`（`ADMIN_PASSWORD` でログイン）。
+GitHub Actions の `ADMIN_PASSWORD` secret を設定すると、デプロイ時に Worker secret へ同期されます。

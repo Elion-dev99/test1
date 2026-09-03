@@ -128,12 +128,16 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   padding: 0.55rem 0.85rem;
   cursor: pointer;
   border-bottom: 2px solid transparent;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
 }
-.top-link:hover { color: var(--text); }
+.top-link:hover { color: var(--text); text-decoration: none; }
 .top-link.active {
   color: var(--gold);
   border-bottom-color: var(--gold);
 }
+.top-link-a { line-height: 1.2; }
 
 .top-meta {
   color: var(--muted);
