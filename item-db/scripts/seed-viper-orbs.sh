@@ -9,8 +9,8 @@ if [[ -z "$API_BASE" ]]; then
 fi
 API_BASE="${API_BASE%/}"
 DATA="$ROOT/data/vampir-enhance/viper-orbs.json"
-BATCH="${BATCH:-5}"
-python3 - "$API_BASE" "$DATA" "$BATCH" <<'PY'
+BATCH="${BATCH:-1}"
+python3 -u - "$API_BASE" "$DATA" "$BATCH" <<'PY'
 import json, sys, time, urllib.request, urllib.error
 
 api, path, batch_s = sys.argv[1], sys.argv[2], sys.argv[3]
@@ -33,7 +33,7 @@ def post(chunk, label):
     try:
         with urllib.request.urlopen(req, timeout=180) as r:
             body = r.read().decode()
-            print(label, r.status, body[:500])
+            print(label, r.status, body[:500], flush=True)
             parsed = json.loads(body)
             errs = (parsed.get('data') or {}).get('errors') or []
             if errs:
@@ -46,6 +46,6 @@ n = len(items)
 for i in range(0, n, batch):
     chunk = items[i:i + batch]
     post(chunk, f'batch {i // batch + 1} ({i + 1}-{i + len(chunk)}/{n})')
-    time.sleep(0.35)
+    time.sleep(0.15)
 print('ok', n, 'orbs')
 PY
