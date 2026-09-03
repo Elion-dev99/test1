@@ -99,3 +99,5 @@ jobs:
             exit 0
           fi
           printf '%s' "$ADMIN_PASSWORD" | npx wrangler secret put ADMIN_PASSWORD
+
+# Redeploy to sync ADMIN_PASSWORD Worker secret after GitHub secret was set.
