@@ -66,6 +66,7 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
         rarity?: ItemRarity;
         slot?: string;
         tradeable?: number;
+        stackable?: number;
         description?: string;
         icon_url?: string;
         verified?: number;
@@ -85,6 +86,121 @@ export async function handleApi(request: Request, env: Env): Promise<Response | 
         }
         throw err;
       }
+    }
+
+    if (path === '/api/seed' && request.method === 'POST') {
+      const body = await parseBody<{
+        bosses?: Array<{
+          name: string;
+          boss_type?: 'world' | 'gehenna' | 'event' | 'other';
+          location?: string;
+          notes?: string;
+          external_boss_id?: number;
+        }>;
+        items?: Array<{
+          name: string;
+          category?: ItemCategory;
+          rarity?: ItemRarity;
+          slot?: string | null;
+          tradeable?: number;
+          stackable?: number;
+          description?: string | null;
+          verified?: number;
+          source_url?: string | null;
+          aliases?: string[];
+          acquire_sources?: Array<{
+            source_type: string;
+            label: string;
+            ref_note?: string | null;
+          }>;
+          drops?: Array<{
+            boss_name: string;
+            drop_note?: string | null;
+            verified?: number;
+          }>;
+        }>;
+      }>(request);
+
+      if (!body) return json({ success: false, error: 'Invalid JSON' }, 400);
+
+      const summary = {
+        bosses_upserted: 0,
+        items_created: 0,
+        items_existing: 0,
+        sources_added: 0,
+        drops_added: 0,
+        errors: [] as string[],
+      };
+
+      for (const boss of body.bosses ?? []) {
+        try {
+          await db.upsertBoss(env.DB, boss);
+          summary.bosses_upserted += 1;
+        } catch (err) {
+          summary.errors.push(`boss ${boss.name}: ${err instanceof Error ? err.message : 'fail'}`);
+        }
+      }
+
+      for (const raw of body.items ?? []) {
+        try {
+          let item = await db.findItemByName(env.DB, raw.name);
+          let created = false;
+          if (!item) {
+            item = await db.createItem(env.DB, {
+              name: raw.name,
+              category: raw.category,
+              rarity: raw.rarity,
+              slot: raw.slot,
+              tradeable: raw.tradeable,
+              stackable: raw.stackable,
+              description: raw.description,
+              verified: raw.verified,
+              source_url: raw.source_url,
+              aliases: raw.aliases,
+            });
+            summary.items_created += 1;
+            created = true;
+          } else {
+            summary.items_existing += 1;
+            await db.updateItem(env.DB, item.id, {
+              category: raw.category,
+              rarity: raw.rarity,
+              slot: raw.slot ?? null,
+              tradeable: raw.tradeable,
+              stackable: raw.stackable,
+              description: raw.description ?? null,
+              verified: raw.verified,
+              source_url: raw.source_url ?? null,
+            });
+          }
+
+          if (created || (await db.listSources(env.DB, item.id)).length === 0) {
+            for (const src of raw.acquire_sources ?? []) {
+              await db.addSource(env.DB, {
+                item_id: item.id,
+                source_type: src.source_type,
+                label: src.label,
+                ref_note: src.ref_note,
+              });
+              summary.sources_added += 1;
+            }
+          }
+
+          for (const drop of raw.drops ?? []) {
+            await db.addDrop(env.DB, {
+              item_id: item.id,
+              boss_name: drop.boss_name,
+              drop_note: drop.drop_note,
+              verified: drop.verified,
+            });
+            summary.drops_added += 1;
+          }
+        } catch (err) {
+          summary.errors.push(`item ${raw.name}: ${err instanceof Error ? err.message : 'fail'}`);
+        }
+      }
+
+      return json({ success: summary.errors.length === 0, data: summary }, summary.errors.length ? 207 : 201);
     }
 
     if (path === '/api/items/lookup' && request.method === 'GET') {
