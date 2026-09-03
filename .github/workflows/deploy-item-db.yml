@@ -1,0 +1,79 @@
+name: Deploy Item DB
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "item-db/**"
+      - ".github/workflows/deploy-item-db.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-item-db
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy Item DB
+    steps:
+      - name: Check required secrets
+        id: secrets
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "$CF_TOKEN" ] || [ -z "$CF_ACCOUNT" ]; then
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::CLOUDFLARE secrets missing; skip item-db deploy."
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.secrets.outputs.configured == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.secrets.outputs.configured == 'true'
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: item-db/package-lock.json
+
+      - name: Install dependencies
+        if: steps.secrets.outputs.configured == 'true'
+        working-directory: item-db
+        run: npm ci
+
+      - name: Ensure D1 database exists
+        if: steps.secrets.outputs.configured == 'true'
+        working-directory: item-db
+        run: bash scripts/ensure-d1.sh
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Show wrangler.jsonc after D1 ensure
+        if: steps.secrets.outputs.configured == 'true'
+        working-directory: item-db
+        run: |
+          if ! git diff --quiet wrangler.jsonc; then
+            echo "database_id was resolved on the runner:"
+            grep database_id wrangler.jsonc
+          fi
+
+      - name: Apply D1 migrations
+        if: steps.secrets.outputs.configured == 'true'
+        working-directory: item-db
+        run: npx wrangler d1 migrations apply item-db --remote
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Deploy Worker
+        if: steps.secrets.outputs.configured == 'true'
+        working-directory: item-db
+        run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

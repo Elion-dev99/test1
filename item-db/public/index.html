@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MMORPG Item DB</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">IDB</span>
+        <div>
+          <strong>Item DB</strong>
+          <small>VAMPIR 互換マスタ</small>
+        </div>
+      </div>
+      <nav>
+        <button class="nav-btn active" data-tab="search">検索</button>
+        <button class="nav-btn" data-tab="add">登録</button>
+        <button class="nav-btn" data-tab="drops">ドロップ</button>
+        <button class="nav-btn" data-tab="price">相場</button>
+      </nav>
+      <div class="stats" id="stats">読込中…</div>
+    </aside>
+
+    <main>
+      <section id="tab-search" class="tab active">
+        <header class="page-header">
+          <h1>アイテム検索</h1>
+          <p>名前・カテゴリ・レア度で検索</p>
+        </header>
+        <div class="toolbar">
+          <input type="search" id="search-q" placeholder="例: 魔物の証">
+          <select id="search-category">
+            <option value="">全カテゴリ</option>
+            <option value="equipment">装備</option>
+            <option value="skillbook">スキルブック</option>
+            <option value="collection">収集品</option>
+            <option value="material">素材</option>
+            <option value="consumable">消費</option>
+            <option value="other">その他</option>
+          </select>
+          <select id="search-rarity">
+            <option value="">全レア</option>
+            <option value="common">一般</option>
+            <option value="uncommon">高級</option>
+            <option value="rare">希少</option>
+            <option value="heroic">英雄</option>
+            <option value="legendary">伝説</option>
+          </select>
+          <button class="btn" id="btn-search">検索</button>
+        </div>
+        <div id="item-list" class="item-list"></div>
+        <div id="item-detail" class="detail hidden"></div>
+      </section>
+
+      <section id="tab-add" class="tab">
+        <header class="page-header">
+          <h1>アイテム登録</h1>
+          <p>取引所UI互換のマスタを追加</p>
+        </header>
+        <form id="add-form" class="form">
+          <label>名前 *<input name="name" required></label>
+          <label>別名（カンマ区切り）<input name="aliases" placeholder="Larva token, 마물의 증표"></label>
+          <div class="row">
+            <label>カテゴリ
+              <select name="category">
+                <option value="material">素材</option>
+                <option value="equipment">装備</option>
+                <option value="skillbook">スキルブック</option>
+                <option value="collection">収集品</option>
+                <option value="consumable">消費</option>
+                <option value="other">その他</option>
+              </select>
+            </label>
+            <label>レア
+              <select name="rarity">
+                <option value="common">一般</option>
+                <option value="uncommon">高級</option>
+                <option value="rare">希少</option>
+                <option value="heroic">英雄</option>
+                <option value="legendary">伝説</option>
+              </select>
+            </label>
+          </div>
+          <label>部位（装備）<input name="slot" placeholder="武器 / ヘルム …"></label>
+          <label>説明<textarea name="description" rows="3"></textarea></label>
+          <label>出典URL<input name="source_url" type="url"></label>
+          <label class="check"><input type="checkbox" name="tradeable" checked> 取引可</label>
+          <label class="check"><input type="checkbox" name="verified"> 検証済み</label>
+          <button class="btn primary" type="submit">登録</button>
+        </form>
+      </section>
+
+      <section id="tab-drops" class="tab">
+        <header class="page-header">
+          <h1>ボストロップ</h1>
+          <p>ボス名でドロップ一覧 / 紐付け登録</p>
+        </header>
+        <div class="toolbar">
+          <input id="drop-boss" placeholder="例: ラルヴァ">
+          <button class="btn" id="btn-drop-search">検索</button>
+        </div>
+        <div id="drop-list" class="item-list"></div>
+        <form id="drop-form" class="form compact">
+          <h3>ドロップ登録</h3>
+          <label>アイテムID<input name="item_id" type="number" required></label>
+          <label>ボス名<input name="boss_name" required></label>
+          <label>メモ<input name="drop_note"></label>
+          <button class="btn primary" type="submit">追加</button>
+        </form>
+      </section>
+
+      <section id="tab-price" class="tab">
+        <header class="page-header">
+          <h1>相場スナップショット</h1>
+          <p>取引所で見た最安・出品数を記録</p>
+        </header>
+        <form id="price-form" class="form">
+          <label>アイテムID *<input name="item_id" type="number" required></label>
+          <div class="row">
+            <label>強化<input name="enhance_level" type="number" value="0" min="0"></label>
+            <label class="check"><input type="checkbox" name="blessed"> 祝福</label>
+          </div>
+          <div class="row">
+            <label>最低価格<input name="min_price" type="number" min="0"></label>
+            <label>出品数<input name="listing_count" type="number" min="0" value="0"></label>
+          </div>
+          <div class="row">
+            <label>在庫数<input name="stock_qty" type="number" min="0" value="0"></label>
+            <label>28日完了数<input name="traded_28d" type="number" min="0" value="0"></label>
+          </div>
+          <label>メモ<input name="note"></label>
+          <button class="btn primary" type="submit">記録</button>
+        </form>
+      </section>
+    </main>
+  </div>
+  <div id="toast" class="toast hidden"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
