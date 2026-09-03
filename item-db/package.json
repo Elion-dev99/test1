@@ -1,0 +1,18 @@
+{
+  "name": "mmorpg-item-db",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:migrate": "wrangler d1 migrations apply item-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply item-db --remote",
+    "setup:cloudflare": "bash scripts/setup-cloudflare.sh",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260831.1",
+    "typescript": "^5.7.3",
+    "wrangler": "^4.4.0"
+  }
+}
